@@ -1,0 +1,19 @@
+[project]
+name = "flower-ai-hackathon"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+authors = [
+    { email = "slav.lukin@axomic.com" }
+]
+requires-python = ">=3.13"
+dependencies = [
+    "flwr>=1.34.0",
+]
+
+[project.scripts]
+flower-ai-hackathon = "flower_ai_hackathon:main"
+
+[build-system]
+requires = ["uv_build>=0.12.5,<0.13.0"]
+build-backend = "uv_build"
