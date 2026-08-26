@@ -85,9 +85,11 @@ layout: center
 class: text-left
 ---
 
-# Five of six, at every firm
+# What the database fields can prove
 
-<div class="grid grid-cols-[20rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm mt-4">
+<div class="text-xs opacity-55 mt-1">every firm searching its own records, matched on declared fields only</div>
+
+<div class="grid grid-cols-[20rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm mt-3">
 
 <div></div>
 <div class="text-center text-xs font-bold opacity-60">Firm A</div>
@@ -114,19 +116,23 @@ class: text-left
 
 </div>
 
-<div v-click class="cap mt-5">
+<div v-click class="cap mt-4">
 
-Every firm looks like a fine partner. The fourth row is empty at all three of them, so the
-team is not qualified and no firm can find that out alone.
+Every firm clears five rows on its own. On the fields alone, nobody can show the fourth —
+**which is not the same as nobody having it.**
 
 </div>
 
 <!--
-This is the design constraint. The corpora are built backwards from this grid.
+This is the design constraint, and the corpora are built backwards from it.
 
-Careful with the wording: it is NOT "each firm thinks it is fine and is wrong". Every firm
-genuinely misses the fourth row, because no firm's database fields describe it. Verified off
-the run - round 1 has have=0 on that row and every firm alone clears the other five.
+Say "on the fields alone" out loud. The grid is what a structured search returns, NOT what the
+firms hold, and the next slide turns on that difference. A judge who reads this grid as
+"nobody has such a person" will think round 2 contradicts it.
+
+Careful with the wording in the other direction too: it is NOT "each firm thinks it is fine
+and is wrong". Verified off the run - round 1 has have=0 on that row, and every firm alone
+clears the other five.
 -->
 
 ---
@@ -170,17 +176,23 @@ sector   civic          <- not healthcare
 
 <div v-click class="cap mt-4">
 
-The fields say civic, so no keyword search reaches it. The prose says hospital. Firm B has the
-answer, does not know it is the answer, and has no reason to go looking.
+**Firm B has the person.** The fields say civic, so the field search never offered them, and
+round 1 never opened the bio: reading every paragraph against every requirement is the
+expensive half. That is what the red row on the last slide actually meant.
 
 </div>
 
 <!--
-The crux for anyone outside construction. Two glosses, ten seconds: seismic means earthquake,
-and a retrofit is strengthening a building that already exists.
+This slide is the answer to "wait, you said nobody had one". Firm B held the person the whole
+time. `agents/search.py` is a structured predicate over declared banded fields, and
+`agents/matcher.py` grades what that prefilter admits without being allowed to add to it - so
+a record filed `sector: civic` never reaches the model in round 1.
+
+Two glosses for anyone outside construction, ten seconds: seismic means earthquake, and a
+retrofit is strengthening a building that already stands.
 
 Why it was filed as civic: a structural engineering firm saw a concrete frame and a city
-client, not a hospital. That is an ordinary filing decision, not a contrived one.
+client, not a hospital. An ordinary filing decision, not a contrived one.
 -->
 
 ---
@@ -192,9 +204,9 @@ class: text-left
 
 ```mermaid {scale: 0.7}
 flowchart LR
-    ask["<b>1 · ask</b><br/>each agent searches<br/>its own records only"]
+    ask["<b>1 · ask</b><br/>each agent matches its own<br/>records on declared fields"]
     compare["<b>2 · compare</b><br/>build the team grid,<br/>find the empty row"]
-    reread["<b>3 · re-read</b><br/>send the gap back,<br/>agents re-read their prose"]
+    reread["<b>3 · re-read</b><br/>send the gap back, agents<br/>re-read the prose they filed"]
     release["<b>4 · release</b><br/>disclose the least you can,<br/>a human approves each"]
 
     ask --> compare --> reread --> release
@@ -343,9 +355,9 @@ class: text-left
 ```mermaid {scale: 0.72}
 flowchart LR
     c["<b>Coordinator</b><br/>sends <b>R4</b><br/><i>2 bytes</i>"]
-    a["Firm A<br/>re-reads its 8 bios"]
-    b["Firm B<br/>re-reads its 8 bios"]
-    x["Firm C<br/>re-reads its 8 bios"]
+    a["Firm A<br/>reads the bios<br/>its fields ruled out"]
+    b["Firm B<br/>reads the bios<br/>its fields ruled out"]
+    x["Firm C<br/>reads the bios<br/>its fields ruled out"]
     ra["nothing here"]
     rb["<b>PERSON::007</b><br/>found in a paragraph"]
     rx["nothing here"]
@@ -358,18 +370,25 @@ flowchart LR
     style rb fill:#dcfce7,stroke:#15803d,color:#14532d
     style ra fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
     style rx fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
+    style a fill:#fff,stroke:#6b7280,color:#374151
+    style b fill:#fff,stroke:#374151,color:#111827
+    style x fill:#fff,stroke:#6b7280,color:#374151
 ```
 
 <div class="cap mt-3">
 
-Firm B's agent went looking only because it was told about a hole in **somebody else's**
-coverage. That is the whole argument: one agent answers a question none of them could ask
-alone.
+Round 1 matched fields. Round 2 reads paragraphs, for the one requirement the grid proved
+nobody covered. Firm B's agent went looking only because it was told about a hole in
+**somebody else's** coverage.
 
 </div>
 
 <!--
 The beat. Hold here for as long as the question takes.
+
+If they ask why round 1 does not read everything: cost. `agents/search.py` is a cheap
+structured predicate over six requirements; reading every paragraph against every requirement
+is the expensive half, and the joint grid is what licenses spending it on exactly one.
 
 The line the log actually prints:
   firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation
@@ -377,7 +396,8 @@ The line the log actually prints:
 
 Two bytes is the literal payload: the string "R4". Not which firm has the hole, not what would
 fill it. The model reads Firm B's bios on Firm B's node; the sentence it reasons over never
-leaves.
+leaves. In the trace this is one field: round 1 broadcasts `reads_text: false`, round 2
+broadcasts `reads_text: true`.
 -->
 
 ---
@@ -390,7 +410,7 @@ class: text-left
 <div class="grid grid-cols-4 gap-4 mt-6 text-center">
 <div><div class="num">2</div><div class="numlabel">rounds to converge</div></div>
 <div><div class="num">2 B</div><div class="numlabel">the gap, broadcast back</div></div>
-<div><div class="num">32.4 kB</div><div class="numlabel">banded answers, forward</div></div>
+<div><div class="num">≈33 kB</div><div class="numlabel">banded answers, forward</div></div>
 <div><div class="num text-green-600">0 B</div><div class="numlabel">record content, either way</div></div>
 </div>
 
@@ -409,10 +429,13 @@ nothing. Two invariant tests guard the vocabulary and the engineered gap.
 </div>
 
 <!--
-Technical execution axis. Every number here was read off the run in
-frontend/state/trace-healthcare-seismic.jsonl - round 1 attests 19, 13 and 18; the round-2
-broadcast carries gap_bytes 2; banded_bytes 33191, which the page prints as 32.4 kB;
-record_bytes 0; converged after 2 rounds.
+Technical execution axis. Every number here was read off a real run: round 1 attests 19, 13
+and 18; the round-2 broadcast carries gap_bytes 2; record_bytes 0; converged after 2 rounds.
+
+The banded total is approximate on purpose. It drifts a few hundred bytes between runs because
+each attestation carries the round-1 grader's note, and that text is a sampled completion -
+33191 B on one run, 33807 B on the next, which the page prints as 32.4 and 33.0 kB. Quote "about
+33 kB" and let the pane show the exact figure; do not read a decimal off this slide.
 
 If a judge wants to see it again, press Run.
 -->

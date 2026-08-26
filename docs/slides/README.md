@@ -52,7 +52,7 @@ deck can be checked against `docs/event.md` rather than against taste.
 |---|---|---|
 | 1 | Cover | the problem and the solution, two lines each |
 | 2 | **One contract. Three firms. Nobody can check.** | three firms, one question, three "cannot answer" |
-| 3 | **Five of six, at every firm** | the 6 × 3 coverage grid, one row red |
+| 3 | **What the database fields can prove** | the 6 × 3 coverage grid, one row red |
 | 4 | The fourth row is in a paragraph, not a field | the database fields beside the bio sentence |
 | 5 | The loop | four stages, stage 4 dashed because it is not built |
 | 6 | Architecture | the trust boundary, three identical stacks under it |
@@ -72,16 +72,26 @@ mechanism appears.
 
 - **Every number on slide 8 came off a real run**, out of
   `frontend/state/trace-healthcare-seismic.jsonl`.
-  Round 1 attests 19 · 13 · 18; the round-2 broadcast carries `gap_bytes` 2; `banded_bytes`
-  33191, which the page renders as 32.4 kB; `record_bytes` 0; converged after 2 rounds. If the
-  protocol changes, re-run it and re-copy them. A stale number here is worse than no number.
+  Round 1 attests 19 · 13 · 18; the round-2 broadcast carries `gap_bytes` 2; `record_bytes` 0;
+  converged after 2 rounds. If the protocol changes, re-run it and re-copy them. A stale number
+  here is worse than no number.
+- **The banded total is the one number that must stay approximate.** Every attestation carries
+  the round-1 grader's note, and that text is a sampled completion, so `banded_bytes` moves
+  between runs: 33191 B on one, 33807 B on the next, which the page renders as 32.4 and
+  33.0 kB. The slide says "≈33 kB" so the pane can never contradict it. Do not put a decimal
+  back on that tile.
 - **Nothing on a slide may claim something the code does not do.** The roadmap slide exists so
   that the optimiser, the human gate, and the baselines have somewhere honest to live. The
   appendix's *Not claimed* list is the checklist — keep it in sync with
   `docs/demo-script.md`'s closing section.
-- **Slide 3 shows what the run shows.** Every firm clears five rows alone and all three miss
-  the fourth. Do not revive the brief's "each firm self-assesses compliant and is confidently
-  wrong" — that is `ground_truth.json`'s `self_assessment` baseline, and it never executes.
+- **Slide 3 is a field search, not an inventory.** Every firm clears five rows alone and all
+  three miss the fourth *on declared fields*. Firm B holds the person the whole time;
+  `agents/search.py` is a structured predicate and `agents/matcher.py` may only grade what it
+  admits, so a record filed `sector: civic` never reaches a model in round 1. If slide 3 ever
+  reads as "nobody has such a person", slide 7 looks like a contradiction and the deck loses
+  the argument. Keep the "not the same as nobody having it" clause.
+- Do not revive the brief's "each firm self-assesses compliant and is confidently wrong" —
+  that is `ground_truth.json`'s `self_assessment` baseline, and it never executes.
 - **Validate Mermaid before pushing:** `node ~/.claude/tools/mermaid-lint/validate.mjs
   docs/slides/slides.md`. Slidev renders Mermaid client-side, so a syntax error is a blank
   slide rather than a build failure.
