@@ -3,6 +3,12 @@
 **Collaborative Agent Hackathon — Flower Labs, University of Cambridge, Wed 26 Aug 2026**
 **Track 1: SuperGrid**
 
+```text
+Team: Axomic
+Vyacheslav Lukin, slav.lukin@axomic.com
+Ivan Senilov, [repo owner]
+```
+
 Consortium is a harness for agents that are not allowed to pool their data. Parties that
 must jointly prove a property none of them can verify alone exchange **attestations** —
 banded, anonymised evidence that a matching record exists — rather than records. The
