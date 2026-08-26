@@ -1,8 +1,55 @@
-# Consortium — Federated Bid Assembly
+# Consortium — a collaborative disclosure harness for Flower Agents
 
 **Collaborative Agent Hackathon — Flower Labs, University of Cambridge, Wed 26 Aug 2026**
+**Track: Flower Agent Harness** — *"Agents can significantly accelerate our work; how would
+collaborative agents multiply that?"*
 
-Domain: AEC qualifications packages (SF330), grounded in the OpenAsset / Axomic workflow.
+Reference application: AEC qualifications packages (SF330), grounded in the
+OpenAsset / Axomic workflow.
+
+---
+
+## 0. The track, and what we must hand in
+
+The track asks for **a new agent harness that runs on SuperGrid and is published on Flower
+Hub, showcasing the collaborative aspect of Flower Agents.** That phrasing sets two
+pass/fail gates and six scored axes. Everything in this document is arranged around them.
+
+### 0.1 Submission gates — binary, not scored
+
+| Gate | Evidence | Owner | Deadline |
+|---|---|---|---|
+| **Published Flower Hub app** | live URL `flower.ai/apps/<account>/consortium/`, runnable by a judge | Flower | **11:30 stub, 16:30 final** |
+| **Open-source repo** | public GitHub, Apache-2.0, `LICENSE` file present | all | 16:50 |
+
+Neither is a demo feature. A perfect demo with no published app does not qualify. §10 is
+the publishing runbook; **T0 in §11 clears both gates before we write scenario code.**
+
+### 0.2 Scored axes, and the artefact that evidences each
+
+| Axis | Our evidence | Where it lives |
+|---|---|---|
+| **Impact** | JVs bid federal work by emailing spreadsheets; the harness is the missing primitive | §1 pitch, §14 roadmap |
+| **Innovation** | not retrieval — a *constrained disclosure optimiser* with a human gate | §5.4 optimiser |
+| **Flower** | genuine `AgentApp` on SuperGrid, published to Hub, run from `flwr chat` | §6 mapping, §10 runbook |
+| **Execution** | it runs end to end, live, and the three-condition baseline table is real | §7 evaluation |
+| **Presentation** | 4-minute table demo, rehearsed twice, with one scripted reaction beat | §8 demo |
+| **Safety** | banded egress, reject-not-sanitise, per-record human authorisation, 0-byte proof | §5.2, §7.2 |
+
+**Safety is a scored axis, not a compliance chore.** We happen to have built the most
+defensible safety story in the room — surface it deliberately (§7.2), do not let it stay
+implicit in the schema.
+
+### 0.3 The clock
+
+| Time | Event |
+|---|---|
+| 17:30 | **Demos ready.** Judges come to the table. |
+| — | 3–5 minutes each, at the table, conversational |
+| 18:45 | Winners announced; top 3 present on stage |
+
+Working backwards: code freeze **16:50**, final Hub publish **16:30**, two timed rehearsals
+between 16:50 and 17:30.
 
 ---
 
@@ -18,15 +65,37 @@ firm's full project history exposes its client relationships and contract values
 full roster is a recruiter's shopping list. Today this is solved by emailing spreadsheets
 around and hoping.
 
-Consortium puts an agent next to each firm's private asset library. The agents establish
+Consortium is **a harness for agents that are not allowed to pool their data.** It puts an
+agent next to each party's private library and gives those agents a protocol: establish
 compliance by exchanging **attestations** — banded, anonymised evidence that a matching
-record exists — never the records. A coordinator computes the *minimum set of disclosures*
-that makes the bid compliant, each firm's BD lead approves their own releases individually,
-and only then does real content flow into the document.
+record exists — never the records; broadcast the *gap* rather than the answer so each agent
+re-queries its own data with a question it did not know to ask; then compute the *minimum
+set of disclosures* that closes the gap, and route each one through a human owner.
+
+SF330 bid assembly is the reference application shipped with it. The harness is the
+deliverable.
 
 **One-line demo:** *three firms discover their joint bid is non-compliant, fix it, and
-assemble the SF330 — while each firm releases three records out of forty and never names
+assemble the SF330 — while each firm releases nine records out of forty and never names
 its confidential clients.*
+
+### 1.1 Why this is a harness and not an app
+
+A harness is the part someone else can reuse. Strip out SF330 and what remains is a
+four-stage collaboration protocol with no domain in it:
+
+```
+attest  ->  detect gap  ->  re-examine locally against the gap  ->  minimise disclosure, gate on a human
+```
+
+That loop applies unchanged to any set of parties who must jointly prove a property they
+cannot each verify alone and cannot pool data to check: consortium bids, multi-hospital
+cohort feasibility, cross-bank sanctions triage, supply-chain conformance. The domain
+enters only through three pluggable pieces — a requirement set, a closed banding
+vocabulary, and a disclosure-cost function. That separation is the reason this belongs on
+Hub rather than in a repo.
+
+Say this sentence in the demo: **"the SF330 is the example; the harness is the product."**
 
 ---
 
@@ -34,17 +103,20 @@ its confidential clients.*
 
 > **No single firm can assess whether the JV is compliant.**
 
-Direct transplant of the principle from the incident-diagnosis design. Each firm sees only
-its own coverage, systematically overestimates its contribution, and cannot know which of
-its assets are actually load-bearing. The federated coverage matrix is the only artefact
-that reveals the true gap.
+Each firm sees only its own coverage, systematically overestimates its contribution, and
+cannot know which of its assets are actually load-bearing. The federated coverage matrix is
+the only artefact that reveals the true gap.
 
 If any one firm can determine compliance alone, the system did not need to be distributed.
 The synthetic corpora are engineered backwards from this.
 
+This is also the answer to the track's own question. Collaborative agents do not multiply
+because three copies work faster; they multiply because **agent B answers a question agent
+A could not know to ask.** Round 2 is that claim, made executable.
+
 ---
 
-## 3. Why SF330 is the right output
+## 3. Why SF330 is the right reference application
 
 The form is structurally a gift:
 
@@ -74,7 +146,7 @@ specialist, seismic-heavy), Firm C (mid-size regional, strong federal past perfo
 
 | ID | Section | Kind | Predicate | Min count |
 |---|---|---|---|---|
-| R1 | F | MANDATORY | sector=healthcare, value ≥ $50M, completed ≤ 7 yrs | 3 |
+| R1 | F | MANDATORY | sector=healthcare, value >= $50M, completed <= 7 yrs | 3 |
 | R2 | F | MANDATORY | delivery=design-build, federal client | 2 |
 | R3 | E | MANDATORY | role=PM, credential=PMP, healthcare experience | 1 |
 | R4 | G | MANDATORY | **one person with healthcare AND seismic retrofit** | 1 |
@@ -97,9 +169,9 @@ Nobody finds R4 alone. The federated round finds it.
 
 ```mermaid
 flowchart TB
-    coord["<b>ServerApp — Coordinator</b><br/>backend/server_app.py<br/>RFP decomposition · coverage matrix · gap analysis<br/>minimum disclosure optimiser · SF330 assembly"]
+    coord["<b>Coordinator</b><br/>backend/server_app.py<br/>RFP decomposition · coverage matrix · gap analysis<br/>minimum disclosure optimiser · SF330 assembly"]
 
-    subgraph firm_a["ClientApp: Firm A — backend/client_app.py"]
+    subgraph firm_a["Firm A node — backend/client_app.py"]
         direction TB
         match_a["matcher agent<br/>agents/matcher.py"]
         search_a["local search<br/>agents/search.py"]
@@ -108,11 +180,11 @@ flowchart TB
         match_a --> search_a --> band_a --> gate_a
     end
 
-    subgraph firm_b["ClientApp: Firm B"]
+    subgraph firm_b["Firm B node"]
         same_b["same stack"]
     end
 
-    subgraph firm_c["ClientApp: Firm C"]
+    subgraph firm_c["Firm C node"]
         same_c["same stack"]
     end
 
@@ -130,9 +202,9 @@ the rules for working across it are in `CLAUDE.md` at the repo root.
 
 ### 5.2 The attestation schema — the privacy boundary
 
-The schema is the guarantee. A struct that structurally cannot carry a client name, a fee,
-or a person's identity. It ships as `backend/schema.py` and is **frozen at 11:20** — every
-other task depends on it.
+The schema is the guarantee, and it is the core of the **safety** story. A struct that
+structurally cannot carry a client name, a fee, or a person's identity. It ships as
+`backend/schema.py` and is **frozen at 11:20** — every other task depends on it.
 
 ```python
 from dataclasses import dataclass, field
@@ -175,6 +247,11 @@ class Attestation:
 **Key property:** the coordinator can compute the full coverage matrix and prove compliance
 or non-compliance from attestations alone, before any record is disclosed.
 
+**Reject, do not sanitise.** A sanitising egress filter teaches an agent that leaky output
+is acceptable and silently ships whatever the regex missed. A rejecting one fails the
+attestation and makes the agent try again within the vocabulary. This distinction is worth
+one sentence to the judges — it is the difference between a guardrail and a filter.
+
 ### 5.3 The round protocol
 
 **Round 1 — decomposition and blind bidding**
@@ -185,7 +262,7 @@ coverage matrix.
 
 *Expected output:* R4 uncovered. Every firm privately believes the JV is fine.
 
-**Round 2 — re-examination in light of the gap** ← the make-or-break feature
+**Round 2 — re-examination in light of the gap** <- the make-or-break feature
 
 Coordinator broadcasts the *gap*, not the answer: "R4 uncovered — need one individual with
 both healthcare and seismic retrofit evidence, Section G cell."
@@ -195,9 +272,9 @@ round 1. Firm B's agent, prompted by the cross-cutting framing, re-reads a bio i
 classified as purely structural and finds a hospital wing retrofit buried in the project
 history. It emits a new attestation with a `links` entry joining person to project.
 
-This is the same primitive as the incident design: *local recompute informed by global
-state, iterated over rounds.* Say it in the pitch — this audience reads it immediately as
-the shape of federated learning.
+*Local recompute informed by global state, iterated over rounds.* Say it in the pitch —
+this audience reads it immediately as the shape of federated learning, and it is the
+literal answer to "showcases the collaborative aspect".
 
 **Round 3 — minimum disclosure and human approval**
 
@@ -233,22 +310,61 @@ on both.
 
 ## 6. Flower mapping
 
+Verified against the installed `flwr 1.34.0`, not from memory.
+
 | Concept | Flower construct |
 |---|---|
-| Coordinator, round orchestration, optimiser | `ServerApp` |
-| Per-firm matcher agent | `ClientApp` (or `AgentApp` if the runtime cooperates) |
-| Attestation / request / content transport | `RecordDict` → `ConfigRecord` / `MetricRecord` |
-| Round loop | Flower's native round mechanism |
-| Model access | `AgentSession.responses.create` (Open Responses compatible) |
+| **Harness entry point, published to Hub** | `AgentApp` — `[tool.flwr.app.components] agentapp = "backend.agent_app:app"` |
+| Harness body | `@app.main()` over `(agent: AgentSession, context: Context)` |
+| Every model call in every agent | `agent.responses.create({...})` — Open Responses shape, supports `"stream": True` |
+| Tool access for an agent | `agent.connectors.tools([...])` / `agent.connectors.call(...)` |
+| Operator input (the solicitation) | `context.run_config["agent.input"]`, declared as `[tool.flwr.app.config.agent] input = ""` |
+| Invocation on SuperGrid | `flwr chat` -> `@<publisher>/consortium <solicitation>` |
+| Per-firm node holding a private library | `ClientApp` (federated path, `flwr run .`) |
+| Coordinator round loop | `ServerApp` (federated path) |
+| Attestation / request / content transport | `RecordDict` -> `ConfigRecord` / `MetricRecord` |
 
-**Risk hedge — 12:30 decision point.** Flower Agent is documented as experimental with APIs
-that may change between releases. If `flwr.agentapp` is fighting you at 12:30, drop to
-plain `flwr` `ClientApp`/`ServerApp` with direct model calls inside the client body.
-Identical architecture, materially lower risk. Do not debug the runtime past 12:30.
+### 6.1 The one architectural decision — resolve it by 12:00
+
+`flwr` validates an app as an **agentapp bundle** the moment `agentapp` appears in
+`[tool.flwr.app.components]`; `serverapp` and `clientapp` then stop being required. Whether
+one FAB may usefully carry *all three* is not documented, and we are not going to find out
+at 16:00.
+
+**Plan of record — ship both surfaces, test the combination first:**
+
+- `agentapp = "backend.agent_app:app"` — the harness as a Flower Agent. This is what gets
+  published, what runs on SuperGrid, and what a judge can invoke from `flwr chat`.
+- `serverapp` / `clientapp` — the federated simulation, `flwr run .`, three supernodes,
+  genuine per-node data isolation. This is the demo we drive at the table because it is
+  local and cannot be taken out by venue wifi.
+
+**T0 tests this exact combination in one pyproject at 11:00, with stub bodies, before any
+scenario code exists.** If the runtime rejects it, the fallback is decided in advance and
+costs twenty minutes: keep the root project as the federated app, and publish the agentapp
+from `hub/` as a second project directory (`flwr app publish hub/`) that imports `backend`
+and `agents`. Do not discover this at 16:00.
+
+### 6.2 Dual-runtime compatibility is a Hub requirement
+
+A published app must run in **both** simulation and deployment without code changes. The
+documented discriminator is `context.node_config`:
+
+```python
+if "partition-id" in context.node_config and "num-partitions" in context.node_config:
+    library = load_sim_library(context.node_config["partition-id"])   # data/firm_{a,b,c}.json
+else:
+    library = load_local_library(context.node_config["library-path"]) # real SuperNode
+```
+
+This lands in `backend/client_app.py` and costs about eight lines. Write it at T3, not
+after the first Hub reviewer runs the app on a real federation and it dies.
 
 ---
 
 ## 7. Evaluation — the 20 minutes that probably wins it
+
+### 7.1 The three conditions
 
 | Condition | Data access | Compliant? | Records disclosed |
 |---|---|---|---|
@@ -262,20 +378,45 @@ the disclosure**, and the isolated baseline is not merely worse — it is confid
 That "confidently wrong" row is the most persuasive line in the deck. Hackathon judges
 almost never see an actual evaluation. Budget the 20 minutes; cut UI polish before this.
 
+### 7.2 The safety ledger — a scored axis, so make it an artefact
+
+Safety here is not "we thought about privacy". It is four numbers the harness prints at the
+end of every run, and every one of them is checkable on the spot:
+
+| Claim | Instrument | Demo value |
+|---|---|---|
+| No raw record left a node before authorisation | outbound byte counter in `backend/bander.py` | **0 bytes** |
+| No confidential client was named | closed-vocabulary validator; unknown key = rejection | **0 names** |
+| Every disclosure had a named human approver | per-record approval log in `backend/approval.py` | **9 of 9** |
+| A refusal is honoured, not routed around | cost-3 handles never enter the candidate set | **1 denial, 1 substitution** |
+
+Include the **rejection** count too — attestations the bander refused during the run. A
+guardrail that never fires is indistinguishable from an absent one, and showing it fired
+twice is stronger than claiming it would have.
+
 ---
 
-## 8. Demo script (90 seconds)
+## 8. Demo — 4 minutes at the table
+
+Full beat sheet, the compressed 90-second version, and the stage variant are in
+`docs/demo-script.md`. Summary of the shape:
 
 | Time | Beat |
 |---|---|
-| 0:00–0:15 | "Three firms, one federal bid, and they compete next month. Here's the solicitation." |
-| 0:15–0:35 | Round 1. Coverage matrix fills in. Each firm's self-assessment: *compliant*. The joint matrix: **R4 red**. |
-| 0:35–0:55 | Round 2. Gap broadcast. Firm B's agent re-reads its own roster and surfaces the one person who is both. Cell turns green. |
-| 0:55–1:15 | Round 3. Optimiser requests 9 of 40 records. BD lead **denies** one competitively-sensitive project — optimiser instantly substitutes. |
-| 1:15–1:30 | SF330 assembles on screen. Disclosure ledger: 9 released, 0 confidential clients named, raw library bytes transmitted before approval: **0**. |
+| 0:00–0:30 | The problem, in the judge's language. "Three firms, one federal bid, competitors next month." |
+| 0:30–1:00 | **Hub first.** The published app, and `flwr chat @<publisher>/consortium`. Gate cleared in front of them. |
+| 1:00–1:45 | Round 1. Coverage matrix fills. Each firm self-assesses *compliant*. Joint matrix: **R4 red**. |
+| 1:45–2:30 | Round 2. Gap broadcast; Firm B's agent re-reads its own roster and finds the one person who is both. |
+| 2:30–3:15 | Round 3. Optimiser requests 9 of 40. BD lead **denies** one — optimiser substitutes live. |
+| 3:15–3:45 | SF330 assembles. Safety ledger: 0 bytes, 0 names, 9 of 9 approved, 2 rejections. |
+| 3:45–4:00 | "The SF330 is the example. The harness is the product." Roadmap line. Stop talking. |
 
-Rehearse twice, timed, before 17:15. The denial-and-substitute beat is the one that gets
-the reaction — make sure it is scripted and reliable.
+Two changes from a stage pitch, both because judges are standing at the table:
+
+- **Lead with the Hub app, not the architecture.** They are ticking a submission gate; give
+  it to them in the first minute and the remaining three are yours.
+- **Leave silence for questions.** Four minutes of a five-minute slot. §13 is the Q&A prep
+  and it is where the marks actually are.
 
 ---
 
@@ -283,29 +424,39 @@ the reaction — make sure it is scripted and reliable.
 
 ### 9.1 Access — verify in the first 30 minutes
 
-- [ ] Flower account, CLI authenticated against SuperGrid
+`make doctor` checks the local half of this list. The rest is human.
+
+- [ ] **Flower account, and one named person who owns it.** Their username becomes
+      `publisher` and cannot be changed later — see §10.3.
+- [ ] `flwr login supergrid` succeeds, and `flwr app publish` is permitted for that account
 - [ ] Model access confirmed; know the available model strings
 - [ ] Fallback direct model API key (SuperGrid contention with ~130 attendees is likely)
-- [ ] GitHub repo, all teammates pushing
+- [ ] GitHub repo **public** — it is a submission gate, not a nicety — all teammates pushing
 - [ ] Phone hotspot — venue wifi is a known failure mode
 
 ### 9.2 Environment
 
-- [ ] Python ≥ 3.11, `uv`, `flwr >= 1.33.0, < 2.0`
-- [ ] `uv sync` clean, `uv run flwr build` producing a `.fab`
+- [ ] Python ≥ 3.13, `uv`, `flwr >= 1.34.0, < 2.0`
+- [ ] `make setup` clean, `make doctor` green, `make build` producing a `.fab`
+- [ ] `make rounds` executes a no-op round across three supernodes
 - [ ] Hello-agent tutorial run end to end **before writing any project code**
+
+Everything routes through the Makefile — `make` lists the targets. `make check` (lint plus
+the invariant tests) is the gate before every push.
 
 ### 9.3 Dependencies
 
 | Package | Purpose | Risk |
 |---|---|---|
-| `flwr` | rounds, transport | experimental agent runtime — hedged §6 |
+| `flwr` | rounds, transport, `AgentApp`, Hub publishing | agent runtime is young — hedged §6.1 |
 | stdlib `dataclasses` | schema (prefer over pydantic — fewer moving parts) | low |
 | `numpy` | optimiser arithmetic | low |
 | stdlib `re` | bander scrubbing | low |
-| static HTML or `matplotlib` | coverage matrix + ledger | low |
+| `pytest`, `ruff` (dev group) | the invariant tests and the lint gate | low |
 
-No web framework. No database. No embedding service — see R5 below.
+No web framework. No database. No embedding service — see R5 in §12. Every runtime
+dependency ends up inside the published FAB, so a dependency added at 15:00 is a
+republish, not just a `uv sync`.
 
 ### 9.4 Data artefacts — build-day critical path
 
@@ -318,7 +469,9 @@ No web framework. No database. No embedding service — see R5 below.
 - [ ] `data/generate.py` — the scripted generation pass itself
 
 Record shapes for projects and people are fixed in `data/README.md` before generation
-starts.
+starts. `tests/test_invariants.py` guards the two things that break silently — the
+vocabulary drifting from `backend/schema.py`, and a corpus edit that closes the engineered
+R4 gap. Those tests skip until the corpora land and go live unedited.
 
 **Engineering requirements for the corpora — non-negotiable:**
 
@@ -330,81 +483,173 @@ starts.
 4. At least one cost-2 record must be substitutable, or the denial beat fails.
 5. 2–3 near-miss distractors per firm (right sector, wrong value band; right credential,
    wrong role) so the matcher has something to correctly reject.
+6. Keep each `data/*.json` under 1 MB — the Hub upload rejects a larger file (§10.3).
 
 ---
 
-## 10. Task breakdown
+## 10. Publishing to Flower Hub — the runbook
+
+Verified against the Hub docs and the installed CLI. **Owner: Flower. First run at 11:00.**
+
+### 10.1 Commands
+
+```bash
+flwr login supergrid                 # browser auth against the Flower account
+flwr app publish .                   # uploads SOURCE; Hub builds the FAB server-side
+# -> https://flower.ai/apps/<account>/consortium/
+```
+
+Publishing a new version is the same command after bumping `version` in `pyproject.toml`.
+**Publish early and often** — every increment, all afternoon. The first publish is the risky
+one because it exercises the account, the publisher name, the license file and the file
+filter all at once; the tenth is free.
+
+Wrap both in the Makefile at T0 so nobody publishes by hand at 16:25: `make publish` should
+bump nothing, run `make check`, then `flwr app publish .`. Add `make chat` for the SuperGrid
+side of the demo.
+
+### 10.2 `pyproject.toml` deltas required for Hub
+
+Apply these as one edit at T0. The current file satisfies none of them.
+
+```toml
+[project]
+name = "consortium"
+version = "0.1.0"
+description = "A collaborative disclosure harness for agents that cannot pool their data"
+license = { file = "LICENSE" }          # NOT license = "Apache-2.0" — a table, with a file
+
+[tool.flwr.app]
+publisher = "<flower-account-username>"  # MUST equal the account name; "consortium" is wrong
+fab-format-version = 1
+flwr-version-target = "1.34.0"
+
+[tool.flwr.app.components]
+agentapp = "backend.agent_app:app"
+serverapp = "backend.server_app:app"
+clientapp = "backend.client_app:app"
+
+[tool.flwr.app.config.agent]
+input = ""
+```
+
+Two knock-on effects the Flower owner should expect from that edit. `make doctor` prints
+`components['serverapp'] / components['clientapp']` directly and will need the `agentapp`
+key added — if §6.1 forces the agentapp-only fallback, those two keys disappear and the
+target raises `KeyError`. And `flwr-version-target` pins the runtime the Hub builds
+against, so it must track whatever `make doctor` reports, not whatever this document says.
+
+### 10.3 Constraints that change the plan
+
+| Constraint | Consequence for us |
+|---|---|
+| `name` **cannot change after first publication** | `consortium` is final from 11:00. Agree it before T0 publishes, not after. |
+| `publisher` must equal the Flower account username | Someone owns the account. Name that person at kickoff. |
+| `LICENSE` file required for `fab-format-version = 1` | **The repo has none.** Add Apache-2.0 at T0 — it is also the open-source gate. |
+| Allowed extensions: `.py .toml .md .yaml .json .jsonl`, LICENSE, `.gitignore`, `.editorconfig` | **`frontend/` HTML, CSS and JS are silently excluded from the published app.** See below. |
+| 1,000 files, 1 MB per file, 10 MB total | Our corpora are far inside this. Keep each `data/*.json` under 1 MB anyway. |
+| Files deeper than 10 directory levels are excluded | Not a risk with the current layout. |
+| `.gitignore` patterns filter the upload | `frontend/state/` is gitignored, so run state never ships. Correct. |
+
+**The frontend finding matters.** A judge who installs the app from Hub gets no HTML. So
+the harness's *primary* output must be a legible terminal / Markdown report written by
+Python — the coverage matrix, the ledger and the SF330 sections all render as text. The
+`frontend/` page is a local demo skin over the same JSON, not the product surface. This
+re-scopes T13/T14: **make the text renderer first, the HTML second.** The text renderer is
+what ships; the HTML is what cuts.
+
+---
+
+## 11. Task breakdown
 
 Assumes 4 people. With 3, drop the viz owner; the pitch still gets a named owner.
 
 | # | Task | Owner | Where it lands | Window | Blocks |
 |---|---|---|---|---|---|
+| **T0** | **Hub beachhead.** Flower account, `flwr login supergrid`, `LICENSE`, pyproject per §10.2, stub `agentapp`+`serverapp`+`clientapp` in one FAB, `flwr app publish .`, run it from `flwr chat`. | Flower | `pyproject.toml`, `LICENSE`, `backend/agent_app.py` | **10:45–11:30** | **submission** |
 | T1 | Align on scenario + attestation schema. Everyone can state the demo moment in one sentence. | all | `backend/schema.py` | 11:00–11:20 | everything |
 | T2 | **Synthetic corpora + RFP + vocabulary** (scripted LLM pass, fixed schema first) | Data | `data/` | 11:20–12:10 | T4, T7 |
-| T3 | Repo skeleton, `pyproject.toml`, `flwr run` executing a no-op round | Flower | `pyproject.toml`, `backend/` | 11:20–12:00 | T5 |
+| T3 | Repo skeleton, dual-runtime `node_config` branch (§6.2), `flwr run` executing a no-op round | Flower | `backend/client_app.py` | 11:30–12:15 | T5 |
 | T4 | Local search + structured predicate matcher | Agent | `agents/search.py` | 12:10–13:00 | T6 |
-| T5 | Attestation serialisation into `RecordDict`, both directions | Flower | `backend/transport.py` | 12:00–13:30 | T7 |
-| T6 | Matcher agent prompt, round-1 attestation emission | Agent | `agents/matcher.py`, `agents/prompts/` | 13:00–14:15 | T7 |
-| T7 | **End-to-end round 1 + coverage matrix, R4 showing red** | Flower+Agent | `backend/coverage.py`, `backend/server_app.py` | → 15:00 | T8 |
+| T5 | Attestation serialisation into `RecordDict`, both directions | Flower | `backend/transport.py` | 12:15–13:30 | T7 |
+| T6 | Matcher agent prompt, round-1 attestation emission, via `agent.responses.create` | Agent | `agents/matcher.py`, `agents/prompts/` | 13:00–14:15 | T7 |
+| T7 | **End-to-end round 1 + coverage matrix, R4 showing red** | Flower+Agent | `backend/coverage.py`, `backend/server_app.py` | -> 15:00 | T8 |
 | T8 | **Round 2 re-examination** — gap-directed local re-query | Agent | `agents/reexamine.py` | 15:00–16:00 | demo |
-| T9 | Bander + byte counter | Flower | `backend/bander.py` | 13:30–14:00 | T12 |
+| T9 | Bander + byte counter + rejection counter | Flower | `backend/bander.py` | 13:30–14:00 | T12 |
 | T10 | Disclosure optimiser (greedy weighted set cover) | Fusion | `backend/optimiser.py` | 12:00–14:30 | T11 |
 | T11 | Approval gate + denial-and-substitute re-run | Fusion | `backend/approval.py` | 14:30–15:15 | demo |
-| T12 | Three-condition baseline harness + results table | Fusion | `backend/baselines.py` | 15:15–16:00 | demo |
-| T13 | Coverage matrix + disclosure ledger visual | Viz | `frontend/` | 13:30–16:00 | cut candidate |
-| T14 | SF330 assembly render (HTML with Sections E/F/G is plenty) | Viz | `backend/assemble.py`, `frontend/` | 14:00–16:00 | demo |
-| T15 | Slides: problem, architecture, baselines, roadmap | Viz | `docs/`, slides | 15:00–16:40 | demo |
-| T16 | **Code freeze.** Rehearse twice, timed. | all | `docs/demo-script.md` | 16:40–17:15 | — |
+| T12 | Three-condition baseline harness + safety ledger (§7.2) | Fusion | `backend/baselines.py` | 15:15–16:00 | demo |
+| T13 | **Text** renderer: coverage matrix, ledger, SF330 — the shipped surface (§10.3) | Viz | `backend/render.py` | 13:30–15:00 | demo |
+| T14 | HTML skin over the same JSON — the local demo surface | Viz | `frontend/` | 15:00–16:00 | cut candidate |
+| T15 | Hub app README + description; the page a judge lands on | Viz | `README.md`, Hub metadata | 15:00–16:00 | submission |
+| **T16** | **Final publish.** Bump version, `flwr app publish .`, verify the live URL from a clean shell. | Flower | Hub | **16:15–16:30** | **submission** |
+| T17 | Slides / talking points: problem, harness, baselines, safety, roadmap | Viz | `docs/` | 15:00–16:50 | demo |
+| T18 | **Code freeze.** Rehearse twice, timed, against §8. | all | `docs/demo-script.md` | 16:50–17:30 | — |
 
 ### Milestones
 
 - **11:20** — schema frozen. T2 cannot start until it is, and T2 is critical path.
-- **12:30** — SuperGrid vs. local-fallback decision. No further runtime debugging.
+- **11:30** — **stub app live on Hub and runnable on SuperGrid.** Both submission gates
+  provisionally cleared. If this is not green, everyone stops and helps until it is.
+- **12:00** — agentapp-plus-federated-in-one-FAB decision settled (§6.1). No further
+  packaging debate after this point.
 - **13:00** — corpora committed. If not, cut to two firms and 6 projects each **immediately**.
-- **15:00** — round 1 end to end with the matrix rendering.
+- **15:00** — round 1 end to end with the matrix rendering as text.
 - **16:00** — round 2 converges and closes R4. This is the demo; protect this hour above all.
-- **16:40** — freeze. Nothing merges after.
+- **16:30** — **final version published to Hub and verified from a clean shell.**
+- **16:50** — freeze. Nothing merges after.
+- **17:30** — demos ready.
 
 ### Cut list, in strict order
 
-1. SF330 visual render → structured JSON output printed
-2. Coverage matrix animation → static table per round
-3. Approval gate UI → `input("approve disclosure of FIRM_A::PROJ::014? [y/N] ")`
-4. Denial-and-substitute beat → single-pass optimiser
-5. Centralised-pool baseline → keep isolated vs. federated
-6. Three firms → two firms (**degrades the story badly — near-last resort**)
+1. HTML skin -> text renderer only (already the shipped surface, so this costs nothing)
+2. Coverage matrix animation -> static table per round
+3. Approval gate UI -> `input("approve disclosure of FIRM_A::PROJ::014? [y/N] ")`
+4. Denial-and-substitute beat -> single-pass optimiser
+5. Centralised-pool baseline -> keep isolated vs. federated
+6. Three firms -> two firms (**degrades the story badly — near-last resort**)
 
 **Never cut round 2.** Without gap-directed re-examination this is federated RAG with extra
 steps, which is exactly the criticism to avoid.
 
+**Never cut the Hub publish.** It is not a feature, it is the entry ticket. If the choice at
+16:20 is between a working denial beat and a published app, publish.
+
 ---
 
-## 11. Risk register
+## 12. Risk register
 
 | # | Risk | Likelihood | Impact | Mitigation |
 |---|---|---|---|---|
+| R0 | **Hub publish fails late** — wrong publisher, missing LICENSE, file filter, name clash | **High** | **Fatal** | T0 at 10:45. Publish a stub before writing scenario code, then republish all afternoon. Never first-publish after 12:00. |
 | R1 | Reads as "federated RAG" | **High** | **High** | Lead the pitch with the disclosure optimiser and the human gate, not retrieval. The optimiser is the novel artefact — demo it before the search. |
 | R2 | Round 2 fails to surface the R4 match | Med | **Critical** | The bio wording is a tuning parameter, not fixed data. If it misses by 15:45, edit the corpus, not the prompt. |
 | R3 | Corpora slip past 13:00 | **High** | High | Fix schema first, script the generation, cut to two firms on the milestone without debate. |
-| R4 | `flwr.agentapp` experimental APIs break the build | Med | High | 12:30 fallback to plain `ClientApp`/`ServerApp`. |
-| R5 | LLM call volume — naive matching is 60 records × 6 requirements | Med | Med | Structured predicate prefilter on banded fields; invoke the model only on the shortlist and only for free-text bios. Target ≤ 50 calls per full run. |
-| R6 | Venue wifi / SuperGrid contention | High | Med | Hotspot; cache model responses during development; local SuperLink path. |
-| R7 | Attestations leak identifying detail | Med | Med | Bander **rejects** rather than sanitises; test with a deliberately leaky prompt on stage if there's time. |
+| R4 | `agentapp` + `serverapp`/`clientapp` in one FAB is unsupported | Med | High | §6.1 — tested at T0 with stubs; pre-decided fallback is a second project dir published separately. |
+| R5 | LLM call volume — naive matching is 60 records x 6 requirements | Med | Med | Structured predicate prefilter on banded fields; invoke the model only on the shortlist and only for free-text bios. Target <= 50 calls per full run. |
+| R6 | Venue wifi / SuperGrid contention with ~130 attendees | High | Med | Hotspot; cache model responses during development. **Drive the table demo from the local simulation**, and show the Hub app as an artefact rather than depending on a live SuperGrid round at 17:30. |
+| R7 | Attestations leak identifying detail | Med | Med | Bander **rejects** rather than sanitises; the rejection counter is a demo asset (§7.2). |
 | R8 | SF330 unfamiliar to a UK audience | Med | Low | Ten seconds of framing: "US federal qualifications form — Section G is a person-by-project matrix." Do not explain more. |
-| R9 | Team formed at 10:45 doesn't buy it | Low | High | Lead with the one-liner in §1, never the architecture. |
+| R9 | Reads as one app, not a reusable harness | Med | **High** | §1.1. Name the three pluggable pieces out loud; say "the SF330 is the example, the harness is the product". |
 
-R1 and R3 are the ones that decide this project. R3 is on the critical path from minute
-twenty.
+R0, R1 and R3 decide this project. R0 is on the critical path from minute one and is the
+only one that is unrecoverable.
 
 ---
 
-## 12. Judge Q&A prep
+## 13. Judge Q&A prep
 
 **"Isn't this just federated retrieval?"**
 Retrieval establishes what exists. The contribution is deciding what to *reveal*: a
 constrained optimisation over disclosure cost, subject to a compliance requirement and a
 hard cap on Section F entries, with per-record human authorisation. Remove the optimiser
 and the firms are back to disclosing everything.
+
+**"What makes this a harness rather than an application?"**
+Three pluggable pieces and nothing else is domain-specific: a requirement set, a closed
+banding vocabulary, and a disclosure-cost function. Swap those and the same four-stage loop
+runs cross-hospital cohort feasibility or supply-chain conformance. That is why it is on
+Hub — someone else installs it and brings their own three.
 
 **"The coordinator sees all attestations — that's centralisation."**
 Same relationship as gradients to training data. Attestations are banded, anonymised
@@ -428,9 +673,26 @@ LangGraph orchestrates agents inside a trust domain. Here the premise is that no
 exists — the participants are active competitors. Round-based coordination across nodes
 that cannot share state is precisely Flower's primitive.
 
+**"How do collaborative agents multiply the work, rather than just parallelise it?"**
+Parallel agents each answer their own question faster. These answer a question none of them
+could pose: Firm B's agent only finds the R4 person because the coordinator told it about a
+gap that exists in Firm A's coverage. The information that unlocks the search is held by a
+party that cannot see the data the search runs over. That is the multiplier.
+
+**"What is the safety story?"**
+Four instrumented claims, printed at the end of every run: zero raw bytes out before
+authorisation, zero confidential names in any attestation, every disclosure carries a named
+human approver, and refusals are honoured by re-planning rather than routed around. Plus a
+rejection counter, so you can see the guardrail actually fired.
+
+**"Does it really run on SuperGrid?"**
+It is published at `flower.ai/apps/<account>/consortium` and invoked with
+`flwr chat @<publisher>/consortium`. We drive the table demo from the local simulation for
+reliability with 130 people on the venue wifi, not because the deployment path is a mock.
+
 ---
 
-## 13. Roadmap slide (say it, do not build it)
+## 14. Roadmap slide (say it, do not build it)
 
 Every completed pursuit is a labelled example: this evidence set, against this solicitation,
 won or lost. Firms federate a **win-rate prior** over requirement-to-evidence matching —
@@ -447,9 +709,10 @@ pool the data. It is also a product Axomic could plausibly ship.
 ```
 consortium/
 ├── CLAUDE.md                     # working agreement: worktrees, one branch, ownership
-├── README.md
-├── Makefile                      # make demo, make check — `make` lists the rest
-├── pyproject.toml                # flwr app config, hatchling packages: backend, agents
+├── LICENSE                       # Apache-2.0 — required by Hub, required by the open-source gate
+├── README.md                     # also the Hub app landing copy — T15
+├── Makefile                      # make demo, make check, make publish — `make` lists the rest
+├── pyproject.toml                # agentapp + serverapp + clientapp; Hub metadata per §10.2
 ├── data/                         # Data owner — T2
 │   ├── README.md                 # record shapes + the non-negotiable corpus rules
 │   ├── rfp.json                  # 6 typed requirements per §4
@@ -460,25 +723,27 @@ consortium/
 │   ├── ground_truth.json         # true coverage, for scoring the three conditions
 │   └── generate.py               # scripted LLM generation pass
 ├── backend/                      # Flower + Fusion owners
+│   ├── agent_app.py              # AgentApp entry point — the harness, published to Hub — T0
 │   ├── schema.py                 # Requirement, Attestation, closed vocabulary — frozen 11:20
-│   ├── bander.py                 # egress validator + outbound byte counter
+│   ├── bander.py                 # egress validator + outbound byte and rejection counters
 │   ├── transport.py              # Attestation <-> RecordDict, both directions
 │   ├── server_app.py             # coordinator: decomposition, round loop, gap broadcast
-│   ├── client_app.py             # firm node: agent dispatch, approval gate
+│   ├── client_app.py             # firm node: dual-runtime library load, agent dispatch, gate
 │   ├── coverage.py               # coverage matrix, gap analysis
 │   ├── optimiser.py              # greedy weighted set cover under the Section F cap
 │   ├── approval.py               # BD approval gate, denial-and-substitute re-run
 │   ├── assemble.py               # SF330 Sections E / F / G
-│   └── baselines.py              # isolated / consortium / centralised-pool harness
+│   ├── render.py                 # text/Markdown renderer — the surface that ships — T13
+│   └── baselines.py              # isolated / consortium / centralised-pool + safety ledger
 ├── agents/                       # Agent owner
 │   ├── search.py                 # structured predicate prefilter over banded fields
 │   ├── matcher.py                # round-1 matching, attestation emission
 │   ├── reexamine.py              # round-2 gap-directed re-query — never cut
-│   ├── model.py                  # model client + response cache
+│   ├── model.py                  # agent.responses.create wrapper + response cache
 │   └── prompts/
 │       ├── round1_match.md
 │       └── round2_reexamine.md
-├── frontend/                     # Viz owner — static HTML, no build step
+├── frontend/                     # Viz owner — local demo skin, EXCLUDED from the Hub app
 │   ├── index.html                # coverage matrix, disclosure ledger, SF330
 │   ├── app.js
 │   ├── styles.css

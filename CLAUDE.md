@@ -47,7 +47,7 @@ git push origin HEAD:main
 
 ## 3. Stay in your lane
 
-Directory ownership follows the task table in the brief (§10). Editing outside your lane
+Directory ownership follows the task table in the brief (§11). Editing outside your lane
 is what produces conflicts on a shared branch — if you need a change in someone else's
 directory, say so in chat first.
 
@@ -77,7 +77,7 @@ Everything goes through the Makefile — `make` lists the targets. The four you 
 make setup     # once, and after anyone touches uv.lock
 make rounds    # the federated protocol, logs streaming
 make check     # lint + invariant tests — run this before every push
-make demo      # the full 90-second run
+make demo      # the full demo sequence — see docs/demo-script.md
 ```
 
 `make check` is not optional. The invariant tests in `tests/` guard the two things that
@@ -109,9 +109,12 @@ not a release artefact.
 
 ## 6. Hard deadlines
 
-The brief's milestones are real and the cut list (§10) is in strict order. **16:40 is a
-code freeze** — after it, nothing merges, and the only work is rehearsal. If you are
-mid-task at 16:30, push what runs and stop.
+The brief's milestones are real and the cut list (§11) is in strict order. **16:50 is a
+code freeze** — after it, nothing merges, and the only work is rehearsal. Demos are ready
+at **17:30**, when judges come to the table. If you are mid-task at 16:40, push what runs
+and stop.
 
-Never cut round 2. Without gap-directed re-examination this is federated RAG with extra
-steps.
+Two things are never cut. **Round 2**, because without gap-directed re-examination this is
+federated RAG with extra steps. And the **Hub publish** — a published app and a public repo
+are the submission gates, not features, and the final publish is at **16:30**, before the
+freeze. If the 16:20 choice is between a working demo beat and a published app, publish.
