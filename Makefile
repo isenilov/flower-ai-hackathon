@@ -16,7 +16,7 @@ SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds traces harness baselines data build ui watch demo test lint fmt check clean reset publish chat
+.PHONY: help setup doctor run rounds traces harness baselines data build ui watch demo test lint fmt check clean reset reset-traces publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -121,11 +121,17 @@ check: lint test ## What to run before you push
 
 # ---------------------------------------------------------------- housekeeping
 
-reset: ## Clear run state so the demo starts from nothing
-	@rm -f frontend/state/*.json frontend/state/*.jsonl
-	@echo "run state cleared"
+# Only the live trace. The per-scenario traces are the thing `make traces` builds so the
+# selector can switch offline at the table — wiping those on every run defeats the point.
+reset: ## Clear the live trace so a run starts from nothing
+	@rm -f frontend/state/trace.jsonl
+	@echo "live trace cleared"
 
-clean: reset ## reset, plus caches and build artefacts
+reset-traces: ## reset, plus the per-scenario traces the selector switches between
+	@rm -f frontend/state/*.jsonl frontend/state/*.json
+	@echo "all traces cleared — run make traces before the demo"
+
+clean: reset-traces ## reset-traces, plus caches and build artefacts
 	@rm -rf .pytest_cache .ruff_cache ./*.fab
 	@find . -name __pycache__ -not -path './.venv/*' -prune -exec rm -rf {} + 2>/dev/null || true
 	@echo "caches cleared"

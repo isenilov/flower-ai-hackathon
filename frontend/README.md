@@ -71,6 +71,9 @@ Each run writes its trace twice — `trace.jsonl` for a following page, and
 learns the catalogue without being able to read `data/`. A scenario the selector shows as
 `not run` has no trace yet; `make traces` fills them all in.
 
+`make reset` clears only the live trace, so the snapshots survive every later run —
+`make reset-traces` is the one that drops them.
+
 **Before the demo, run `make traces`.** The selector then switches between scenarios
 instantly with no re-run and no network, which is what you want with a judge at the table.
 
