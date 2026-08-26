@@ -70,7 +70,11 @@ text = once(
     "\\1\n"
     "# Which corpus a run stands on. Empty uses the manifest default. Only this surface\n"
     "# has the key: the published app reads the scenario from its environment.\n"
-    '\nscenario = ""',
+    '\nscenario = ""\n'
+    "# Put the trace in the run's log, so a page on the operator's machine can follow a run\n"
+    "# happening in a container it cannot see. `make grid` sets it and reads the other end\n"
+    "# of the pipe with `python -m backend.trace`.\n"
+    "trace-to-log = false",
     text,
     "add the scenario config key",
     re.M,

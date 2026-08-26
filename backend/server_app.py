@@ -29,10 +29,15 @@ def main(grid: Grid, context: Context) -> None:
     num_rounds = protocol.resolve_rounds(context.run_config.get("num-rounds"))
     scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
     model_id = str(context.run_config.get("model", "") or os.environ.get(MODEL_ENV, ""))
+    # On SuperGrid the JSONL sink is written inside a container and thrown away with it, so
+    # a page on the operator's machine would follow a file nothing writes. `trace-to-log`
+    # adds the sink that survives the trip — see `backend.trace`. Off by default: locally the
+    # file is already right there, and the extra lines would only clutter the demo pane.
+    to_log = str(context.run_config.get("trace-to-log", "")).strip().lower() in ("true", "1")
     outcome = protocol.run(
         grid,
         num_rounds,
-        trace=Trace(scenario=scenario.slug),
+        trace=Trace(scenario=scenario.slug, to_log=to_log),
         scenario=scenario,
         model_id=model_id,
     )

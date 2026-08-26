@@ -62,7 +62,7 @@ SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds traces harness grid baselines data build ui stage watch demo slides slides-build slides-deps test lint fmt check clean reset reset-traces publish chat
+.PHONY: help setup doctor run rounds traces harness grid grid-watch baselines data build ui stage watch demo slides slides-build slides-deps test lint fmt check clean reset reset-traces publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -157,14 +157,31 @@ grid: ## Run the federated protocol on SuperGrid — coordinator and firm nodes 
 	@sh grid-stage.sh $(GRIDDIR) >/dev/null
 	@echo "-> $(FEDERATION) · $(ROUNDS) rounds · $(SUPERNODES) firm nodes · model $(if $(GRID_MODEL),$(GRID_MODEL),NONE — round 1 only)"
 	@trap 'rm -rf $(GRIDDIR)' EXIT INT TERM; \
-	 printf 'num-rounds = %s\nmodel = "%s"\nscenario = "%s"\n' \
+	 printf 'num-rounds = %s\nmodel = "%s"\nscenario = "%s"\ntrace-to-log = true\n' \
 	   '$(ROUNDS)' '$(GRID_MODEL)' '$(SCENARIO)' > $(GRIDDIR)/run-config.toml; \
 	 $(RUN) flwr federation simulation-config $(FEDERATION) $(SUPERLINK) \
 	   --num-supernodes $(SUPERNODES) --client-resources-num-cpus $(GRID_CPUS) >/dev/null; \
 	 $(RUN) flwr run $(GRIDDIR)/consortium-grid $(SUPERLINK) --federation $(FEDERATION) \
-	   --stream --run-config $(GRIDDIR)/run-config.toml
+	   --stream --run-config $(GRIDDIR)/run-config.toml 2>&1 \
+	   | $(RUN) python -m backend.trace
 	@echo ""
 	@echo "-> $(FEDERATION_URL)"
+
+# `grid` puts the page's data on this machine but the page has to already be up to follow it,
+# and `grid` then `ui` is the wrong order — the run is over before the page exists. Same
+# shape as `watch`, one federation further away.
+grid-watch: reset ## Serve the UI, then run on SuperGrid into it — watch the remote rounds land
+	@$(RUN) python frontend/serve.py $(PORT) >/dev/null 2>&1 & \
+	 ui=$$!; \
+	 trap "kill $$ui 2>/dev/null" EXIT INT TERM; \
+	 sleep 1; \
+	 echo "-> http://localhost:$(PORT)/   (the page follows a run on $(FEDERATION))"; \
+	 ( $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & ); \
+	 sleep 2; \
+	 $(MAKE) --no-print-directory grid; \
+	 echo ""; \
+	 echo "run complete — page still served on :$(PORT), ctrl-c to stop"; \
+	 wait $$ui
 
 # NOT BUILT. `backend/baselines.py` is a docstring, so this prints nothing at all. The three
 # readings it would score are already derived in `data/ground_truth.json` — `round_one_coverage`

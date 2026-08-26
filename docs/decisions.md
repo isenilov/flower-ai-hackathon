@@ -25,14 +25,10 @@ argument happening twice under time pressure.
 | ~15:45 | **On SuperGrid a firm node reaches its model through the endpoint SuperGrid injects, not one we pass it.** `GRID_MODEL` follows `HARNESS_MODEL`, so both SuperGrid targets ask for the same id. | SuperGrid does not route to the organisers' endpoints — a node posting to one gets `403 Forbidden`, keyless Qwen included. It injects its own `FLWR_MODEL_API_ENDPOINT` instead, which from inside a ClientApp is an in-cluster key proxy holding the key itself, so nothing has to carry one there. That proxy has its own id namespace, independently confirming what `docs/event.md` records: it answers `openai/gpt-5.5`, and also `glm-5.2`, `minimax-m3` and `gpt-oss-120b`, while `glm-5.2-fp8` — correct for a direct call, and what `.env` holds — is refused with `400 {"detail":"glm-5.2-fp8 is not a valid model ID"}`. `HttpReader` now raises with the response body attached, which is the only reason that sentence is quotable rather than a bare 400. |
 | ~16:00 | **`client-resources-num-cpus = 1` on the federation, so three firms get three ClientAppActors.** | At the default of 2, the container's CPU budget fitted two actors for three SuperNodes and Ray multiplexed them: two firms shared a process and answered one after the other. Visible in the log as the same `(ClientAppActor pid=…)` in front of two different firms — and misleading, because the pid is a pooled worker, not a node. Isolation is by `Context` either way, but round 2 has every firm waiting on a model, and serialising two of those spends a five-minute task budget that three in parallel fit inside. |
 
+| ~16:15 | **The trace rides home in the run's own log, so the page follows a SuperGrid run.** A fourth sink in `backend/trace.py` behind `trace-to-log`, read back by `python -m backend.trace` at the far end of `make grid`'s pipe. `make grid-watch` is the split screen for it. | The JSONL sink is written inside the container and discarded with it, so the page was following a file nothing wrote. Of the sinks, only the log crosses the boundary — `--stream` already carries the whole run — so the events travel as JSON behind a sentinel and are rebuilt into the same two paths at this end. The page cannot tell a remote run from a local one, which is the point: no second renderer, and no bridge process to babysit. Recovering zero events is a non-zero exit, because a page silently following an empty file is the failure nobody notices until the demo. |
+
 ## Still open at the time of writing
 
-- **The frontend does not follow a SuperGrid run.** `backend/trace.py` writes
-  `frontend/state/trace.jsonl`, and on `make grid` that file is written inside the SuperGrid
-  container and thrown away with it — the local page sees nothing. The terminal is the only
-  sink that survives the trip, which is why `--stream` carries the whole run. `make stage`
-  and `make watch` are still the visual demo; the SuperGrid beat is the streamed log and the
-  federation's runs tab. Wiring the two would mean a fourth sink that survives the boundary.
 - **`SUPERNODES` above 3 silently repeats firms.** `load_library` maps a node to a corpus
   with `FIRMS[partition_id % 3]`, so `make grid SUPERNODES=6` gives two firm A's, two B's and
   two C's rather than an error. Pre-existing, and it applies to `make rounds` the same way.
