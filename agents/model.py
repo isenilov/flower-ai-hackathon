@@ -5,9 +5,10 @@ and venue wifi is a known failure mode.
 
 A firm's agent needs a model to read its own bios, and it can reach one two ways. Under
 the published ``AgentApp`` it is handed ``agent.responses.create`` — the Flower Agents
-path, and the only one that exists on SuperGrid. Under the federated simulation there is
-no ``AgentSession`` at all, so it posts to ``FLWR_MODEL_API_ENDPOINT`` itself. Both speak
-Open Responses, so the caller cannot tell them apart.
+path, and the only one that needs no endpoint at all. Under the federated surface there is
+no ``AgentSession``, so it posts to ``FLWR_MODEL_API_ENDPOINT`` itself: the Makefile
+exports it locally, and on SuperGrid the runtime injects its own in-cluster proxy there.
+Both speak Open Responses, so the caller cannot tell them apart.
 
 What crosses the wire here is a firm reading *its own* library with *its own* model. The
 bander is what stops raw records reaching a peer; nothing in this module ever emits to one.
@@ -55,6 +56,10 @@ class HttpReader:
         self.api_key = api_key
         self.timeout = timeout
 
+    def describe(self) -> str:
+        """Where this reader posts, for the node-side log. Never the key itself."""
+        return f"{self.endpoint} ({'with key' if self.api_key else 'no key'})"
+
     def __call__(self, request: JSONObject) -> JSONObject:
         headers = {"Content-Type": "application/json"}
         if self.api_key:
@@ -64,8 +69,16 @@ class HttpReader:
         http_request = urllib.request.Request(
             self.endpoint, data=json.dumps(payload).encode(), headers=headers
         )
-        with urllib.request.urlopen(http_request, timeout=self.timeout) as response:
-            return json.load(response)
+        try:
+            with urllib.request.urlopen(http_request, timeout=self.timeout) as response:
+                return json.load(response)
+        except urllib.error.HTTPError as exc:
+            # The status alone is not actionable, and a rejected call is exactly the moment
+            # someone is reading the log: a wrong model id and an unroutable endpoint both
+            # come back as a bare 400, and only the body says which. `HTTPError` is already
+            # an `OSError`, so re-raising as one keeps every caller's except clause.
+            detail = exc.read().decode(errors="replace").strip()
+            raise OSError(f"HTTP {exc.code} from {self.endpoint}: {detail[:300]}") from exc
 
 
 class CachedReader:
@@ -83,6 +96,18 @@ class CachedReader:
 
     def _path(self, request: JSONObject) -> Path:
         return self.cache_dir / f"{_fingerprint(request)}.json"
+
+    def describe(self) -> str:
+        """Which model path a node actually got, asked of the reader rather than guessed.
+
+        A node cannot report this from its own config: the endpoint may have come from the
+        environment its runtime injected, which is how a SuperNode on SuperGrid reaches a
+        model at all. So the reader says, and the node logs what it is told.
+        """
+        if self.inner is None:
+            return f"cache only ({self.cache_dir})"
+        describe = getattr(self.inner, "describe", None)
+        return describe() if describe else "the agent session"
 
     def cached(self, request: JSONObject) -> bool:
         """Whether this exact request would be answered from disk.
@@ -111,6 +136,10 @@ def resolve_reader(injected: Reader | None = None, offline: bool = False) -> Rea
     Order: whatever the AgentApp handed us, then the endpoint in the environment, then
     cache-only. ``None`` means there is no model at all — the caller must degrade rather
     than raise, because a harness with no model still has a coverage matrix to print.
+
+    The environment is the right source on every surface, including SuperGrid, which
+    injects its own ``FLWR_MODEL_API_ENDPOINT`` into a run — an in-cluster proxy that
+    holds the key itself, which is why nothing here has to carry one there.
     """
     if offline:
         return CachedReader(None, offline=True)

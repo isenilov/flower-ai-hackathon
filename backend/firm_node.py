@@ -18,6 +18,7 @@ from flwr.clientapp import ClientApp
 from flwr.common.logger import log
 
 from agents import matcher, search
+from backend import ansi
 from backend.scenarios import resolve
 from backend.schema import NOTE_MAX_CHARS, VOCABULARY, Attestation, Requirement
 
@@ -330,7 +331,8 @@ def make_client_app(injected_reader: object | None = None) -> ClientApp:
 
     ``injected_reader`` is how a model reaches a node. Only the AgentApp has an
     ``AgentSession``, so it passes ``agent.responses.create`` down; the federated surface
-    passes nothing and each node resolves its own endpoint from the environment.
+    passes nothing and each node resolves its own endpoint — from the environment when the
+    run is local, and from ``model-endpoint`` in its run config when it is a SuperNode.
     """
     app = ClientApp()
 
@@ -346,9 +348,16 @@ def make_client_app(injected_reader: object | None = None) -> ClientApp:
         gap_ids = [gid for gid in str(msg.content["gap"]["requirement_ids"]).split(",") if gid]
 
         library = load_library(context, str(rfp["scenario"]) if "scenario" in rfp else "")
+        firm = str(library.get("firm", "UNKNOWN"))
         # One reader for both rounds, so both go through the same on-disk cache: round 1
         # grades what the declared fields matched, round 2 re-reads what they missed.
+        #
         reader = model_client.resolve_reader(injected_reader) if model_id else None  # type: ignore[arg-type]
+        if reader is not None:
+            # Which of the three model paths this node actually got. "grading unavailable"
+            # on its own does not separate a model that refused from an endpoint that never
+            # reached the node, and on SuperGrid those have different fixes.
+            ansi.say(ansi.node_line(firm, f"model {model_id} via {reader.describe()}"))
         attestations = attest(library, requirements, as_of, reader, model_id)
         if gap_ids:
             # A broadcast gap is the only thing that licenses re-reading prose.

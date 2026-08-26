@@ -20,8 +20,22 @@ argument happening twice under time pressure.
 | ~14:30 | **One round-1 call per firm for the whole matrix**, not one per requirement. | Round trips are the cost that matters, not tokens. Per requirement it was eighteen calls a run and ~2 min a firm cold; this is three calls and one wait, and one cache entry per firm per scenario so a rehearsal replays whole rather than partially. |
 | ~14:30 | **The demo is a split screen, driven from the page.** `make stage` serves the UI; `POST /run` spawns the protocol with **stdout inherited** so the log lands in the terminal pane beside the browser. | Neither half is a recording of the other. `serve.py` binds `127.0.0.1` only — it spawns subprocesses on an unauthenticated POST, and conference wifi is not the place to listen on `0.0.0.0`. |
 | ~15:00 | **`make publish` publishes a staged tree, not the repo root.** `publish-stage.sh` copies `README.md`, `LICENSE`, `pyproject.toml`, `agents/`, `backend/` and `data/` into a directory named for the app, drops `fab-exclude` from the staged `pyproject.toml`, and publishes that. | **`flwr app publish` never reads `fab-exclude`** — only `flwr build` does (`flwr/cli/build.py`). Publish filters on the extension allowlist, `.flwr/`, `__pycache__` and `.gitignore`, so 0.1.0–0.3.0 all shipped `docs/`, `tests/`, `frontend/`, `CLAUDE.md` and the deck's 358 KB `package-lock.json`: 71 files, 832 KB against the staged 55 files, 312 KB. The staged `fab-exclude` has to go because `flwr build` raises on an exclude pattern that matches no file, and Hub builds the FAB server-side. |
+| ~15:45 | **`make grid` runs the federated surface on SuperGrid, one SuperNode per firm**, from a staged second app declaring `serverapp` + `clientapp` (`grid-stage.sh`). | A run is not a publish. Hub rejects a mixed bundle, but `flwr run <dir>` uploads a FAB the SuperLink builds without ever consulting Hub — so the two surfaces can be two app *directories* even though they cannot be two *components* of one. This reopens what the 12:00 decision closed: `run_simulation` is no longer the only way to get per-node isolation. The proof it is real rather than nominal is `flwr ls --format json` — `clientapp-seconds: 8.2` for this, `0.0` for the agentapp, which does all three firms' work in one task. |
+| ~15:45 | **`SUPERLINK` defaults to `supergrid`, and both SuperGrid targets pass `--federation @i53n1/workspace`.** | An empty `SUPERLINK` resolves to whatever `~/.flwr/config.toml` calls `default`, which is `local`. `make harness` therefore never reached SuperGrid at all, and nothing it ran appeared in the federation's runs tab — which is the thing a judge is shown. `@i53n1/personal` is deployment-runtime with zero SuperNodes registered, so the simulation-runtime `workspace` federation is the only one that can stand the nodes up. |
+| ~15:45 | **On SuperGrid a firm node reaches its model through the endpoint SuperGrid injects, not one we pass it.** `GRID_MODEL` follows `HARNESS_MODEL`, so both SuperGrid targets ask for the same id. | SuperGrid does not route to the organisers' endpoints — a node posting to one gets `403 Forbidden`, keyless Qwen included. It injects its own `FLWR_MODEL_API_ENDPOINT` instead, which from inside a ClientApp is an in-cluster key proxy holding the key itself, so nothing has to carry one there. That proxy has its own id namespace, independently confirming what `docs/event.md` records: it answers `openai/gpt-5.5`, and also `glm-5.2`, `minimax-m3` and `gpt-oss-120b`, while `glm-5.2-fp8` — correct for a direct call, and what `.env` holds — is refused with `400 {"detail":"glm-5.2-fp8 is not a valid model ID"}`. `HttpReader` now raises with the response body attached, which is the only reason that sentence is quotable rather than a bare 400. |
+| ~16:00 | **`client-resources-num-cpus = 1` on the federation, so three firms get three ClientAppActors.** | At the default of 2, the container's CPU budget fitted two actors for three SuperNodes and Ray multiplexed them: two firms shared a process and answered one after the other. Visible in the log as the same `(ClientAppActor pid=…)` in front of two different firms — and misleading, because the pid is a pooled worker, not a node. Isolation is by `Context` either way, but round 2 has every firm waiting on a model, and serialising two of those spends a five-minute task budget that three in parallel fit inside. |
 
 ## Still open at the time of writing
+
+- **The frontend does not follow a SuperGrid run.** `backend/trace.py` writes
+  `frontend/state/trace.jsonl`, and on `make grid` that file is written inside the SuperGrid
+  container and thrown away with it — the local page sees nothing. The terminal is the only
+  sink that survives the trip, which is why `--stream` carries the whole run. `make stage`
+  and `make watch` are still the visual demo; the SuperGrid beat is the streamed log and the
+  federation's runs tab. Wiring the two would mean a fourth sink that survives the boundary.
+- **`SUPERNODES` above 3 silently repeats firms.** `load_library` maps a node to a corpus
+  with `FIRMS[partition_id % 3]`, so `make grid SUPERNODES=6` gives two firm A's, two B's and
+  two C's rather than an error. Pre-existing, and it applies to `make rounds` the same way.
 
 - **Stage four of the loop is not built.** The disclosure optimiser (`backend/optimiser.py`),
   the approval gate (`approval.py`), SF330 assembly (`assemble.py`) and the three-condition
@@ -36,6 +50,9 @@ argument happening twice under time pressure.
 ## Decisions the brief scheduled that no longer apply
 
 - **13:00 cut to two firms and six projects each** — not needed, corpora landed on time.
+- **The two-project fallback for *publishing*** (brief §6.1) — still superseded for that, but
+  it came back at 15:45 for *running*: see `grid-stage.sh`. Hub rejects a mixed bundle;
+  `flwr run` never asks Hub. The original note, kept because the publishing half still holds:
 - **The two-project publishing fallback** (brief §6.1) — superseded by the agentapp-only
   bundle above.
 
