@@ -23,7 +23,6 @@
       "FIRM_A::PROJ::012",
       "FIRM_A::PROJ::013",
       "FIRM_B::PROJ::012",
-      "FIRM_B::PROJ::013",
       "FIRM_B::PROJ::014",
       "FIRM_C::PROJ::001",
       "FIRM_C::PROJ::002",
@@ -48,18 +47,14 @@
       "FIRM_C::PROJ::012"
     ],
     "R3": [
-      "FIRM_A::PERSON::001",
-      "FIRM_B::PERSON::001",
-      "FIRM_C::PERSON::001"
+      "FIRM_A::PERSON::001"
     ],
     "R4": [
       "FIRM_B::PERSON::007"
     ],
     "R5": [
-      "FIRM_A::PERSON::002",
       "FIRM_B::PERSON::002",
-      "FIRM_B::PERSON::007",
-      "FIRM_C::PERSON::002"
+      "FIRM_B::PERSON::007"
     ],
     "R6": [
       "FIRM_A::PROJ::001",
@@ -91,7 +86,6 @@
       "FIRM_A::PROJ::012",
       "FIRM_A::PROJ::013",
       "FIRM_B::PROJ::012",
-      "FIRM_B::PROJ::013",
       "FIRM_B::PROJ::014",
       "FIRM_C::PROJ::001",
       "FIRM_C::PROJ::002",
@@ -116,16 +110,12 @@
       "FIRM_C::PROJ::012"
     ],
     "R3": [
-      "FIRM_A::PERSON::001",
-      "FIRM_B::PERSON::001",
-      "FIRM_C::PERSON::001"
+      "FIRM_A::PERSON::001"
     ],
     "R4": [],
     "R5": [
-      "FIRM_A::PERSON::002",
       "FIRM_B::PERSON::002",
-      "FIRM_B::PERSON::007",
-      "FIRM_C::PERSON::002"
+      "FIRM_B::PERSON::007"
     ],
     "R6": [
       "FIRM_A::PROJ::001",
@@ -191,11 +181,9 @@
           }
         },
         "R5": {
-          "covered": true,
+          "covered": false,
           "reading": "joined",
-          "cited": [
-            "FIRM_A::PERSON::002"
-          ]
+          "cited": []
         },
         "R6": {
           "covered": true,
@@ -213,14 +201,13 @@
       }
     },
     "FIRM_B": {
-      "compliant": true,
+      "compliant": false,
       "requirements": {
         "R1": {
-          "covered": true,
+          "covered": false,
           "reading": "joined",
           "cited": [
             "FIRM_B::PROJ::012",
-            "FIRM_B::PROJ::013",
             "FIRM_B::PROJ::014"
           ]
         },
@@ -235,11 +222,9 @@
           ]
         },
         "R3": {
-          "covered": true,
+          "covered": false,
           "reading": "joined",
-          "cited": [
-            "FIRM_B::PERSON::001"
-          ]
+          "cited": []
         },
         "R4": {
           "covered": true,
@@ -269,7 +254,7 @@
       }
     },
     "FIRM_C": {
-      "compliant": true,
+      "compliant": false,
       "requirements": {
         "R1": {
           "covered": true,
@@ -294,11 +279,9 @@
           ]
         },
         "R3": {
-          "covered": true,
+          "covered": false,
           "reading": "joined",
-          "cited": [
-            "FIRM_C::PERSON::001"
-          ]
+          "cited": []
         },
         "R4": {
           "covered": true,
@@ -309,11 +292,9 @@
           }
         },
         "R5": {
-          "covered": true,
+          "covered": false,
           "reading": "joined",
-          "cited": [
-            "FIRM_C::PERSON::002"
-          ]
+          "cited": []
         },
         "R6": {
           "covered": true,
@@ -333,7 +314,7 @@
   },
   "candidate_pool": {
     "records": 63,
-    "offerable": 35,
+    "offerable": 30,
     "blocked": 2
   },
   "notes": "Derived by data/generate.py — do not hand-edit. `coverage` is the oracle reading: declared fields plus the scenario lexicon over narratives and bios, which is what a centralised pool with a perfect reader would find. `round_one_coverage` is the same predicates against declared fields only, which is what a firm's agent sees before the gap is broadcast. The difference between the two is the Section G cell. `self_assessment` is each firm alone, reading a joined requirement as an aggregate — the one word of difference that makes the isolated condition confidently wrong. Read only by backend/baselines.py, never by a firm node."

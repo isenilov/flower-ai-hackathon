@@ -164,7 +164,7 @@
       "handle": "FIRM_C::PERSON::001",
       "name": "Corinne Baptiste",
       "role": "PM",
-      "credentials": ["PMP", "LEED-AP"],
+      "credentials": ["LEED-AP"],
       "bio": "Project manager for federal and regional clinic delivery, including ambulatory and primary care facilities.",
       "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::011"],
       "disclosure_cost": 0
@@ -173,7 +173,7 @@
       "handle": "FIRM_C::PERSON::002",
       "name": "Otto Lindqvist",
       "role": "structural-lead",
-      "credentials": ["SE", "PE"],
+      "credentials": ["PE"],
       "bio": "Structural lead for aviation and hardened civic facilities, including seismic retrofit of terminal concourses.",
       "projects": ["FIRM_C::PROJ::007", "FIRM_C::PROJ::010"],
       "disclosure_cost": 0

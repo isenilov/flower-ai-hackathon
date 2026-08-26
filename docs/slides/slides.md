@@ -87,7 +87,7 @@ class: text-left
 
 # What the database fields can prove
 
-<div class="sub">every firm searching its own records, matched on declared fields only</div>
+<div class="sub">each firm searches its own records on declared fields &nbsp;·&nbsp; the coordinator joins the answers</div>
 
 <div class="fields">
 
@@ -95,97 +95,61 @@ class: text-left
 <div class="hd">Firm A</div>
 <div class="hd">Firm B</div>
 <div class="hd">Firm C</div>
+<div class="hd team">The team</div>
 
-<div class="rq"><span class="rid">R1</span>Hospital projects over $50m</div>
-<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+<div class="rq"><span class="rid">R1</span><b>Three</b> hospital projects over $50m</div>
+<div class="ok">✓</div><div class="no">✗</div><div class="ok">✓</div><div class="ok team">✓</div>
 
-<div class="rq"><span class="rid">R2</span>Design-build, federal client</div>
-<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+<div class="rq"><span class="rid">R2</span><b>Two</b> design-build jobs for a federal client</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok team">✓</div>
 
-<div class="rq"><span class="rid">R3</span>Project manager with hospital work</div>
-<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+<div class="rq"><span class="rid">R3</span>A project manager with hospital work</div>
+<div class="ok">✓</div><div class="no">✗</div><div class="no">✗</div><div class="ok team">✓</div>
 
 <div class="rq hot"><span class="rid">R4</span>One person: hospital <i>and</i> earthquake retrofit</div>
-<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div>
+<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div><div class="maybe team">?</div>
 
-<div class="rq"><span class="rid">R5</span>Chartered structural lead</div>
-<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+<div class="rq"><span class="rid">R5</span>A chartered structural lead</div>
+<div class="no">✗</div><div class="ok">✓</div><div class="no">✗</div><div class="ok team">✓</div>
 
-<div class="rq"><span class="rid">R6</span>Green-certified projects</div>
-<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+<div class="rq"><span class="rid">R6</span><b>Two</b> green-certified projects</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div><div class="ok team">✓</div>
 
 </div>
 
 <div class="legend">
-<div><span class="ok">✓</span> the fields settle it</div>
+<div><span class="ok">✓</span> the fields prove it</div>
+<div><span class="no">✗</span> the fields rule it out</div>
 <div><span class="maybe">?</span> the fields cannot say either way</div>
 </div>
 
 <div v-click class="cap mt-3">
 
-Five rows are settled by the fields at every firm. The fourth one the fields cannot answer, so
-the coordinator records it as an open gap. **An open gap is not the same as nobody having it.**
+No firm's column is complete. The team's is, bar one row — and that row the fields cannot answer
+either way, so it goes down as an open gap. **An open gap is not the same as nobody having it.**
 
 </div>
 
-<style>
-.sub { font-size: 0.85rem; opacity: 0.6; margin-top: 0.2rem; }
-.fields {
-  display: grid;
-  grid-template-columns: 1fr 6.5rem 6.5rem 6.5rem;
-  column-gap: 0.7rem;
-  row-gap: 0.28rem;
-  align-items: center;
-  margin-top: 0.9rem;
-}
-.hd {
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 700;
-  opacity: 0.55;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-}
-.rq {
-  font-size: 1rem;
-  line-height: 1.25;
-  border-left: 3px solid transparent;
-  border-radius: 0 0.25rem 0.25rem 0;
-  padding: 0.25rem 0 0.25rem 0.6rem;
-  /* A band per row: the mark columns sit ~190px right of the longest label, and the eye needs
-     something to track across. */
-  background: #f7f8f9;
-}
-html.dark .rq { background: rgba(255, 255, 255, 0.04); }
-.rid {
-  display: inline-block;
-  width: 2.2rem;
-  font-size: 0.72rem;
-  font-weight: 700;
-  opacity: 0.4;
-}
-/* The one row the fields cannot settle carries the accent, so the eye lands there before the
-   presenter says anything. The three amber cells to its right complete the band. */
-.rq.hot { border-left-color: #d97706; background: #fffbeb; font-weight: 700; }
-html.dark .rq.hot { background: #3d3218; }
-.fields .ok, .fields .no, .fields .maybe { font-size: 1.1rem; padding: 0.28rem 0; }
-.legend { display: flex; gap: 2.5rem; margin-top: 0.85rem; font-size: 0.82rem; opacity: 0.75; }
-.legend > div { display: flex; align-items: center; gap: 0.55rem; }
-.legend span { padding: 0.12rem 0.6rem; font-size: 0.88rem; }
-</style>
 
 <!--
 This is the design constraint, and the corpora are built backwards from it.
 
-Say "on the fields alone" out loud. The grid is what a structured search returns, NOT what the
-firms hold, and the next slide turns on that difference. A judge who reads this grid as
-"nobody has such a person" will think round 2 contradicts it.
+Two things to say, in this order. First: no column is complete, so none of them can bid this
+alone - A has no chartered structural lead, B is a project short on hospital work and has no
+credentialled PM, C has neither. Point at the last column: only together do they clear the form.
+
+Second, and this is the one to slow down for: R4 is not a cross, it is a question mark. The five
+settled rows are settled either way by the fields - the crosses are as provable as the ticks.
+R4 is the row where a structured search returns nothing and that proves nothing, because the
+answer is in prose. A judge who reads R4 as a cross will think the next slide contradicts this
+one.
 
 The row ids are the ones the log and the live page print, so R4 said here is R4 there.
 
-Careful with the wording in the other direction too: it is NOT "each firm thinks it is fine
-and is wrong". Verified off the run - round 1 has have=0 on that row, and every firm alone
-clears the other five.
+The last column is derived, not reported: one firm's tick makes the team's tick, which is stage
+2 of the loop two slides on. Verified off `data/ground_truth.json` - round 1 gives A 7/3 on R1
+and 0 on R5, B 2/3 on R1 and 0 on R3, C 0 on R3 and R5, and R4 zero handles from anyone. The
+oracle reading agrees on every row but R4, so the crosses survive reading every paragraph too.
 -->
 
 ---
@@ -227,19 +191,20 @@ sector   civic        <- not healthcare
 
 <div v-click class="mt-5">
 
-<div class="text-xs opacity-55 mb-1">the fourth row, both ways</div>
+<div class="text-xs opacity-55 mb-1">R4 again, same columns as the last slide &nbsp;·&nbsp; watch the last cell</div>
 
-<div class="grid grid-cols-[13rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm">
+<div class="fields">
 <div></div>
-<div class="text-center text-xs font-bold opacity-60">Firm A</div>
-<div class="text-center text-xs font-bold opacity-60">Firm B</div>
-<div class="text-center text-xs font-bold opacity-60">Firm C</div>
+<div class="hd">Firm A</div>
+<div class="hd">Firm B</div>
+<div class="hd">Firm C</div>
+<div class="hd team">The team</div>
 
-<div>matched on fields</div>
-<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div>
+<div class="rq">round 1 &nbsp;·&nbsp; matched on fields</div>
+<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div><div class="maybe team">?</div>
 
-<div>read in the bios</div>
-<div class="no">✗</div><div class="ok">✓</div><div class="no">✗</div>
+<div class="rq">round 2 &nbsp;·&nbsp; read in the bios</div>
+<div class="no">✗</div><div class="ok">✓</div><div class="no">✗</div><div class="ok team">✓</div>
 </div>
 
 </div>

@@ -413,13 +413,37 @@ def verify(
                 f"{firm} can join {gap['requirement']} from its own library ({alone}) — "
                 "'no single firm could have seen this' is then not true"
             )
-    for firm, verdict in assessed.items():
-        if not verdict["compliant"]:
-            short = [rid for rid, v in verdict["requirements"].items() if not v["covered"]]
-            failures.append(
-                f"{firm} does not self-assess compliant (short on {short}) — the demo opens on "
-                "three firms that each believe the bid is already fine"
-            )
+    # --- what one firm can and cannot reach alone -----------------------------------
+    # Two mutually exclusive shapes, declared per scenario. `compliant` is the brief's original:
+    # three firms that each believe the bid is already fine. `short` is healthcare-seismic's: no
+    # firm's column on the coverage matrix is complete, so the joint column is the only one that
+    # clears the form. Under `short` every requirement still has to close jointly in round 1 —
+    # weighted ones included, because the matrix draws them the same way.
+    if scenario.get("alone", "compliant") == "compliant":
+        for firm, verdict in assessed.items():
+            if not verdict["compliant"]:
+                short = [rid for rid, v in verdict["requirements"].items() if not v["covered"]]
+                failures.append(
+                    f"{firm} does not self-assess compliant (short on {short}) — the demo opens "
+                    "on three firms that each believe the bid is already fine"
+                )
+    else:
+        for firm, verdict in assessed.items():
+            if all(v["covered"] for v in verdict["requirements"].values()):
+                failures.append(
+                    f"{firm} reaches every requirement from its own library — 'only the team "
+                    "clears the form' is then not true"
+                )
+        for requirement in rfp["requirements"]:
+            if requirement["id"] == gap["requirement"]:
+                continue
+            found = len(round_one.get(requirement["id"], []))
+            if found < requirement["min_count"]:
+                failures.append(
+                    f"round 1 leaves {requirement['id']} short jointly "
+                    f"({found}/{requirement['min_count']}) — every column on the matrix then has "
+                    f"a hole, not just {gap['requirement']}"
+                )
 
     # --- the disclosure beats -------------------------------------------------------
     every = [f for facts in facts_by_firm.values() for f in facts]

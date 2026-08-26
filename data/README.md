@@ -114,11 +114,14 @@ place it can live.
    structured round-1 search reaches them and there is no gap left to broadcast.
 4. No firm can join the cell from its own library, even reading its own bios — otherwise
    "no single firm could have seen this" is not true.
-5. Each firm has enough surface coverage to self-assess as compliant on every MANDATORY
-   requirement. Note what this does and does not license: it holds for the `self_assessment`
-   reading, which drops `join` from the Section G predicate. On the actual run path no firm
-   reaches R4 at all — each covers five of six. Say that, not "confidently wrong"
-   (`docs/demo-script.md`).
+5. **No firm's column on the coverage matrix is complete, and the joint column is** — that is
+   `"alone": "short"` in `scenarios.json`, and `generate.py` enforces both halves. In
+   healthcare-seismic each firm is short on something the fields settle outright, matching its
+   profile: A has no SE-credentialed structural lead (R5), B has two $50M+ hospital projects
+   where three are wanted and no PMP project manager (R1, R3), C has neither the PMP PM nor the
+   SE lead (R3, R5). Jointly every requirement closes in round 1 except R4. Scenarios that omit
+   `alone` keep the brief's original shape — `"compliant"`, three firms that each read their own
+   library as already sufficient.
 6. At least one cost-2 record must be substitutable, or the denial beat fails.
 7. At least one cost-3 record must be one that *would* have matched, or "the refusal is
    honoured" is a claim about a candidate set that never excluded anything.

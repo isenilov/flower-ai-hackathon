@@ -78,10 +78,10 @@ where the marks actually are.
 | 0:00–0:30 | **The problem.** "Three architecture firms are bidding one government hospital together, because the job is too big for any one of them. Next month they compete against each other. To submit, they have to prove *as a team* that they cover every requirement, and none of them will show the others its client list, its fees or its staff. Today that proof is assembled by emailing spreadsheets." | narrator |
 | 0:30–0:55 | **The gate, up front.** Hub tab: "this is published — `flwr chat`, `@i53n1/consortium`." Repo tab. Then: *"the SF330 is the example; the harness is the product."* Back to the stage screen. | narrator + driver |
 | 0:55–1:10 | **Set the screen.** "Left pane is the protocol's own log — that is Flower: `InMemoryGrid`, three SuperNodes, one process each. Right is the same run as a picture. I start it from the page." Press **Run**. | driver |
-| 1:10–1:50 | **Round 1 — blind attestation.** Six typed requirements go out, 1.4 kB. Each firm searches **only its own library** and answers with banded existence proofs — 19, 13 and 18 attestations. "Not one record left a building. What crossed is a handle and a band." Matrix fills: **R1, R2, R3, R5, R6 green. R4 red.** | driver narrates the panes, narrator holds the line |
-| 1:50–2:10 | **Why R4 is invisible.** Click **R4** on the page. "Every other requirement is answered from a database field. R4 needs one person who has done both a hospital and an earthquake-strengthening job, named on both projects. No firm's fields say that about anybody. Each firm covers five of six on its own, and not one of them can reach this one." | narrator |
+| 1:10–1:50 | **Round 1 — blind attestation.** Six typed requirements go out, 1.4 kB. Each firm searches **only its own library** and answers with banded existence proofs — 18, 11 and 16 attestations. "Not one record left a building. What crossed is a handle and a band." Matrix fills: **R1, R2, R3, R5, R6 green. R4 red.** | driver narrates the panes, narrator holds the line |
+| 1:50–2:10 | **Why R4 is invisible.** Click **R4** on the page. "Every other requirement is answered from a database field. R4 needs one person who has done both a hospital and an earthquake-strengthening job, named on both projects. No firm's fields say that about anybody. Look at the columns: not one firm can clear this form on its own, and even together they cannot answer this row." | narrator |
 | 2:10–2:55 | **Round 2 — the beat.** "The coordinator broadcasts the *gap*, not the answer." Left pane: `(gap R4 = 2 B)`. Then all three nodes, each on its own actor pid: `firm A gap R4 - re-reading 8 records`, `firm C ... nothing here evidences it`, and **`firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation and strengthening on an acute care wing upgrade`**. Cell turns green. "Firm B had that filed as civic work. Only the bio says the building was a hospital. And Firm B only re-read its bios because it was told about a hole in *somebody else's* coverage." | narrator |
-| 2:55–3:20 | **The ledger.** Right pane: **about 33 kB banded forward, 2 bytes back, 0 B of record content, 2 rounds.** Read the kB figure off the pane rather than off this page — it drifts a few hundred bytes per run. "Zero is by construction: the protocol has no field that can carry a record. And the model's reasoning stayed on the firm's node; what crossed the wire was requirement-side vocabulary." | driver |
+| 2:55–3:20 | **The ledger.** Right pane: **about 31 kB banded forward, 2 bytes back, 0 B of record content, 2 rounds.** Read the kB figure off the pane rather than off this page — it drifts a few hundred bytes per run. "Zero is by construction: the protocol has no field that can carry a record. And the model's reasoning stayed on the firm's node; what crossed the wire was requirement-side vocabulary." | driver |
 | 3:20–3:45 | **It is a harness.** Scenario selector — switch to **transit-tunnel**, then **defence-secure-lab**. "Same code, same protocol, no branches. A transit tunnel, a secure lab, a campus energy retrofit. The gap sits at a **different firm** in each one, and the harness does not know which." | driver |
 | 3:45–4:00 | **Close.** "Three pluggable pieces: a requirement list, a banding vocabulary, a cost per disclosure. Swap those and the same loop runs for hospitals sizing a trial cohort without sharing patients. Next is the disclosure optimiser and the human approval gate: the half we designed and did not build today." Stop. | narrator |
 
@@ -110,7 +110,7 @@ part that matters" rather than speeding up.
 | 0:00–0:15 | Three firms, one government bid, competitors next month. Published on Hub as `@i53n1/consortium`. |
 | 0:15–0:40 | Round 1. Every firm answers from its own library only: banded yes/no answers, no records. Joint matrix: **R4 red**, and no firm's fields can reach it. |
 | 0:40–1:05 | Round 2. The **gap** goes back — 2 bytes. All three re-read their own prose; Firm B finds the one person who is both, filed as civic work. Green. |
-| 1:05–1:20 | Ledger: about 33 kB banded forward, 2 B back, **0 B of record content**, by construction. |
+| 1:05–1:20 | Ledger: about 31 kB banded forward, 2 B back, **0 B of record content**, by construction. |
 | 1:20–1:30 | Scenario selector: four solicitations, same code, gap at a different firm each time. "The SF330 is the example; the harness is the product." |
 
 ---
@@ -189,12 +189,20 @@ the design, and the deck no longer carries a roadmap slide - say it.
 
 One claim in the brief does not survive contact with the data, and the correction is
 stronger than the original. The brief says each firm "self-assesses **compliant**" in round 1
-and is "confidently wrong". It does not: each firm covers R1, R2, R3, R5 and R6 on its own,
-and **no** firm can reach R4, because R4 is a Section G join that no firm's declared fields
-describe. So do not say "confidently wrong". Say: **"Each firm covers five of six on its own.
-R4 is invisible to structured search at every one of them, and it takes the joint matrix to
-license the one local re-read that finds it."** That is what the run shows, and it is a
-better argument for the protocol than the version we planned.
+and is "confidently wrong". It does not, and the corpora now say the opposite outright: **no
+firm's column on the matrix is complete.** Firm A has no chartered structural lead, Firm B is
+a project short on hospital work and has no credentialled project manager, Firm C has neither.
+Every requirement closes jointly in round 1 except R4, which is invisible to structured search
+at all three because it is a Section G join no firm's declared fields describe.
+
+So do not say "confidently wrong". Say: **"None of them can bid this alone, and together they
+still cannot prove one row. It takes the joint matrix to license the one local re-read that
+finds it."** That is what the run shows, and it is a better argument for the protocol than
+the version we planned.
+
+The crosses are as provable as the ticks — the oracle reading agrees with the declared reading
+on every row but R4 — so if a judge asks whether round 2 could close R1 or R3 as well, the
+answer is no, and `data/ground_truth.json`'s `coverage` is where that is checked.
 
 > The page's round-1 narration still says "every firm's own self-assessment reads compliant".
 > That is the same overclaim. Flagged to the Viz owner: `frontend/app.js`, `narrate()`, the

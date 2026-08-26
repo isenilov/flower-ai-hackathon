@@ -164,7 +164,7 @@
       "client": "St. Aurelia Regional",
       "client_type": "state",
       "sector": "healthcare",
-      "value_usd": 71000000,
+      "value_usd": 38000000,
       "completed": "2024-09",
       "delivery": "design-bid-build",
       "certification": "LEED-Silver",
@@ -190,7 +190,7 @@
       "handle": "FIRM_B::PERSON::001",
       "name": "Ellis Vaughn",
       "role": "PM",
-      "credentials": ["PMP"],
+      "credentials": ["PE"],
       "bio": "Project manager for hospital structural packages, coordinating phased work above operating clinical floors.",
       "projects": ["FIRM_B::PROJ::012", "FIRM_B::PROJ::013", "FIRM_B::PROJ::014"],
       "disclosure_cost": 0

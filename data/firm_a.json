@@ -186,7 +186,7 @@
       "handle": "FIRM_A::PERSON::002",
       "name": "Marcus Lin",
       "role": "structural-lead",
-      "credentials": ["SE", "PE"],
+      "credentials": ["PE"],
       "bio": "Structural lead for civic and transit work, specialising in seismic retrofit of occupied public buildings and lateral strengthening of existing frames.",
       "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::008"],
       "disclosure_cost": 0

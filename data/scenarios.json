@@ -5,6 +5,7 @@
     {
       "slug": "healthcare-seismic",
       "path": ".",
+      "alone": "short",
       "title": "Federal healthcare facility, seismic zone, design-build",
       "headline": "Firm A has healthcare people. Firm A has seismic people. Firm A has nobody who is both, and does not know it.",
       "firms": {

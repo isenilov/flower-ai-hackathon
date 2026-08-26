@@ -95,3 +95,54 @@ html.dark .maybe {
   display: flex;
   justify-content: center;
 }
+
+/* The coverage table, shared by slides 3 and 4. Both use `.fields`, so the mark columns land on
+   the same x positions on both slides and the joint cell visibly flips from `?` to `✓` between
+   them. Changing the column template breaks that link. */
+.sub { font-size: 0.85rem; opacity: 0.6; margin-top: 0.2rem; }
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 6.2rem 6.2rem 6.2rem 7.1rem;
+  column-gap: 0.7rem;
+  row-gap: 0.28rem;
+  align-items: center;
+  margin-top: 0.9rem;
+}
+.hd {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.55;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rq {
+  font-size: 1rem;
+  line-height: 1.25;
+  border-left: 3px solid transparent;
+  border-radius: 0 0.25rem 0.25rem 0;
+  padding: 0.25rem 0 0.25rem 0.6rem;
+  /* A band per row: the mark columns sit ~190px right of the longest label, and the eye needs
+     something to track across. */
+  background: #f7f8f9;
+}
+html.dark .rq { background: rgba(255, 255, 255, 0.04); }
+.rid {
+  display: inline-block;
+  width: 2.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.4;
+}
+/* The one row the fields cannot settle carries the accent, so the eye lands there before the
+   presenter says anything. The three amber cells to its right complete the band. */
+.rq.hot { border-left-color: #d97706; background: #fffbeb; font-weight: 700; }
+html.dark .rq.hot { background: #3d3218; }
+.fields .ok, .fields .no, .fields .maybe { font-size: 1.1rem; padding: 0.28rem 0; }
+/* The joint column is the coordinator's grid, not a fourth firm - the extra gap is the whole
+   distinction, so it stays wider than the column gap. */
+.team { margin-left: 0.9rem; }
+.hd.team { opacity: 0.85; }
+.legend { display: flex; gap: 1.8rem; margin-top: 0.85rem; font-size: 0.82rem; opacity: 0.75; }
+.legend > div { display: flex; align-items: center; gap: 0.55rem; }
+.legend span { padding: 0.12rem 0.6rem; font-size: 0.88rem; }
