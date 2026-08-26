@@ -4,14 +4,30 @@ Judges come **to the table** at 17:30 and give us **3–5 minutes**. That is a c
 not a stage pitch, and it changes three things: we lead with the submission gate, we build
 in silence for questions, and we never depend on the venue wifi.
 
-Owner: **Viz** (T17) to build the talking points around this; **all** to rehearse it. Twice,
-timed, between the 16:50 freeze and 17:30.
+Owner: **Viz** (T17); **all** to rehearse it. Twice, timed, between the 16:50 freeze and 17:30.
 
-> **This script covers what runs.** Stage four of the loop — the disclosure optimiser and
-> the human approval gate — is designed in brief §5.4 and **not built**. Every beat below
-> has been executed end to end on this machine; the numbers in it are measured, not
-> projected. If you find yourself about to narrate a denial-and-substitution, stop: that
-> beat does not exist, and §"What we did not build" is how to answer for it.
+Everything below is what the code in this repo actually does, verified by running it. Where a
+beat from the brief is not built, it is named as roadmap rather than narrated as a feature —
+see §*What we do not claim* at the end. That section is not modesty, it is the reason nothing
+in the first four minutes can be contradicted by a follow-up question.
+
+---
+
+## The shape of the demo
+
+**Split screen, one machine.** `make stage` puts the protocol log in the left-hand terminal
+pane and the page in the right-hand browser. Every run is started from the page's **Run**
+button: `frontend/serve.py` spawns `backend.rounds` with stdout inherited, so the log lands
+in the pane while the animation plays in the browser. Neither half is a recording of the
+other, and that is the point — say it once, early.
+
+The left pane is where **Flower** is visible: `flwr 1.34.0 · run_simulation · InMemoryGrid ·
+3 SuperNodes, one process each`, then `InMemoryGrid.send_and_receive · 3 × Message(QUERY)`
+per round. The right pane is where the *argument* is visible: the dashed firm perimeters,
+the coverage matrix, the byte ledger.
+
+A full run replays in about **20 seconds** at 1×. That is deliberate — the narrator paces it
+with `Step ›` and holds on round 2 for as long as the question takes.
 
 **Round 1 grades with a model too, when one is reachable.** It grades and never re-decides —
 the matrix is the same matrix either way — so on a cache-only laptop those calls miss, a grade
@@ -26,164 +42,154 @@ promise a judge round-1 grading lines that this machine will not print.
 Run this at 16:50 and leave it running. Do not rebuild any of it while someone is standing
 there.
 
-- [ ] Hub app page open in a browser tab: `flower.ai/apps/i53n1/consortium/`
-- [ ] Second tab: the public GitHub repo
-- [ ] **`make traces MODEL=/models/Qwen3.5-397B-A17B-FP8` has been run twice**, against a
-      reachable endpoint, *after the last prompt edit*. Twice, not once — see below. This is
-      the one non-negotiable item.
-- [ ] `make doctor` shows a non-zero `cache` line and `4 of 4` traces ready
-- [ ] `make stage MODEL=…` up, terminal pane left, browser right, rehearsed once on this
-      machine, this hour
-- [ ] Terminal 2: `flwr chat` logged in, ready to type `@i53n1/consortium`
+- [ ] **`make doctor`, and read four lines of it.** `model` must name a model, `endpoint`
+      must be set, `cache` must be non-zero, and `traces` must say `4 of 4`. Those four
+      decide whether round 2 has anything to find. Everything else in `doctor` is scenery.
+- [ ] **`make traces`** — one run per scenario, so the selector switches offline with a judge
+      at the table. It warns loudly if `MODEL` is empty; heed it, or all four scenarios trace
+      as NON-COMPLIANT and the selector shows a judge four broken bids.
+- [ ] **`.cache/model` must exist in the checkout you are demoing from.** It is gitignored,
+      so it lives on exactly one laptop — the one that made the calls. A fresh clone, a
+      worktree, or a teammate's machine has an empty cache, and with no endpoint reachable
+      `resolve_reader` returns `None`, round 2 finds nothing, and the bid ends
+      NON-COMPLIANT. This is the single most likely way the demo dies. Check it, do not
+      assume it.
+- [ ] `make stage` running, terminal pane left, browser right, both readable from a metre away
+- [ ] Second browser tab: the Hub app page, `flower.ai/apps/i53n1/consortium/`
+- [ ] Third tab: the public GitHub repo
+- [ ] One rehearsed run already done on this machine, this hour, then `make stage` again so
+      the run they watch starts from nothing
 - [ ] Laptop on hotspot, not venue wifi
-- [ ] Font size up in **both** panes. Two people can read a terminal over your shoulder;
-      four cannot.
-
-**The cache is the demo.** Both rounds call a model and the shared Qwen endpoint answers in
-~240s under load. Cached, the same run lands in milliseconds. The cache is keyed on the exact
-request, so **any edit to either prompt in `agents/prompts/` throws away every entry for that
-round.** If you touch a prompt after 16:00, re-warm before the freeze or you will be
-narrating an open gap.
-
-**Warm it twice.** Round-1 grading has a 120s budget against round 2's 280s, and on a cold
-cache against the shared endpoint *it times out* — measured, not hypothetical. That is a
-designed degrade, not a failure: the in-flight call is left to finish into the cache, the
-matrix comes out identical, and the second run gets the grades for nothing. But the first run
-of a scenario will not have them, so warm every scenario twice and check `make doctor` before
-you unplug.
+- [ ] Font size up in both panes. Two people can read a terminal over your shoulder; four cannot.
 
 **Who talks.** One narrator, one driver. The narrator never touches the keyboard and the
-driver never explains — the single most common way a table demo runs to seven minutes is
-two people both narrating.
+driver never explains — the single most common way a table demo runs to seven minutes is two
+people both narrating.
 
 ---
 
 ## The 4-minute run
 
-Four minutes into a five-minute slot. The remaining minute is theirs, and §13 of the brief
-is where the marks actually are.
+Four minutes into a five-minute slot. The remaining minute is theirs, and §13 of the brief is
+where the marks actually are.
 
 | Time | Beat | Who |
 |---|---|---|
-| 0:00–0:30 | **The problem.** "Three architecture firms bid one federal hospital as a joint venture. Next month they compete. To submit, they must prove *together* that the team covers every requirement — without any of them exposing their client list, their fees, or their roster. Today that is done by emailing spreadsheets." | narrator |
-| 0:30–1:00 | **The gate, up front.** Hub tab: "this is published — `flwr chat`, `@i53n1/consortium`, runs on SuperGrid." Second tab: the repo. Then: *"the SF330 is the example; the harness is the product."* | narrator + driver |
-| 1:00–1:50 | **Round 1.** Press **Run** on the page. Each firm's agent searches only its own library — a structured prefilter over declared fields, then its own model grading whether each filing is borne out by its own prose — and returns banded attestations. The log fills the left pane as the animation plays on the right; same run, two views. Every firm self-assesses **compliant**. The joint matrix does not: **R4 red.** "No single firm could have seen this. Each one is confidently wrong." | driver narrates the matrix, narrator holds the line |
-| 1:50–2:50 | **Round 2 — the beat.** The coordinator broadcasts the *gap*: the string `R4`, two bytes, and nothing else. Firm B's agent re-reads a bio it had already classified as purely structural — its projects are all *filed* as civic — and the prose says acute-care wing. It returns the handle; the coordinator checks the Section G join in code. **R4 goes green, and the run converges — 2 rounds, not 3.** "Firm B's agent only found that because it was told about a hole in *Firm A's* coverage. That is the multiplier." | narrator |
-| 2:50–3:30 | **The safety ledger.** Click a requirement in the UI. `record content on the wire: 0 B` — zero by construction, not by policy: no field on an `Attestation` can carry a title, a client, a fee, or a name. **32.4 kB of attestations forward; 2 bytes back.** Cost-3 records were never offered, in either round. The model's own sentence never left Firm B's node — the wire got requirement vocabulary. | narrator |
-| 3:30–4:00 | **Close.** Switch the scenario selector to `transit-tunnel` — same harness, different solicitation, different firm holding the gap, no re-run. "Swap the requirement set, the banding vocabulary and the cost function and the same harness runs cross-hospital cohort feasibility." Stop. | driver, then narrator |
+| 0:00–0:30 | **The problem.** "Three architecture firms bid one federal hospital as a joint venture. Next month they compete against each other. To submit, they must prove *together* that the team covers every requirement — without any of them exposing their client list, their fees, or their roster. Today that is done by emailing spreadsheets." | narrator |
+| 0:30–0:55 | **The gate, up front.** Hub tab: "this is published — `flwr chat`, `@i53n1/consortium`." Repo tab. Then: *"the SF330 is the example; the harness is the product."* Back to the stage screen. | narrator + driver |
+| 0:55–1:10 | **Set the screen.** "Left pane is the protocol's own log — that is Flower: `InMemoryGrid`, three SuperNodes, one process each. Right is the same run as a picture. I start it from the page." Press **Run**. | driver |
+| 1:10–1:50 | **Round 1 — blind attestation.** Six typed requirements go out, 1.4 kB. Each firm searches **only its own library** and answers with banded existence proofs — 19, 13 and 18 attestations. "Not one record left a building. What crossed is a handle and a band." Matrix fills: **R1, R2, R3, R5, R6 green. R4 red.** | driver narrates the panes, narrator holds the line |
+| 1:50–2:10 | **Why R4 is invisible.** Click **R4** on the page. "Every other requirement is answered from a declared field. R4 needs one person with healthcare *and* seismic-retrofit evidence — a Section G cell — and no firm's structured fields say that about anybody. Each firm covers five of six on its own. Not one of them can reach this one." | narrator |
+| 2:10–2:55 | **Round 2 — the beat.** "The coordinator broadcasts the *gap*, not the answer." Left pane: `(gap R4 = 2 B)`. Then all three nodes, each on its own actor pid: `firm A gap R4 - re-reading 8 records`, `firm C ... nothing here evidences it`, and **`firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation and strengthening on an acute care wing upgrade`**. Cell turns green. "Firm B had that filed as civic work. Only the bio says the building was a hospital. And Firm B only re-read its bios because it was told about a hole in *somebody else's* coverage." | narrator |
+| 2:55–3:20 | **The ledger.** Right pane: **32.4 kB banded forward, 2 bytes back, 0 B of record content, 2 rounds.** "Zero is by construction, not by policy — the protocol has no field that can carry a record. And the model's reasoning stayed on the firm's node; what crossed the wire was requirement-side vocabulary." | driver |
+| 3:20–3:45 | **It is a harness.** Scenario selector — switch to **transit-tunnel**, then **defence-secure-lab**. "Same code, same protocol, no branches. A transit tunnel, a secure lab, a campus energy retrofit. The gap sits at a **different firm** in each one, and the harness does not know which." | driver |
+| 3:45–4:00 | **Close.** "Three pluggable pieces: a requirement set, a banding vocabulary, a disclosure-cost function. Swap those and the same loop runs cross-hospital cohort feasibility. Next is the disclosure optimiser and the human approval gate — that is the half we designed and did not build today." Stop. | narrator |
 
-### The beat that must not be improvised
+### The two beats that must not be improvised
 
-**1:50 — round 2 closing R4.** If this does not converge, the demo has no argument. It is
-also the only beat with a live dependency, which is why the cache checklist above exists.
+**2:10 — round 2 closing R4.** If this does not converge, the demo has no argument. It is
+also the beat that depends on the model cache, so the pre-flight check above is not optional.
+Per the brief's R2 risk, the corpus wording is the tuning parameter, not the prompt — but at
+17:30 neither is a live option, so verify at 16:50 instead.
 
-Per brief R2 the corpus wording is the tuning parameter — but the actual failure we hit was
-the *prompt*, not the corpus: an earlier version told the model to judge substance and also
-not to infer, and Qwen3.5 resolved the contradiction by refusing every scenario's evidence.
-Read `agents/prompts/round2_reexamine.md` before you touch `data/`. It is the cheaper check
-and it is the one that was wrong.
-
-If round 2 is genuinely dead at 16:40, run without `MODEL=` and narrate the honest version:
-"round 1 completes, the gap is detected and broadcast, and re-examination needs a model we
-cannot reach from this room." Detecting the gap is still a result no single firm could
-produce. Do not pretend a cached result is a live round.
+**3:20 — the scenario switch.** This is what turns "an app" into "a harness" in a judge's
+head, and it costs eight seconds. Know which two scenarios you switch to, and know that the
+gap is at Firm C in transit-tunnel and Firm A in defence-secure-lab — a judge who spots that
+the answer moves has understood the whole thing, and you want to be ready to confirm it.
 
 ---
 
 ## The 90-second version
 
 Use this when a judge arrives late, is visibly rushed, or has already spent four minutes at
-the table next to ours. Cutting to it mid-demo is a legitimate move — say "let me jump to
-the part that matters" rather than speeding up.
+the table next to ours. Cutting to it mid-demo is a legitimate move — say "let me jump to the
+part that matters" rather than speeding up.
 
 | Time | Beat |
 |---|---|
-| 0:00–0:15 | Three firms, one federal bid, competitors next month. Published on Hub, runs on SuperGrid. |
-| 0:15–0:35 | Round 1, each firm searching only its own library. Every firm self-assesses compliant. The joint matrix: **R4 red**. |
-| 0:35–1:00 | Round 2. The gap goes out — two bytes. Firm B's agent reads its own prose and finds the one person who is both. Green, converged. |
-| 1:00–1:20 | Ledger: 0 bytes of record content, 0 clients named, 32.4 kB out against 2 bytes back. |
-| 1:20–1:30 | Scenario selector: same harness, four solicitations. "The SF330 is the example; the harness is the product." |
-
----
-
-## What we did not build — say it before they find it
-
-Volunteering this costs thirty seconds and buys the credibility of everything else. A judge
-who greps `backend/optimiser.py` and finds a docstring after you claimed an optimiser has
-stopped listening to you.
-
-- **The disclosure optimiser and the approval gate.** Designed in brief §5.4 — greedy
-  weighted set cover under the Section F cap of ten, then every disclosure routed through a
-  named human. `backend/optimiser.py`, `approval.py`, `assemble.py` are docstrings. What
-  makes the design credible is already in the data and enforced by the tests:
-  `disclosure_cost` on every record, cost-3 excluded from the candidate set in both rounds,
-  and a substitutable cost-2 record the invariant tests assert exists.
-- **The three-condition baseline table.** `backend/baselines.py` is a stub and
-  `make baselines` prints nothing. `data/ground_truth.json` holds the three readings the
-  table would score — `declared` (what round 1 can match), `firm` (what a firm knows alone),
-  `oracle` (what a centralised pool would find) — and `data/generate.py` refuses to write it
-  if the gap between them ever closes. The claim "consortium matches the centralised oracle"
-  is checked in the corpus, not measured in a run.
-- **The bander.** There is no egress validator and no rejection counter. Do **not** say "the
-  guardrail fired twice" — it does not exist. The privacy property is structural instead,
-  which is the stronger claim: the schema has no field that can carry record content, so
-  `record_bytes` is 0 by construction.
-
-The honest framing: *"three of the four stages run. The fourth is where minimum disclosure
-and the human gate go, and the data model already encodes what it needs."*
+| 0:00–0:15 | Three firms, one federal bid, competitors next month. Published on Hub as `@i53n1/consortium`. |
+| 0:15–0:40 | Round 1. Every firm answers from its own library only — banded existence proofs, no records. Joint matrix: **R4 red**, and no firm's fields can reach it. |
+| 0:40–1:05 | Round 2. The **gap** goes back — 2 bytes. All three re-read their own prose; Firm B finds the one person who is both, filed as civic work. Green. |
+| 1:05–1:20 | Ledger: 32.4 kB banded forward, 2 B back, **0 B of record content**, by construction. |
+| 1:20–1:30 | Scenario selector: four solicitations, same code, gap at a different firm each time. "The SF330 is the example; the harness is the product." |
 
 ---
 
 ## The 3-minute stage version — only if we make the top 3
 
-Announced at 18:45, presented immediately. Different room, different constraints: no
-terminal they can read, no time for a live run, and the audience is other builders.
+Announced at 18:45, presented immediately. Different room, different constraints: no terminal
+they can read, no time for a live run, and the audience is other builders.
 
-- **Do not run the demo live on stage.** Screenshots or a recorded terminal. A live run in
-  front of 130 people on shared wifi is a coin flip we have no reason to take.
-- Three slides, one idea each: (1) three competitors, one bid, nobody can check compliance
-  alone; (2) the four-stage loop with round 2 highlighted and stage four marked as design;
-  (3) the two-bytes-back-for-32-kB-forward ledger.
-- Say the harness sentence twice — once at the start, once at the end. On stage it is the
-  only thing anyone remembers.
-- Ten seconds of framing if the room is UK-heavy: "US federal qualifications form —
-  Section G is a person-by-project matrix." Do not explain more.
+- **Do not run the demo live on stage.** Use the deck (`docs/slides/`, `make slides`) and a
+  recorded run. A live run in front of 130 people on shared wifi is a coin flip we have no
+  reason to take.
+- The deck is built for exactly this: problem → the invisible cell → the four-stage loop with
+  round 2 highlighted → the ledger → the harness claim → roadmap.
+- Say the harness sentence twice — once at the start, once at the end. On stage it is the only
+  thing anyone remembers.
+- Ten seconds of framing if the room is UK-heavy: "US federal qualifications form — Section G
+  is a person-by-project matrix." Do not explain more.
 
 ---
 
 ## Framing notes
 
-**If they ask what a harness is.** "Everything except the SF330. A requirement set, a
-banding vocabulary, and a disclosure-cost function are the three things you swap." Then show
-the scenario selector — four of them ship, and they are not re-skins: the delivery method,
-the client type, the certification threshold and the firm holding the gap all move. Do not
-reach for the architecture diagram; brief §1.1 has the sentence.
+**If they ask what a harness is.** "Everything except the SF330. A requirement set, a banding
+vocabulary, and a disclosure-cost function are the three things you swap." Then use the
+scenario selector instead of the architecture diagram — brief §1.1 has the sentence.
 
 **If they push on centralisation.** Brief §13 has the full answer. The short one: the
 coordinator sees banded existence proofs, the same relationship gradients have to training
 data.
 
-**If they ask why only two rounds.** Because it converged. The loop runs to `num-rounds` *or*
-until the gap closes *or* until a round returns nothing new — `stopped: "converged"` in the
-trace. A third identical broadcast would only cost time.
+**If they ask whether it really runs on SuperGrid.** It is published at
+`flower.ai/apps/i53n1/consortium` and invoked from `flwr chat`. The published surface is an
+`AgentApp` running the same `backend.protocol.run` over `LocalGrid`; the federated surface
+runs it over `InMemoryGrid` under the simulation runtime, and over `GrpcGrid` against a real
+SuperLink. The left pane names which one is carrying the messages, so we never have to imply
+a SuperLink we are not using. We drive the table demo locally because 130 people are on the
+same wifi, not because the deployment path is a mock.
 
-**If they ask why round 1's model does not just find the cell.** Because it is not allowed to
-look for it. Round 1's call grades records the *structured predicate already matched* —
-"does this filing's own prose bear it out?", `corroborated` or `thin` — and both the prompt
-and `agents/matcher.py` refuse it the two moves that would matter: it cannot nominate a
-record it was not shown, and `thin` is a grade rather than a veto. That is deliberate on both
-sides. A round-1 call that could nominate would find the Section G cell a round early and
-there would be no beat; one that could veto would drop a declared match out of the disclosure
-set on a sampled completion. The proof is cheap and worth offering: run it with and without
-`MODEL=` and the coverage matrix is identical.
+**If SuperGrid is down or slow at 17:30.** Say so plainly and drive the local run. An honest
+fallback costs nothing. Pretending a cached result is a live SuperGrid round costs everything
+if they ask one more question.
 
-**If they ask whether the model could just be told the answer.** The node is handed the
-uncovered requirement id and its predicate, never the answer and never which record to look
-at. `data/scenarios.json` does carry an evidence lexicon — that is the oracle `generate.py`
-uses to prove the cell is findable, and handing it to a node would be handing it the answer
-key. Returned handles the model was not shown are discarded.
+**If the model endpoint is down at 17:30.** Nothing changes — the run replays from
+`.cache/model` and the left pane prints `(from cache)` on every re-examination. Say that out
+loud rather than hoping nobody reads it: "those are cached responses, and the pane says so."
+A judge who spots an unmentioned `(from cache)` is a judge who stops believing the rest.
 
-**If SuperGrid is down or slow at 17:30.** Say so plainly and drive the local simulation:
-"the published app is there, we are running the local federation because 130 of us are on
-the same wifi." An honest fallback costs nothing. Pretending a cached result is a live
-SuperGrid round costs everything if they ask one more question.
+---
+
+## What we do not claim
+
+Round 3 is designed and not built. `backend/optimiser.py`, `approval.py`, `assemble.py` and
+`baselines.py` are docstrings. So none of the following is in the demo, and none of it may be
+narrated as if it runs:
+
+- a disclosure count ("9 of 40"), a denial, or a live substitution
+- a human approval gate, or "9 of 9 approved"
+- an assembled SF330
+- the three-condition baseline table, including the centralised-pool row
+- a bander rejection count — the closed vocabulary is enforced in `backend/schema.py` and
+  `firm_node.py` bands every field before it leaves, but there is no instrumented counter,
+  so do not offer a number
+
+Two of these are worth saying out loud as roadmap, because a judge asking "then what?" is
+asking the right question: **the disclosure optimiser** (greedy weighted set cover over
+disclosure cost, under the Section F cap of ten) and **the per-record human gate**, where a
+denial makes the optimiser re-plan rather than get routed around. Brief §5.4 and §7.2 have
+the design; the deck's roadmap slide has the one-line version.
+
+One claim in the brief does not survive contact with the data, and the correction is
+stronger than the original. The brief says each firm "self-assesses **compliant**" in round 1
+and is "confidently wrong". It does not: each firm covers R1, R2, R3, R5 and R6 on its own,
+and **no** firm can reach R4, because R4 is a Section G join that no firm's declared fields
+describe. So do not say "confidently wrong". Say: **"Each firm covers five of six on its own.
+R4 is invisible to structured search at every one of them — and it takes the joint matrix to
+license the one local re-read that finds it."** That is what the run shows, and it is a
+better argument for the protocol than the version we planned.
+
+> The page's round-1 narration still says "every firm's own self-assessment reads compliant".
+> That is the same overclaim. Flagged to the Viz owner — `frontend/app.js`, `narrate()`, the
+> `matrix` case.

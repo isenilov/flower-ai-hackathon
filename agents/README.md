@@ -99,7 +99,11 @@ answer with no explanation reads as a model that was never consulted.
 
 ## Round 2 is the whole demo
 
-Round 1 sees each requirement in isolation and every firm self-assesses compliant. Round 2
+Round 1 sees each requirement in isolation, and every firm covers five of six on its own —
+R4 is unreachable at *all three*, because no firm's declared fields describe a Section G
+join. (Not "each firm self-assesses compliant and is confidently wrong": that is
+`ground_truth.json`'s `self_assessment` reading, which drops `join` and never executes on the
+run path. See `docs/demo-script.md`.) Round 2
 receives the **gap** — the uncovered requirement id and its predicate, stated as a
 requirement — and never the answer, never which record to look at. `data/scenarios.json`
 carries an evidence lexicon, but that is the oracle `data/generate.py` uses to prove the

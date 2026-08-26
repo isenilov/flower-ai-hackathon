@@ -6,6 +6,7 @@
 | `demo-script.md` | The 4-minute table demo, the 90-second cut, and the stage version. Every beat in it has been run end to end; the numbers are measured. Rehearsed twice, timed, between the 16:50 freeze and 17:30. |
 | `decisions.md` | Decisions actually taken, with the reason each one went the way it did. The 12:00 packaging call is the one that reshaped the codebase. |
 | `event.md` | The organisers' post: schedule, venue, Slack, required docs, shared model endpoints and keys, submission fields, judging axes. Go here before re-reading the forum thread. |
+| `slides/` | Slidev deck for the 18:45 stage slot — business context, architecture, roadmap: the three things the running page cannot show. `make slides` to present, `make slides-build` to export. Installs into `slides/node_modules`, touches no Python dependency. |
 
 Track: **Track 1 — SuperGrid**, which is the name that goes on the submission form; "agent
 harness" is how we describe what we built, not a track. Two submission gates — a published
@@ -36,6 +37,7 @@ Where the two diverge, and why:
 | R5: "target ≤ 50 model calls per full run" | **Three** in round 1 — one per firm for the whole matrix — plus one per firm per uncovered requirement in round 2. | Round trips are the cost that matters, not tokens. |
 | R2: "if round 2 misses the match, edit the corpus, not the prompt" | **Inverted.** The failure we actually hit was the prompt contradicting itself; the corpora were fine. | Recorded at the top of `agents/prompts/round2_reexamine.md`. Check the prompt first — it is cheaper and it is what was wrong. |
 | Milestones: 3 rounds | The loop **converges at round 2** and stops — `stopped: "converged"` in the trace. | A third identical broadcast costs time and finds nothing. `ROUNDS` is the ceiling, not the count. |
+| §4, §8: in round 1 "every firm self-assesses compliant" and is "confidently wrong" | **Each firm covers five of six, and R4 is unreachable at all three.** No firm's declared fields describe a Section G join, so no firm claims it in the first place. | The brief's version is `ground_truth.json`'s `self_assessment` reading, which drops `join` — and that baseline never executes. The correction is the better argument: it takes the joint matrix to license the one local re-read that finds the cell. `demo-script.md` has the wording. |
 
 Two things the brief planned that landed *bigger* than planned: four scenarios instead of one
 (`data/README.md`), and a split-screen demo driven from the page with the protocol's log in

@@ -87,7 +87,11 @@ harness: ## Run the published harness the way a judge does — on SuperGrid
 	$(RUN) flwr run . $(SUPERLINK) --stream \
 		--run-config "num-rounds=$(ROUNDS) model='$(MODEL)'"
 
-baselines: ## Score the three conditions: isolated / consortium / centralised pool
+# NOT BUILT. `backend/baselines.py` is a docstring, so this prints nothing at all. The three
+# readings it would score are already derived in `data/ground_truth.json` — `round_one_coverage`
+# (declared), `self_assessment` (a firm alone), `coverage` (the oracle). Kept as a target so
+# the gap is visible in `make help` rather than discovered at 17:30.
+baselines: ## NOT BUILT — backend/baselines.py is a stub; prints nothing
 	$(RUN) python -m backend.baselines
 
 data: ## Regenerate the corpora — Data owner only, the R4 bio wording is hand-tuned
@@ -142,7 +146,9 @@ watch: reset ## Serve the UI, then run the protocol into it — watch the rounds
 	 echo "rounds complete — page still served on :$(PORT), ctrl-c to stop"; \
 	 wait $$ui
 
-demo: reset rounds baselines ui ## The full run: clean state -> rounds -> baselines -> UI
+# `stage` is what we actually demo — see docs/demo-script.md. This one is kept for a
+# hands-off run: no Run button, no split screen, and `baselines` in the middle is a no-op.
+demo: reset rounds ui ## Unattended run: clean state -> rounds -> UI. For the demo use `stage`.
 
 # ------------------------------------------------------------------- the slides
 

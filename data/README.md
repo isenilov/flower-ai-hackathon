@@ -115,7 +115,10 @@ place it can live.
 4. No firm can join the cell from its own library, even reading its own bios — otherwise
    "no single firm could have seen this" is not true.
 5. Each firm has enough surface coverage to self-assess as compliant on every MANDATORY
-   requirement.
+   requirement. Note what this does and does not license: it holds for the `self_assessment`
+   reading, which drops `join` from the Section G predicate. On the actual run path no firm
+   reaches R4 at all — each covers five of six. Say that, not "confidently wrong"
+   (`docs/demo-script.md`).
 6. At least one cost-2 record must be substitutable, or the denial beat fails.
 7. At least one cost-3 record must be one that *would* have matched, or "the refusal is
    honoured" is a claim about a candidate set that never excluded anything.
