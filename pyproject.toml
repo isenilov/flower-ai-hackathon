@@ -1,9 +1,10 @@
 [project]
 name = "consortium"
 version = "0.1.0"
-description = "Federated bid assembly — SF330 compliance without disclosing private libraries"
+description = "A collaborative disclosure harness for agents that cannot pool their data"
 readme = "README.md"
-license = "Apache-2.0"
+# A table with a file, not an SPDX string: fab-format-version 1 requires the file form.
+license = { file = "LICENSE" }
 requires-python = ">=3.13"
 dependencies = [
     "flwr[simulation]>=1.34.0",
@@ -37,15 +38,36 @@ select = ["E", "F", "I", "UP", "B"]
 
 [tool.flwr.app]
 publisher = "consortium"
+fab-format-version = 1
+flwr-version-target = "1.35.0"
+# Hub keeps only .py/.toml/.md/.yaml/.json/.jsonl and LICENSE, and once any user rule is
+# set every surviving file must match that list — hence .gitignore here. The rest is
+# excluded so the published app is the harness, not our desk.
+fab-exclude = [
+    ".gitignore",
+    "CLAUDE.md",
+    ".claude/**",
+    "docs/**",
+    "frontend/**",
+    "tests/**",
+]
 
 [tool.flwr.app.components]
+agentapp = "backend.agent_app:app"
 serverapp = "backend.server_app:app"
 clientapp = "backend.client_app:app"
 
 [tool.flwr.app.config]
 num-rounds = 3
+num-firms = 3
 tau = 0.6
 section-f-cap = 10
+# Set to a model the target SuperGrid serves to get a narrated report; empty prints the
+# coverage table only, so the harness still runs where no model endpoint is configured.
+model = ""
+
+[tool.flwr.app.config.agent]
+input = ""
 
 
 #######################################################################
