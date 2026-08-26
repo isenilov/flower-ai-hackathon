@@ -84,19 +84,6 @@ html.dark .maybe {
   color: #fcd34d;
 }
 
-/* Big-number layout */
-.num {
-  font-size: 3rem;
-  font-weight: 700;
-  line-height: 1;
-  font-variant-numeric: tabular-nums;
-}
-.numlabel {
-  font-size: 0.72rem;
-  opacity: 0.6;
-  margin-top: 0.3rem;
-}
-
 .slidev-layout pre {
   font-size: 0.68rem !important;
   line-height: 1.35 !important;

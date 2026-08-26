@@ -33,8 +33,8 @@ Track 1 — SuperGrid &nbsp;·&nbsp; <code>flwr chat</code> → <code>@i53n1/con
 <!--
 Read the two lines and stop. Everything else is on the next slide as a picture.
 
-The through-line, said here and again at the end: the bidding form is the example, the
-harness is the product.
+The through-line to say here, and to land on again when the six slides run out: the bidding
+form is the example, the harness is the product.
 -->
 
 ---
@@ -87,38 +87,38 @@ class: text-left
 
 # What the database fields can prove
 
-<div class="text-xs opacity-55 mt-1">every firm searching its own records, matched on declared fields only</div>
+<div class="sub">every firm searching its own records, matched on declared fields only</div>
 
-<div class="grid grid-cols-[20rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm mt-3">
+<div class="fields">
 
 <div></div>
-<div class="text-center text-xs font-bold opacity-60">Firm A</div>
-<div class="text-center text-xs font-bold opacity-60">Firm B</div>
-<div class="text-center text-xs font-bold opacity-60">Firm C</div>
+<div class="hd">Firm A</div>
+<div class="hd">Firm B</div>
+<div class="hd">Firm C</div>
 
-<div>Hospital projects over $50m</div>
+<div class="rq"><span class="rid">R1</span>Hospital projects over $50m</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
-<div>Design-build, federal client</div>
+<div class="rq"><span class="rid">R2</span>Design-build, federal client</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
-<div>Project manager with hospital work</div>
+<div class="rq"><span class="rid">R3</span>Project manager with hospital work</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
-<div class="font-bold">One person: hospital <i>and</i> earthquake retrofit</div>
+<div class="rq hot"><span class="rid">R4</span>One person: hospital <i>and</i> earthquake retrofit</div>
 <div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div>
 
-<div>Chartered structural lead</div>
+<div class="rq"><span class="rid">R5</span>Chartered structural lead</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
-<div>Green-certified projects</div>
+<div class="rq"><span class="rid">R6</span>Green-certified projects</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
 </div>
 
-<div class="flex gap-6 mt-3 text-xs opacity-70">
-<div><span class="ok px-2">✓</span> &nbsp;the fields settle it</div>
-<div><span class="maybe px-2">?</span> &nbsp;the fields cannot say either way</div>
+<div class="legend">
+<div><span class="ok">✓</span> the fields settle it</div>
+<div><span class="maybe">?</span> the fields cannot say either way</div>
 </div>
 
 <div v-click class="cap mt-3">
@@ -128,12 +128,60 @@ the coordinator records it as an open gap. **An open gap is not the same as nobo
 
 </div>
 
+<style>
+.sub { font-size: 0.85rem; opacity: 0.6; margin-top: 0.2rem; }
+.fields {
+  display: grid;
+  grid-template-columns: 1fr 6.5rem 6.5rem 6.5rem;
+  column-gap: 0.7rem;
+  row-gap: 0.28rem;
+  align-items: center;
+  margin-top: 0.9rem;
+}
+.hd {
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 700;
+  opacity: 0.55;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.rq {
+  font-size: 1rem;
+  line-height: 1.25;
+  border-left: 3px solid transparent;
+  border-radius: 0 0.25rem 0.25rem 0;
+  padding: 0.25rem 0 0.25rem 0.6rem;
+  /* A band per row: the mark columns sit ~190px right of the longest label, and the eye needs
+     something to track across. */
+  background: #f7f8f9;
+}
+html.dark .rq { background: rgba(255, 255, 255, 0.04); }
+.rid {
+  display: inline-block;
+  width: 2.2rem;
+  font-size: 0.72rem;
+  font-weight: 700;
+  opacity: 0.4;
+}
+/* The one row the fields cannot settle carries the accent, so the eye lands there before the
+   presenter says anything. The three amber cells to its right complete the band. */
+.rq.hot { border-left-color: #d97706; background: #fffbeb; font-weight: 700; }
+html.dark .rq.hot { background: #3d3218; }
+.fields .ok, .fields .no, .fields .maybe { font-size: 1.1rem; padding: 0.28rem 0; }
+.legend { display: flex; gap: 2.5rem; margin-top: 0.85rem; font-size: 0.82rem; opacity: 0.75; }
+.legend > div { display: flex; align-items: center; gap: 0.55rem; }
+.legend span { padding: 0.12rem 0.6rem; font-size: 0.88rem; }
+</style>
+
 <!--
 This is the design constraint, and the corpora are built backwards from it.
 
 Say "on the fields alone" out loud. The grid is what a structured search returns, NOT what the
 firms hold, and the next slide turns on that difference. A judge who reads this grid as
 "nobody has such a person" will think round 2 contradicts it.
+
+The row ids are the ones the log and the live page print, so R4 said here is R4 there.
 
 Careful with the wording in the other direction too: it is NOT "each firm thinks it is fine
 and is wrong". Verified off the run - round 1 has have=0 on that row, and every firm alone
@@ -247,6 +295,14 @@ requirement list, a fixed vocabulary, and a cost per disclosure.
 Innovation axis, and the answer to "isn't this just federated retrieval?" Retrieval settles
 what exists. This settles what to reveal, and it broadcasts the question rather than the
 answer.
+
+Stage 3 is where the whole claim sits, and the number to have ready is two bytes: the string
+"R4". Not which firm has the hole, not what would fill it. The coordinator does not know which
+firm can close it, and Firm B's agent re-read its own bios on the strength of two bytes about
+somebody else's coverage. The line the log prints:
+
+  firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation
+          and strengthening on an acute care wing upgrade
 
 Be straight about the dashed box. A judge who catches an overclaim stops believing the rest.
 -->
@@ -362,311 +418,3 @@ If they push on centralisation: the coordinator sees banded yes/no answers, the 
 relationship that gradients have to training data.
 -->
 
----
-layout: center
-class: text-left
----
-
-# The coordinator sends the gap, not the answer
-
-```mermaid {scale: 0.72}
-flowchart LR
-    c["<b>Coordinator</b><br/>sends <b>R4</b><br/><i>2 bytes</i>"]
-    a["Firm A<br/>reads the bios<br/>its fields ruled out"]
-    b["Firm B<br/>reads the bios<br/>its fields ruled out"]
-    x["Firm C<br/>reads the bios<br/>its fields ruled out"]
-    ra["nothing here"]
-    rb["<b>PERSON::007</b><br/>found in a paragraph"]
-    rx["nothing here"]
-
-    c ==> a --> ra
-    c ==> b --> rb
-    c ==> x --> rx
-
-    style c fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
-    style rb fill:#dcfce7,stroke:#15803d,color:#14532d
-    style ra fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
-    style rx fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
-    style a fill:#fff,stroke:#6b7280,color:#374151
-    style b fill:#fff,stroke:#374151,color:#111827
-    style x fill:#fff,stroke:#6b7280,color:#374151
-```
-
-<div class="cap mt-3">
-
-Round 1 matched fields. Round 2 reads paragraphs, for the one requirement the grid proved
-nobody covered. Firm B's agent went looking only because it was told about a hole in
-**somebody else's** coverage.
-
-</div>
-
-<!--
-The beat. Hold here for as long as the question takes.
-
-Slide 4 already gave away that Firm B holds the person, deliberately - a judge who is still
-confused about that cannot hear this slide. So the beat here is not "Firm B has it", it is
-that *nobody told Firm B where to look*. The coordinator does not know which firm has the
-hole, and Firm B's agent re-read its own bios on the strength of two bytes about somebody
-else's coverage. Say that, not the result.
-
-If they ask why round 1 does not read everything: cost. `agents/search.py` is a cheap
-structured predicate over six requirements; reading every paragraph against every requirement
-is the expensive half, and the joint grid is what licenses spending it on exactly one.
-
-The line the log actually prints:
-  firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation
-          and strengthening on an acute care wing upgrade
-
-Two bytes is the literal payload: the string "R4". Not which firm has the hole, not what would
-fill it. The model reads Firm B's bios on Firm B's node; the sentence it reasons over never
-leaves. In the trace this is one field: round 1 broadcasts `reads_text: false`, round 2
-broadcasts `reads_text: true`.
--->
-
----
-layout: center
-class: text-left
----
-
-# What crossed the wire
-
-<div class="grid grid-cols-4 gap-4 mt-6 text-center">
-<div><div class="num">2</div><div class="numlabel">rounds to converge</div></div>
-<div><div class="num">2 B</div><div class="numlabel">the gap, broadcast back</div></div>
-<div><div class="num">≈33 kB</div><div class="numlabel">banded answers, forward</div></div>
-<div><div class="num text-green-600">0 B</div><div class="numlabel">record content, either way</div></div>
-</div>
-
-<div class="cap mt-8">
-
-Zero is structural: the message format has no field that can carry a record. Nothing is
-disclosed until a human releases a handle.
-
-</div>
-
-<div v-click class="cap mt-4">
-
-Model answers are cached on disk, so a rehearsed run replays exactly and a dead endpoint costs
-nothing. Two invariant tests guard the vocabulary and the engineered gap.
-
-</div>
-
-<!--
-Technical execution axis. Every number here was read off a real run: round 1 attests 19, 13
-and 18; the round-2 broadcast carries gap_bytes 2; record_bytes 0; converged after 2 rounds.
-
-The banded total is approximate on purpose. It drifts a few hundred bytes between runs because
-each attestation carries the round-1 grader's note, and that text is a sampled completion -
-33191 B on one run, 33807 B on the next, which the page prints as 32.4 and 33.0 kB. Quote "about
-33 kB" and let the pane show the exact figure; do not read a decimal off this slide.
-
-If a judge wants to see it again, press Run.
--->
-
----
-layout: center
-class: text-left
----
-
-# Safety by construction
-
-<div class="grid grid-cols-2 gap-4 mt-4">
-
-<div class="tile"><b>A fixed vocabulary on the way out</b>
-Exact fees and dates become ranges before anything leaves the node.</div>
-
-<div class="tile"><b>Reject, never scrub</b>
-An unknown field is an error. A filter that quietly deletes teaches an agent that leaky output
-is fine.</div>
-
-<div class="tile"><b>Reading stays home</b>
-The model reads a firm's own paragraphs on the firm's own node.</div>
-
-<div class="tile"><b>A refusal cannot be walked around</b>
-Blocked records never enter the candidate set, so nothing downstream can pick one.</div>
-
-</div>
-
-<div v-click class="cap mt-5">
-
-No firm can assert anything about another firm. And the coordinator can prove the team
-qualifies, or does not, **before a single record is disclosed**.
-
-</div>
-
-<!--
-A scored axis, not a compliance chore: the organisers weight transparency, reliability and
-supervision, and say agent performance is not the deciding factor. So raise it deliberately.
-
-Do not offer a rejection count or an approval count. Nothing counts them, and the human gate
-is roadmap.
--->
-
----
-layout: center
-class: text-left
----
-
-# One protocol, three wires
-
-<div class="grid grid-cols-3 gap-4 mt-5">
-<div class="tile"><b><code>LocalGrid</code></b>The published <b style="display:inline">AgentApp</b>, in process. What a judge gets from <code>flwr chat</code>.</div>
-<div class="tile"><b><code>InMemoryGrid</code></b>Simulation runtime. Three SuperNodes, real per-node data isolation. The table demo.</div>
-<div class="tile"><b><code>GrpcGrid</code></b>A real SuperLink. Same <code>send_and_receive</code>, same <code>Message(QUERY)</code>.</div>
-</div>
-
-<div class="cap mt-6">
-
-No code changes between them, and the demo's log names which one is carrying the messages.
-A node knows whether it is simulated or real from its own `node_config`, and no coordinator
-gets to redirect that.
-
-</div>
-
-<div class="cap mt-4">
-
-Published: **`flower.ai/apps/i53n1/consortium`** &nbsp;·&nbsp; `flwr chat` → `@i53n1/consortium`
-
-</div>
-
-<!--
-Use of Flower axis. The honest answer to "does it really run on SuperGrid": it is published
-and invokable. We drive the table demo locally because 130 people share the wifi, not because
-the deployment path is a mock.
-
-Every model call goes through agent.responses.create, the Open Responses shape.
--->
-
----
-layout: center
-class: text-left
----
-
-# The form is the example. The harness is the product.
-
-<div class="grid grid-cols-2 gap-4 mt-4">
-
-<div class="tile"><b><span class="float-right">Firm B</span>Hospital in an earthquake zone</b>
-A hospital wing filed as civic work</div>
-
-<div class="tile"><b><span class="float-right">Firm C</span>Transit station and tunnel</b>
-A bore under a live platform, billed as a relief conduit</div>
-
-<div class="tile"><b><span class="float-right">Firm A</span>Secure research laboratory</b>
-A containment suite booked to the client who paid for it</div>
-
-<div class="tile"><b><span class="float-right">Firm B</span>Campus energy retrofit</b>
-An energy centre bought by the city, serving the university</div>
-
-</div>
-
-<div v-click class="cap mt-5">
-
-Same protocol, same code, no per-scenario branches. The hidden row moves, and the harness does
-not know where. Swap the three pluggable pieces and the loop runs for hospitals sizing a trial
-cohort without sharing patients, or banks checking one name against each other's alerts.
-
-</div>
-
-<!--
-Innovation and Impact together. This is the slide that turns "an app" into "a harness".
-
-At the table, use the live scenario selector instead - it costs eight seconds and lands harder
-than the tiles do.
--->
-
----
-layout: center
-class: text-left
----
-
-# Roadmap
-
-<div class="grid grid-cols-2 gap-4 mt-5">
-
-<div class="tile" style="border-left: 4px solid #60a5fa">
-<b>1 · Disclose as little as possible</b>
-Clear every requirement at the lowest total disclosure cost.</div>
-
-<div class="tile" style="border-left: 4px solid #60a5fa">
-<b>2 · A named human approves each record</b>
-A refusal makes the plan find the next-cheapest substitute.</div>
-
-<div class="tile" style="border-left: 4px solid #9ca3af">
-<b>3 · Measure it against a central pool</b>
-Match what one pooled database finds, at a fraction of the disclosure.</div>
-
-<div class="tile" style="border-left: 4px solid #22c55e">
-<b>4 · Learn from who actually wins</b>
-A shared win-rate model over past bids, with no bid history exposed.</div>
-
-</div>
-
-<!--
-Items 1-3 are today's cut list, in order.
-
-1 is greedy weighted set cover, inside the form's limit of ten example projects: deterministic
-and explainable. 2 routes each request to a named owner at the firm that holds the record, and
-the refusal is honoured rather than routed around. 3 is the claim to try to break.
-
-Item 4 is the one to say out loud if there is time for exactly one: every finished bid is a
-labelled example of which evidence won, so firms can federate a win-rate prior over
-requirement-to-evidence matching. Federated learning in a market where nobody will ever pool
-the data. That is why the harness is worth more than the demo.
--->
-
----
-layout: center
-class: text-center
----
-
-# The form is the example. The harness is the product.
-
-<div class="mt-8 text-xl opacity-85">
-ask &nbsp;→&nbsp; find what nobody covers &nbsp;→&nbsp; re-read locally against it &nbsp;→&nbsp; release the least you can
-</div>
-
-<div class="mt-12 text-lg">
-A protocol for agents that are not allowed to pool their data.
-</div>
-
-<div class="mt-14 text-sm opacity-50">
-<code>@i53n1/consortium</code> &nbsp;·&nbsp; Apache-2.0 &nbsp;·&nbsp; Track 1 — SuperGrid
-</div>
-
-<!--
-Stop talking. Four minutes of a five-minute slot, and the questions are where the marks are.
--->
-
----
-layout: center
-class: text-left
----
-
-# Appendix — the six axes
-
-<div class="text-xs">
-
-| Axis | What evidences it | Slide |
-|---|---|---|
-| **Impact** | Teams of firms bid public work by emailing spreadsheets; this is the missing primitive | 2, 12 |
-| **Innovation** | Broadcast the *gap*, not the answer, so an agent answers a question it could not ask | 5, 7 |
-| **Use of Flower** | Real `AgentApp` on Hub; one protocol over three `Grid`s; runtime chosen by `node_config` | 10 |
-| **Technical execution** | Runs end to end, converges in 2 rounds, four scenarios, replays offline, invariant tests | 8 |
-| **Demo and delivery** | Split screen: the protocol's own log beside a live picture of the same run | live |
-| **Safety and oversight** | Fixed egress vocabulary, reject-not-scrub, reading stays on the node, 0 B by construction | 9 |
-
-</div>
-
-<div class="cap mt-4">
-
-**Not claimed:** a disclosure count, a denial, a live substitution, an assembled form, a human
-approval gate, a rejection count, or the central-pool baseline. Those are slide 12, and saying
-so is why the rest holds up under a follow-up question.
-
-</div>
-
-<!--
-Not presented. This is for the rehearsal, and for the judge who asks how we score ourselves -
-which happens more often than you would think.
--->

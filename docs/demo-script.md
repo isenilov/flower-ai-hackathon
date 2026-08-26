@@ -123,15 +123,19 @@ they can read, no time for a live run, and the audience is other builders.
 - **Do not run the demo live on stage.** Use the deck (`docs/slides/`, `make slides`) and a
   recorded run. A live run in front of 130 people on shared wifi is a coin flip we have no
   reason to take.
-- The deck is built for exactly this. Fourteen slides: the problem as a picture, the coverage
-  grid, the row that lives in a paragraph, the loop, the architecture, round 2, the byte
-  ledger, safety, Flower, four scenarios, the roadmap. Every slide carries a presenter note
-  naming the axis it serves.
+- The deck is built for exactly this. Six slides: the problem as a picture, the coverage grid,
+  the row that lives in a paragraph, the loop, the architecture. Every slide carries a
+  presenter note naming the axis it serves.
+- **The deck stops at the architecture, so four beats are spoken rather than shown**: the byte
+  ledger, safety by construction, the three `Grid`s, and the roadmap. The ledger numbers are in
+  this script and in `frontend/state/trace-healthcare-seismic.jsonl`; the roadmap is brief §5.4
+  and §7.2. There is no closing slide, so land the harness sentence over the architecture.
 - Say the harness sentence twice, once at the start and once at the end. On stage it is the
   only thing anyone remembers.
 - Assume nobody in the room has seen a bid. The deck says "hospital" and "earthquake
-  strengthening" rather than "healthcare sector" and "seismic retrofit", and it names SF330
-  once, glossed. Keep the spoken version at that level too.
+  strengthening" rather than "healthcare sector" and "seismic retrofit", and SF330 appears
+  nowhere on a slide - it is a ten-second gloss in a presenter note. Keep the spoken version at
+  that level too.
 
 ---
 
@@ -181,7 +185,7 @@ Two of these are worth saying out loud as roadmap, because a judge asking "then 
 asking the right question: **the disclosure optimiser** (greedy weighted set cover over
 disclosure cost, under the Section F cap of ten) and **the per-record human gate**, where a
 denial makes the optimiser re-plan rather than get routed around. Brief §5.4 and §7.2 have
-the design; the deck's roadmap slide has the one-line version.
+the design, and the deck no longer carries a roadmap slide - say it.
 
 One claim in the brief does not survive contact with the data, and the correction is
 stronger than the original. The brief says each firm "self-assesses **compliant**" in round 1
