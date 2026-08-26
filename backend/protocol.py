@@ -126,6 +126,10 @@ def run(
             runtime=RUNTIMES.get(type(grid).__name__, "runtime"),
             transport=type(grid).__name__,
             nodes=len(node_ids),
+            # Which model the nodes will reason with, or none. The endpoint is deliberately
+            # not here: each node resolves its own, and a trace is not a place for a URL a
+            # key goes to.
+            model=model_id.rsplit("/", 1)[-1] if model_id else "",
         )
         trace.emit(
             "run_started",

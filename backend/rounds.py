@@ -17,7 +17,7 @@ import logging
 import os
 import warnings
 
-from backend import protocol, server_app
+from backend import dotenv, protocol, server_app
 
 # Two things both shout over the protocol on a demo screen and neither says anything a
 # viewer can act on: Flower's six-line notice that `run_simulation` is deprecated (the
@@ -42,6 +42,10 @@ def quieten() -> None:
 
 def main() -> None:
     """Parse arguments and hand the two apps to the simulation runtime."""
+    # Before the parser, because `--model` defaults to the environment and the page's Run
+    # button spawns this from `frontend/serve.py`, which inherits whatever shell started it.
+    dotenv.load()
+
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])
     parser.add_argument("--rounds", type=int, default=protocol.DEFAULT_ROUNDS)
     parser.add_argument("--supernodes", type=int, default=3)

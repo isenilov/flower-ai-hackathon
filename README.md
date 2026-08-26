@@ -73,11 +73,27 @@ matched — it may neither nominate a record nor veto one, so the coverage matri
 with or without a model. Run `make rounds` both ways and diff it. The shared endpoints are in
 `docs/event.md`:
 
+Put them in **`.env`** rather than exporting by hand — `make` reads it and so does
+`backend/dotenv.py`, which matters because runs started from the page's Run button are
+spawned by `frontend/serve.py` and inherit whatever shell started *it*, not yours:
+
 ```bash
-export FLWR_MODEL_API_ENDPOINT='http://129.212.182.232:8001/v1/responses'
-unset FLWR_MODEL_API_KEY                      # Qwen takes no key — an empty one fails
-make rounds MODEL=/models/Qwen3.5-397B-A17B-FP8
+cp .env.example .env      # then paste the key from #hackathon_cambridge_2026
+make doctor               # reports model, endpoint, key, and what is cached
+make rounds
 ```
+
+Anything already exported in your shell wins over the file, so a one-off stays a one-off:
+
+```bash
+make rounds MODEL=/models/Qwen3.5-397B-A17B-FP8   # Qwen takes no key
+```
+
+**GLM-5.2 is the default in `.env.example`,** and it is the better fit: measured against the
+same round-1 grading call, GLM answers a trivial prompt in 2.6s where Qwen takes 9.6s, and it
+*completes* the grading call — Qwen times out at 280s on two of three firms, so its cache
+never warms. Round 2 closes R4 on the ground-truth handle in all four scenarios on either
+model.
 
 Responses are cached under `.cache/model/`, keyed on the exact request. **Editing either
 prompt invalidates the cache for that round** — re-warm with `make traces MODEL=…` while an

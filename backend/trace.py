@@ -165,10 +165,23 @@ def _terminal_line(event: dict[str, Any]) -> str:
     kind = event["type"]
 
     if kind == "flower":
-        return _tag("flower", ansi.FLOWER, bold=True) + ansi.paint(
-            f"flwr {event['flwr']} · {event['runtime']} · {event['transport']} · "
-            f"{event['nodes']} SuperNodes, one process each",
-            ansi.FLOWER,
+        # No model is a supported mode, not a fault — but it decides whether round 2 has
+        # anything to find, so the pane says which it is rather than leaving it to be
+        # inferred from an empty round 2 twenty seconds later.
+        model = event.get("model") or ""
+        note = (
+            ansi.paint(f"  model {model}", ansi.FIRM[1])
+            if model
+            else ansi.paint("  no model - round 1 only, the gap will stay open", ansi.GAP)
+        )
+        return (
+            _tag("flower", ansi.FLOWER, bold=True)
+            + ansi.paint(
+                f"flwr {event['flwr']} · {event['runtime']} · {event['transport']} · "
+                f"{event['nodes']} SuperNodes, one process each",
+                ansi.FLOWER,
+            )
+            + note
         )
 
     if kind == "run_started":

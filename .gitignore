@@ -16,3 +16,4 @@ frontend/state/*.jsonl
 docs/slides/dist/
 docs/slides/node_modules/
 docs/slides/.slidev/
+!.env.example

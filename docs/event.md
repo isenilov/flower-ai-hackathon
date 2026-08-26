@@ -103,9 +103,17 @@ export FLWR_MODEL_API_KEY='<key from Slack>'
 uv run flower-superlink --insecure
 ```
 
+In this repo, put those two in **`.env`** (gitignored; `cp .env.example .env`) instead of
+exporting them. `make` includes it and `backend/dotenv.py` reads it, so both the Makefile
+targets and the runs spawned by the page's Run button see the same values. `make doctor`
+reports which model, endpoint and key a run will actually use.
+
 Two things that will cost someone twenty minutes otherwise:
 
 - **Qwen takes no key.** Run `unset FLWR_MODEL_API_KEY` or the call fails.
+- **Each task has a five-minute ceiling** — the organisers' own note, "starting from when the
+  task switches to Running". Round-1 grading measured 83–215s per firm on GLM and *over 280s
+  on Qwen*, so this is not theoretical headroom: warm `.cache/model/` before demoing.
 - **Restart `flower-superlink` after switching models.** The endpoint is read at start-up,
   so an exported variable alone changes nothing.
 

@@ -600,7 +600,7 @@ function logLine(event) {
 
 function describe(e) {
   switch (e.type) {
-    case 'flower': return `flwr ${e.flwr} · ${e.runtime} · ${e.transport} · ${e.nodes} SuperNodes`;
+    case 'flower': return `flwr ${e.flwr} · ${e.runtime} · ${e.transport} · ${e.nodes} SuperNodes${e.model ? ` · model ${e.model}` : ' · no model'}`;
     case 'run_started': return `trace v${e.version} · ${e.requirements.length} requirements · ${e.firms.length} firms`;
     case 'round_started': return `round ${e.round} — gap ${e.gap.join(',') || '—'}`;
     case 'broadcast': return `${e.transport ? `${e.transport}.send_and_receive · ` : ''}coordinator → all firms · ${bytes(e.bytes)}${e.gap.length ? ` · gap ${bytes(e.gap_bytes)}` : ''}`;

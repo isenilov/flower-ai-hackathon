@@ -63,7 +63,7 @@ rendering half a run. **Adding a field is safe; renaming or removing one breaks 
 
 | Event | Carries |
 |---|---|
-| `flower` | `flwr` (version), `runtime`, `transport`, `nodes` — emitted first, before `run_started`. The `Grid` class is the honest name for the wire: `InMemoryGrid` under the simulation runtime, `GrpcGrid` against a real SuperLink, `LocalGrid` inside the published harness. Same protocol, three transports. |
+| `flower` | `flwr` (version), `runtime`, `transport`, `nodes`, `model` — emitted first, before `run_started`. The `Grid` class is the honest name for the wire: `InMemoryGrid` under the simulation runtime, `GrpcGrid` against a real SuperLink, `LocalGrid` inside the published harness. Same protocol, three transports. `model` is the id without its path, or empty for a run with no model — the endpoint is deliberately absent, since a trace is not a place for a URL a key goes to. |
 | `run_started` | `version`, `started_at`, `scenario{slug,title,headline,gap}`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` (each with `predicate`) |
 | `round_started` | `round`, `gap[]` |
 | `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text`, `to[]`, `messages`, `message_type`, `transport` |

@@ -26,6 +26,7 @@ draws the same line in round 2.
 """
 
 import json
+import time
 from concurrent.futures import ThreadPoolExecutor, wait
 from dataclasses import dataclass
 from logging import DEBUG, WARNING
@@ -34,6 +35,7 @@ from pathlib import Path
 from flwr.common.logger import log
 
 from agents import model, search
+from backend import ansi
 from backend.schema import Requirement
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "round1_match.md"
@@ -160,25 +162,63 @@ def _read(answer: model.JSONObject, shortlists: Shortlists) -> dict[tuple[str, s
     return graded
 
 
+def _firm_of(shortlists: Shortlists) -> str:
+    """The firm being graded, read off a handle rather than threaded through the call."""
+    for _, candidates in shortlists:
+        if candidates:
+            return str(candidates[0].handle).split("::", 1)[0]
+    return "UNKNOWN"
+
+
+def _model_name(model_id: str) -> str:
+    """The model id without its path, which is all a terminal column has room for."""
+    return model_id.rsplit("/", 1)[-1] or model_id
+
+
 def _call(
     shortlists: Shortlists, reader: model.Reader, model_id: str
 ) -> dict[tuple[str, str], Grade]:
     """Ask for the whole matrix at once. Returns ``{}`` rather than raising, ever."""
-    try:
-        response = reader(
-            {
-                "model": model_id,
-                "instructions": instructions(),
-                "input": _payload(shortlists),
-                "max_output_tokens": MAX_OUTPUT_TOKENS,
-            }
+    who = _firm_of(shortlists)
+    pairs = sum(len(candidates) for _, candidates in shortlists)
+    request = {
+        "model": model_id,
+        "instructions": instructions(),
+        "input": _payload(shortlists),
+        "max_output_tokens": MAX_OUTPUT_TOKENS,
+    }
+    # Asked of the cache before the call, so a replay is reported as a replay rather than as
+    # a suspiciously fast model. Same reading round 2 takes.
+    replay = bool(getattr(reader, "cached", None) and reader.cached(request))  # type: ignore[attr-defined]
+
+    ansi.say(
+        ansi.node_line(
+            who,
+            f"round 1 - grading {pairs} declared matches with {_model_name(model_id)}",
         )
-        return _read(model.extract_json(response), shortlists)
+    )
+
+    started = time.monotonic()
+    try:
+        response = reader(request)
+        grades = _read(model.extract_json(response), shortlists)
     except (LookupError, ValueError, OSError, json.JSONDecodeError) as exc:
         # Say so. A silent degrade to declared-only looks exactly like a model that agreed
         # with every filing, and those two readings of the matrix are not the same claim.
+        ansi.say(ansi.node_line(who, f"round 1 - grading unavailable: {exc}", ansi.GAP))
         log(WARNING, "round-1 grading unavailable: %s", exc)
         return {}
+
+    took = ansi.took(time.monotonic() - started, replay)
+    thin = sum(1 for grade in grades.values() if grade.strength < STRENGTH["corroborated"])
+    ansi.say(
+        ansi.node_line(
+            who,
+            f"round 1 - {len(grades)} graded, {thin} filed thinner than the prose ({took})",
+            ansi.DIM,
+        )
+    )
+    return grades
 
 
 def grade(
@@ -214,6 +254,14 @@ def grade(
         future = pool.submit(_call, work, reader, model_id)
         done, _ = wait([future], timeout=GRADING_BUDGET)
         if not done:
+            ansi.say(
+                ansi.node_line(
+                    _firm_of(work),
+                    f"round 1 - grading gave up after {GRADING_BUDGET:.0f}s, "
+                    f"attesting the declared reading",
+                    ansi.GAP,
+                )
+            )
             log(WARNING, "round-1 grading did not land inside %.0fs", GRADING_BUDGET)
             return {}
         try:

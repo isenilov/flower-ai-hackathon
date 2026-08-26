@@ -6,6 +6,16 @@
 
 UV         ?= uv
 RUN        := $(UV) run
+
+# `.env` holds the model endpoint and its key — per-machine and secret, so gitignored. Read
+# here so `doctor` and `stage` can report what a run will actually use, and exported so a
+# recipe's subprocesses inherit it. `?=` throughout, so an exported shell variable still wins.
+# `backend/dotenv.py` reads the same file for runs started from the page's Run button, which
+# `frontend/serve.py` spawns from whatever shell started it.
+ifneq (,$(wildcard .env))
+include .env
+export
+endif
 PORT       ?= 8000
 SLIDES     := docs/slides
 SLIDE_PORT ?= 3030
@@ -16,6 +26,7 @@ SCENARIO   ?=
 # Round 2 reads prose with a model. Empty means round 1 only, so the gap stays open —
 # a run without a model is honest, not broken. Endpoints are in docs/event.md.
 MODEL      ?= $(CONSORTIUM_MODEL)
+ENDPOINT   ?= $(FLWR_MODEL_API_ENDPOINT)
 OPEN       := $(if $(filter Darwin,$(shell uname -s)),open,xdg-open)
 SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
@@ -52,8 +63,9 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 	@$(RUN) python -c "from flwr.cli.config_utils import load_and_validate; c, w = load_and_validate(); a = c['tool']['flwr']['app']; k = a['components']; print('components ' + ', '.join(f'{n}={r}' for n, r in k.items())); print('target     flwr ' + str(a.get('flwr-version-target', 'unpinned'))); print('warnings   ' + (', '.join(w) if w else 'none'))"
 	@$(MAKE) --no-print-directory build
 	@echo "model      $(if $(MODEL),$(MODEL),NONE - round 2 finds nothing, gap stays open)"
-	@echo "endpoint   $(if $(FLWR_MODEL_API_ENDPOINT),$(FLWR_MODEL_API_ENDPOINT),unset)"
-	@echo "key        $(if $(FLWR_MODEL_API_KEY),set - unset it for Qwen or the call fails,unset)"
+	@echo "endpoint   $(if $(ENDPOINT),$(ENDPOINT),unset)"
+	@echo "key        $(if $(strip $(FLWR_MODEL_API_KEY)),set,unset - correct for Qwen, wrong for GLM/Kimi/MiniMax)"
+	@echo "dotenv     $(if $(wildcard .env),.env found,no .env - copy .env.example and fill in the key)"
 	@echo "cache      $$(ls .cache/model 2>/dev/null | wc -l | tr -d ' ') responses on disk"
 	@echo "traces     $$(ls frontend/state/trace-*.jsonl 2>/dev/null | wc -l | tr -d ' ') of $(words $(SCENARIO_SLUGS)) scenarios ready for the selector"
 	@echo "environment is good"
@@ -122,7 +134,8 @@ stage: reset ## Split screen: this pane is the log, the browser is the process
 	@echo "  ------------------"
 	@echo "  page      http://localhost:$(PORT)/"
 	@echo "  model     $(if $(MODEL),$(MODEL),NONE — round 2 finds nothing and the gap stays open)"
-	@echo "  endpoint  $(if $(FLWR_MODEL_API_ENDPOINT),$(FLWR_MODEL_API_ENDPOINT),unset)"
+	@echo "  key       $(if $(strip $(FLWR_MODEL_API_KEY)),set,unset)"
+	@echo "  endpoint  $(if $(ENDPOINT),$(ENDPOINT),unset)"
 	@echo ""
 	@echo "  Press Run on the page. The protocol logs here. Ctrl-c to stop."
 	@echo ""

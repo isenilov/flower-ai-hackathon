@@ -13,6 +13,9 @@ should be able to read the run off the colours before reading a word of it.
 
 import os
 import sys
+from logging import INFO
+
+from flwr.common.logger import log
 
 # ``frontend/styles.css`` :root, verbatim. FLOWER is the one colour with no counterpart on
 # the page: nothing there stands for the framework, and it must not be mistaken for firm A.
@@ -69,3 +72,44 @@ def firm_tone(firm: str) -> tuple[int, int, int]:
     """The lane colour the page gives this firm, so both panes agree on who is who."""
     index = ord(firm[-1].upper()) - ord("A") if firm.startswith("FIRM_") else 0
     return FIRM[index % len(FIRM)]
+
+
+# ----------------------------------------------------------------- node-side lines
+#
+# Both rounds' model work happens inside a SuperNode, and both report it the same way. Ray
+# forwards an actor's stdout to the driver with its pid attached, so these arrive in the
+# demo's terminal pane already labelled by node — which is the point. It is visible proof
+# that the prose was read on the firm's own node and that only a verdict left it.
+
+# Same width as the coordinator's tag gutter in `backend.trace`, so node lines and
+# coordinator lines line up in one column even though Ray prefixes only the former.
+_GUTTER = 9
+
+
+def say(line: str) -> None:
+    """Log a node-side line and flush, so it arrives while it is still true.
+
+    A ClientAppActor's stderr is a pipe, not a terminal, so Python block-buffers it and Ray
+    forwards nothing until the actor is torn down — which puts "firm B found it" on screen
+    *after* the verdict. Flushing is what makes a node-side beat land in its own round.
+    """
+    log(INFO, "%s", line)
+    sys.stderr.flush()
+    sys.stdout.flush()
+
+
+def node_line(firm: str, detail: str, tone: tuple[int, int, int] | None = None) -> str:
+    """A node-side line in the firm's own lane colour, matching the coordinator's columns."""
+    name = firm.replace("FIRM_", "firm ")
+    return paint(f"{name:<{_GUTTER}}", firm_tone(firm), bold=True) + paint(detail, tone)
+
+
+def took(seconds: float, replay: bool) -> str:
+    """How long the model took, or that it was never asked because the answer was on disk.
+
+    Asked of the cache rather than inferred from the duration: a rehearsal runs entirely off
+    disk, and a bare "0ms" reads as a model that was never consulted at all.
+    """
+    if replay:
+        return "from cache"
+    return f"{seconds * 1000:.0f}ms" if seconds < 1 else f"{seconds:.1f}s"

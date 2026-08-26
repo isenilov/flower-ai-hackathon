@@ -18,9 +18,8 @@ records to look at.
 """
 
 import json
-import sys
 import time
-from logging import INFO, WARNING
+from logging import WARNING
 from pathlib import Path
 from typing import Any
 
@@ -138,8 +137,8 @@ def reexamine(
     # was read on the firm's own node, and that only a verdict left it.
     who = _firm_of(records)
     model_name = model_id.rsplit("/", 1)[-1] or model_id
-    _say(
-        _node_line(
+    ansi.say(
+        ansi.node_line(
             who, f"gap {requirement.id} - re-reading {len(records)} records with {model_name}"
         )
     )
@@ -175,47 +174,24 @@ def reexamine(
     }
 
     if not found:
-        _say(
-            _node_line(
+        ansi.say(
+            ansi.node_line(
                 who,
-                f"{requirement.id} - nothing here evidences it ({_took(elapsed, replay)})",
+                f"{requirement.id} - nothing here evidences it ({ansi.took(elapsed, replay)})",
                 ansi.DIM,
             )
         )
     for handle, reason in found.items():
-        _say(
-            _node_line(
-                who, f"{requirement.id} <- {handle} - {reason} ({_took(elapsed, replay)})", ansi.OK
+        ansi.say(
+            ansi.node_line(
+                who,
+                f"{requirement.id} <- {handle} - {reason} ({ansi.took(elapsed, replay)})",
+                ansi.OK,
             )
         )
     return found
 
 
-def _say(line: str) -> None:
-    """Log from inside a SuperNode, and flush so the line arrives while it is still true.
-
-    A ClientAppActor's stderr is a pipe, not a terminal, so Python block-buffers it and Ray
-    forwards nothing until the actor is torn down — which puts "firm B found it" on screen
-    *after* the verdict. Flushing is what makes the node-side beat land in its own round.
-    """
-    log(INFO, "%s", line)
-    sys.stderr.flush()
-    sys.stdout.flush()
-
-
-def _took(seconds: float, replay: bool) -> str:
-    """How long the model took, or that it was never asked because the answer was on disk."""
-    if replay:
-        return "from cache"
-    return f"{seconds * 1000:.0f}ms" if seconds < 1 else f"{seconds:.1f}s"
-
-
 def _firm_of(records: list[dict[str, Any]]) -> str:
     """The firm these records belong to, read off a handle rather than passed in."""
     return str(records[0]["handle"]).split("::", 1)[0]
-
-
-def _node_line(firm: str, detail: str, tone: tuple[int, int, int] | None = None) -> str:
-    """A node-side line in the same columns and lane colour the coordinator's log uses."""
-    name = firm.replace("FIRM_", "firm ")
-    return ansi.paint(f"{name:<9}", ansi.firm_tone(firm), bold=True) + ansi.paint(detail, tone)
