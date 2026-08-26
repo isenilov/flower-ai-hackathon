@@ -9,14 +9,16 @@ The banding helpers and the wire encoding below are deliberately minimal so that
 """
 
 import json
+from logging import DEBUG
 from pathlib import Path
 from typing import Any
 
 from flwr.app import ConfigRecord, Context, Message, RecordDict
 from flwr.clientapp import ClientApp
+from flwr.common.logger import log
 
 from backend.scenarios import resolve
-from backend.schema import VOCABULARY, Attestation, Requirement
+from backend.schema import NOTE_MAX_CHARS, VOCABULARY, Attestation, Requirement
 
 # Firm order is the simulation's partition order.
 FIRMS = ("a", "b", "c")
@@ -124,16 +126,15 @@ def _rank_order(ordered: tuple[str, ...] | None) -> tuple[str, ...] | None:
     return ("none",) + tuple(band for band in ordered if band != "none")
 
 
-def matches(predicate: dict[str, str], banded: dict[str, str], text: str = "") -> bool:
+def matches(predicate: dict[str, str], banded: dict[str, str]) -> bool:
     """Test one requirement predicate against a banded record.
 
-    Three predicate forms: plain equality (multi-valued fields are comma-joined),
-    ``<key>_min`` / ``<key>_max`` over an ordered band list, and keys with no banded source
-    at all. ``join`` is handled by the caller, not here.
+    Declared fields only: plain equality (multi-valued fields are comma-joined) and
+    ``<key>_min`` / ``<key>_max`` over an ordered band list. ``join`` is handled by the
+    caller, not here.
 
-    That last form is the round boundary. With ``text`` empty — round 1 — an unbacked key
-    simply fails, which is the declared reading and the reason the Section G cell stays
-    hidden. Round 2 passes the narrative or bio and the same predicate can then be met.
+    A predicate key with no declared source fails. That is the round boundary, and it is
+    why the Section G cell survives round 1 — reading prose is round 2's job.
     """
     for key, wanted in predicate.items():
         if key == "join":
@@ -151,34 +152,56 @@ def matches(predicate: dict[str, str], banded: dict[str, str], text: str = "") -
                 return False
             continue
 
-        have = banded.get(key)
-        if have is None:
-            # No banded source for this key. Round 1 passes no text, so this fails.
-            if not text or wanted.replace("-", " ") not in text.lower():
-                return False
-            continue
+        declared = banded.get(key)
+        if declared is None:
+            # No declared source for this key, so a structured search cannot satisfy it.
+            # Round 2 is what reads prose, and it does that with a model in
+            # ``agents.reexamine`` rather than by keyword here.
+            return False
 
-        if wanted not in have.split(","):
+        if wanted not in declared.split(","):
             return False
 
     return True
 
 
+def _attestation(
+    record: dict[str, Any],
+    firm: str,
+    requirement: Requirement,
+    banded: dict[str, str],
+    is_person: bool,
+    match_strength: float,
+    note: str = "",
+) -> Attestation:
+    """Wrap one matching record as banded evidence that it exists."""
+    return Attestation(
+        handle=str(record["handle"]),
+        firm=firm,
+        kind="PERSON" if is_person else "PROJECT",
+        requirement_id=requirement.id,
+        match_strength=match_strength,
+        banded=banded,
+        disclosure_cost=int(record.get("disclosure_cost", 0)),
+        links=[h for h in record.get("projects", []) if h.startswith(firm)],
+        note=note[:NOTE_MAX_CHARS],
+    )
+
+
+def _band_of(record: dict[str, Any], declared_sector: dict[str, str], as_of: str) -> dict[str, str]:
+    is_person = "bio" in record or "projects" in record
+    return band_person(record, declared_sector) if is_person else band_project(record, as_of)
+
+
 def attest(
-    library: dict[str, Any],
-    requirements: list[Requirement],
-    as_of: str,
-    read_text: bool = False,
+    library: dict[str, Any], requirements: list[Requirement], as_of: str
 ) -> list[Attestation]:
-    """Emit one attestation per (requirement, matching record) pair.
+    """Round 1: emit one attestation per (requirement, declared match) pair.
 
     ``disclosure_cost`` 3 means blocked: those records never enter the candidate set, so a
     refusal cannot be routed around downstream. This is why attestation counts sit below
     ``ground_truth.json``'s ``coverage`` — that is the oracle over every record, blocked
     ones included, while a node only ever attests to what it could actually offer.
-
-    ``read_text`` is the round switch: round 1 matches declared fields only, round 2 reads
-    narratives and bios.
     """
     firm = str(library.get("firm", "UNKNOWN"))
     declared_sector = {p["handle"]: p["sector"] for p in library.get("projects", [])}
@@ -193,12 +216,8 @@ def attest(
                 continue
 
             is_person = "bio" in record or "projects" in record
-            banded = (
-                band_person(record, declared_sector) if is_person else band_project(record, as_of)
-            )
-            text = str(record.get("bio") or record.get("narrative") or "") if read_text else ""
-
-            if not matches(requirement.predicate, banded, text):
+            banded = _band_of(record, declared_sector, as_of)
+            if not matches(requirement.predicate, banded):
                 continue
 
             links = [h for h in record.get("projects", []) if h.startswith(firm)]
@@ -206,16 +225,63 @@ def attest(
                 # Section G needs the person-on-project join, not just the person.
                 continue
 
+            attestations.append(_attestation(record, firm, requirement, banded, is_person, 1.0))
+
+    return attestations
+
+
+def reexamine_gaps(
+    library: dict[str, Any],
+    requirements: list[Requirement],
+    gap_ids: list[str],
+    as_of: str,
+    reader: object | None,
+    model_id: str,
+) -> list[Attestation]:
+    """Round 2: re-read this firm's own prose against each broadcast gap.
+
+    The node is handed the uncovered requirement and nothing else — not the answer, not
+    which of its records to look at. ``match_strength`` is below 1.0 because this is a
+    judgement about prose, not an exact match on a declared field, and the optimiser
+    downstream should be able to tell the difference.
+    """
+    if reader is None or not gap_ids or not model_id:
+        return []
+
+    from agents.reexamine import reexamine  # imported here to keep round 1 dependency-free
+
+    firm = str(library.get("firm", "UNKNOWN"))
+    declared_sector = {p["handle"]: p["sector"] for p in library.get("projects", [])}
+    by_handle = {
+        record["handle"]: record
+        for group in ("projects", "people")
+        for record in library.get(group, [])
+    }
+
+    attestations: list[Attestation] = []
+    for requirement in (r for r in requirements if r.id in gap_ids):
+        wants_join = requirement.predicate.get("join") == "person_x_project"
+        for handle, why in reexamine(library, requirement, reader, model_id).items():  # type: ignore[arg-type]
+            record = by_handle[handle]
+            links = [h for h in record.get("projects", []) if h.startswith(firm)]
+            if wants_join and not links:
+                continue
+
+            # The model's reasoning stays on the node. It is prose derived from a bio, and
+            # the whole claim is that no record content leaves before authorisation — so
+            # the wire gets requirement-side vocabulary only, never the model's sentence.
+            log(DEBUG, "[%s] %s evidences %s: %s", firm, handle, requirement.id, why)
+            terms = sorted(k for k in requirement.predicate if k != "join")
+
             attestations.append(
-                Attestation(
-                    handle=str(record["handle"]),
-                    firm=firm,
-                    kind="PERSON" if is_person else "PROJECT",
-                    requirement_id=requirement.id,
-                    match_strength=1.0,
-                    banded=banded,
-                    disclosure_cost=int(record.get("disclosure_cost", 0)),
-                    links=links,
+                _attestation(
+                    record,
+                    firm,
+                    requirement,
+                    _band_of(record, declared_sector, as_of),
+                    is_person="bio" in record or "projects" in record,
+                    match_strength=0.8,
+                    note=f"prose evidences: {', '.join(terms)}",
                 )
             )
 
@@ -240,24 +306,36 @@ def decode(content: RecordDict) -> list[Attestation]:
 # ----------------------------------------------------------------------- the app
 
 
-def make_client_app() -> ClientApp:
+def make_client_app(injected_reader: object | None = None) -> ClientApp:
     """Build the firm-node ``ClientApp``.
 
     Used by ``backend.client_app`` for the federated surface and by
     ``backend.agent_app`` through ``LocalGrid`` for the published harness.
+
+    ``injected_reader`` is how a model reaches a node. Only the AgentApp has an
+    ``AgentSession``, so it passes ``agent.responses.create`` down; the federated surface
+    passes nothing and each node resolves its own endpoint from the environment.
     """
     app = ClientApp()
 
     @app.query()
     def query(msg: Message, context: Context) -> Message:
         """Answer a coordinator round with this firm's attestations."""
+        from agents import model as model_client
+
         rfp = msg.content["rfp"]
         requirements = [Requirement(**item) for item in json.loads(str(rfp["requirements"]))]
         as_of = str(rfp["as_of"])
-        # Only a broadcast gap licenses reading free text — that is round 2.
-        read_text = bool(str(msg.content["gap"]["requirement_ids"]))
+        model_id = str(rfp["model"]) if "model" in rfp else ""
+        gap_ids = [gid for gid in str(msg.content["gap"]["requirement_ids"]).split(",") if gid]
+
         library = load_library(context, str(rfp["scenario"]) if "scenario" in rfp else "")
-        attestations = attest(library, requirements, as_of, read_text)
+        attestations = attest(library, requirements, as_of)
+        if gap_ids:
+            # A broadcast gap is the only thing that licenses re-reading prose.
+            reader = model_client.resolve_reader(injected_reader)  # type: ignore[arg-type]
+            attestations += reexamine_gaps(library, requirements, gap_ids, as_of, reader, model_id)
+
         return Message(content=encode(attestations), reply_to=msg)
 
     return app

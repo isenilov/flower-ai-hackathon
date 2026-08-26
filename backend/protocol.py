@@ -84,8 +84,14 @@ def run(
     solicitation: str | None = None,
     trace: Trace | None = None,
     scenario: Scenario | None = None,
+    model_id: str = "",
 ) -> Outcome:
-    """Run the protocol to convergence or to ``num_rounds``, whichever comes first."""
+    """Run the protocol to convergence or to ``num_rounds``, whichever comes first.
+
+    ``model_id`` travels to the nodes because round 2 is a model reading prose. Without
+    one, round 2 finds nothing and the gap stays open — which is the honest outcome, not
+    a failure.
+    """
     scenario = scenario or resolve(None)
     rfp_solicitation, as_of, requirements = load_rfp(scenario)
     requirements_json = json.dumps([r.__dict__ for r in requirements])
@@ -134,12 +140,14 @@ def run(
         content = RecordDict(
             {
                 # The slug selects which synthetic corpus a partition stands for. A real
-                # SuperNode carries its own `library-path` and ignores it.
+                # SuperNode carries its own `library-path` and ignores it. The model id
+                # travels too, because round-2 re-examination is a model reading prose.
                 "rfp": ConfigRecord(
                     {
                         "requirements": requirements_json,
                         "as_of": as_of,
                         "scenario": scenario.slug,
+                        "model": model_id,
                     }
                 ),
                 # Round 1 broadcasts no gap. Later rounds carry it, and nothing else —

@@ -41,7 +41,9 @@ select = ["E", "F", "I", "UP", "B"]
 # the first publication. Published as @i53n1/consortium.
 publisher = "i53n1"
 fab-format-version = 1
-flwr-version-target = "1.35.0"
+# Tracks uv.lock, so what Hub builds against is what we test against locally. `uv sync`
+# reverts any out-of-band upgrade to this, so bump the lock first if you raise it.
+flwr-version-target = "1.34.0"
 # Hub keeps only .py/.toml/.md/.yaml/.json/.jsonl and LICENSE, and once any user rule is
 # set every surviving file must match that list — hence .gitignore here. The rest is
 # excluded so the published app is the harness, not our desk.

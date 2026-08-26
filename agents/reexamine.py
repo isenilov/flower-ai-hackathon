@@ -3,4 +3,155 @@
 Local recompute informed by global state, iterated over rounds — the same primitive as
 federated learning. The coordinator broadcasts the uncovered requirement; the agent asks
 its own library a question round 1 gave it no reason to ask.
+
+Round 1 can only match what a record *declares*. A person's sectors are the sectors of the
+projects they are booked to, because that is where a firm's sectors have always come from.
+The Section G cell hides in exactly that gap: Firm B's holder is booked to work filed as
+civic, so no structured search reaches them, and only their bio says the building was a
+hospital.
+
+So round 2 reads prose, and it reads it with a model. It does **not** get a keyword list:
+``data/scenarios.json`` carries a lexicon, but that is the oracle ``generate.py`` uses to
+prove the cell is findable, and handing it to a node would be handing it the answer key.
+The node is told the requirement it failed to cover — never the answer, never which of its
+records to look at.
 """
+
+import json
+from logging import WARNING
+from pathlib import Path
+from typing import Any
+
+from flwr.common.logger import log
+
+from agents import model
+from backend.schema import Requirement
+
+PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "round2_reexamine.md"
+
+# Measured against the shared Qwen3.5 endpoint: it spends most of its budget reasoning and
+# emits the answer last, so a cap that looks generous is the difference between a result and
+# `status=incomplete` with nothing but a scratchpad in it. 4096 and 8192 both returned empty.
+# Passing `reasoning: {"effort": ...}` made it slower, not terser.
+MAX_OUTPUT_TOKENS = 16384
+
+# Everything after this heading in the prompt file is the model's `instructions`, so the
+# prompt is editable without touching Python — which is the point of keeping it in prompts/.
+_INSTRUCTIONS_MARKER = "## instructions"
+
+
+def instructions() -> str:
+    """Read the round-2 instructions out of the prompt file."""
+    text = PROMPT_PATH.read_text()
+    _, _, body = text.partition(_INSTRUCTIONS_MARKER)
+    return body.strip() or text.strip()
+
+
+def _describe(requirement: Requirement) -> str:
+    """State the gap as a requirement, with its predicate spelled out but not resolved."""
+    terms = [f"{key} = {value}" for key, value in requirement.predicate.items() if key != "join"]
+    lines = [
+        f"Requirement {requirement.id} (SF330 section {requirement.section}, "
+        f"{requirement.kind.lower()}): {requirement.description}",
+        f"Every term must hold: {'; '.join(terms)}",
+    ]
+    if requirement.predicate.get("join") == "person_x_project":
+        lines.append(
+            "This is a Section G cell: one named person on one named project, both yours. "
+            "A person who has done each half on different jobs does not satisfy it."
+        )
+    return "\n".join(lines)
+
+
+def _candidates(library: dict[str, Any], requirement: Requirement) -> list[dict[str, Any]]:
+    """The records worth re-reading: right kind, not blocked, and carrying prose.
+
+    Cost-3 records are excluded here as well as in round 1. A refusal that a second look
+    could route around would not be a refusal.
+    """
+    group = "people" if requirement.section in ("E", "G") else "projects"
+    records = []
+    for record in library.get(group, []):
+        if int(record.get("disclosure_cost", 0)) >= 3:
+            continue
+        prose = str(record.get("bio") or record.get("narrative") or "").strip()
+        if prose:
+            records.append(record)
+    return records
+
+
+def _payload(
+    library: dict[str, Any], requirement: Requirement, records: list[dict[str, Any]]
+) -> str:
+    """Render the local records for the model. Stays inside the node.
+
+    Deliberately lean. Every extra sentence is more for a reasoning model to chew through,
+    and the shared endpoint answered a fuller version of this prompt in ~240s — most of
+    SuperGrid's per-task budget. So a person gets their own prose and the *declared* sectors
+    of their work, not the full text of every project they touched: the prose is where a
+    hidden cell can live, and the Section G join is a structural fact checked in code.
+    """
+    declared = {p["handle"]: p for p in library.get("projects", [])}
+    lines = [_describe(requirement), "", "Your records:"]
+
+    for record in records:
+        prose = record.get("bio") or record.get("narrative") or ""
+        lines.append(f"\n- {record['handle']}")
+        if "role" in record:
+            credentials = ", ".join(record.get("credentials", [])) or "none"
+            lines.append(f"  role: {record['role']}; credentials: {credentials}")
+            sectors = sorted(
+                {declared[h]["sector"] for h in record.get("projects", []) if h in declared}
+            )
+            if sectors:
+                lines.append(f"  their projects are filed as: {', '.join(sectors)}")
+        else:
+            lines.append(
+                f"  filed as {record.get('sector')}, {record.get('delivery')}, "
+                f"{record.get('client_type')} client"
+            )
+        lines.append(f"  description: {prose}")
+
+    return "\n".join(lines)
+
+
+def reexamine(
+    library: dict[str, Any],
+    requirement: Requirement,
+    reader: model.Reader,
+    model_id: str,
+) -> dict[str, str]:
+    """Re-read this firm's own prose against one uncovered requirement.
+
+    Returns ``{handle: why}`` for records the agent judges to satisfy it. Returns empty on
+    any failure — a model that is slow, absent, or talking nonsense must cost the harness a
+    closed gap, not a crashed run.
+    """
+    records = _candidates(library, requirement)
+    if not records:
+        return {}
+
+    try:
+        response = reader(
+            {
+                "model": model_id,
+                "instructions": instructions(),
+                "input": _payload(library, requirement, records),
+                "max_output_tokens": MAX_OUTPUT_TOKENS,
+            }
+        )
+        answer = model.extract_json(response)
+    except (LookupError, ValueError, OSError, json.JSONDecodeError) as exc:
+        # A slow, absent, or rambling model must cost the harness a closed gap, not a
+        # crashed run — but say so, or a silent miss looks like a correct empty answer.
+        log(WARNING, "round-2 re-examination unavailable for %s: %s", requirement.id, exc)
+        return {}
+
+    known = {record["handle"] for record in records}
+    why = answer.get("why") if isinstance(answer.get("why"), dict) else {}
+    # Only handles the model was actually shown. A hallucinated handle is not evidence.
+    return {
+        handle: str(why.get(handle, "re-examined against the broadcast gap"))
+        for handle in answer.get("handles", [])
+        if isinstance(handle, str) and handle in known
+    }

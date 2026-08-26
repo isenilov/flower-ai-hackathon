@@ -6,6 +6,7 @@ The federated surface. Same protocol as the published harness — see
 ``flwr run``: the FAB is an agentapp bundle now, so ``flwr run .`` starts the harness.
 """
 
+import os
 from logging import INFO
 
 from flwr.app import Context
@@ -15,6 +16,10 @@ from flwr.serverapp import Grid, ServerApp
 from backend import protocol
 from backend.trace import Trace
 
+# `run_simulation` seeds no run_config, so the simulation surface takes the model id from
+# the environment the same way it takes the round count.
+MODEL_ENV = "CONSORTIUM_MODEL"
+
 app = ServerApp()
 
 
@@ -23,5 +28,12 @@ def main(grid: Grid, context: Context) -> None:
     """Run the protocol: blind attestation, gap re-examination, disclosure."""
     num_rounds = protocol.resolve_rounds(context.run_config.get("num-rounds"))
     scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
-    outcome = protocol.run(grid, num_rounds, trace=Trace(scenario=scenario.slug), scenario=scenario)
+    model_id = str(context.run_config.get("model", "") or os.environ.get(MODEL_ENV, ""))
+    outcome = protocol.run(
+        grid,
+        num_rounds,
+        trace=Trace(scenario=scenario.slug),
+        scenario=scenario,
+        model_id=model_id,
+    )
     log(INFO, "\n%s", protocol.render(outcome))

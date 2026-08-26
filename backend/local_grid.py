@@ -10,6 +10,7 @@ directly, one ``Context`` per firm, so the same round loop runs unchanged in the
 """
 
 from collections.abc import Iterable
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 from flwr.app import Context, Message, RecordDict
 from flwr.clientapp import ClientApp
@@ -59,13 +60,32 @@ class LocalGrid(Grid):
         return list(self._contexts)
 
     def push_messages(self, messages: Iterable[Message]) -> Iterable[str]:
-        """Run each message through its destination node and hold the reply."""
-        message_ids = []
-        for message in messages:
-            context = self._contexts[message.metadata.dst_node_id]
-            self._replies[message.object_id] = self._client_app(message, context)
-            message_ids.append(message.object_id)
-        return message_ids
+        """Run each message through its destination node and hold the reply.
+
+        Nodes run concurrently. Round 2 has each one waiting on a model, and the AgentApp
+        task budget on SuperGrid is five minutes of wall clock — three of those calls end
+        to end does not fit, three in parallel does. Ray gives the federated surface the
+        same concurrency for free; this is the in-process equivalent.
+        """
+        pending = list(messages)
+        if len(pending) < 2:
+            for message in pending:
+                context = self._contexts[message.metadata.dst_node_id]
+                self._replies[message.object_id] = self._client_app(message, context)
+            return [message.object_id for message in pending]
+
+        with ThreadPoolExecutor(max_workers=len(pending)) as pool:
+            futures = {
+                pool.submit(
+                    self._client_app, message, self._contexts[message.metadata.dst_node_id]
+                ): message
+                for message in pending
+            }
+            for future in as_completed(futures):
+                message = futures[future]
+                self._replies[message.object_id] = future.result()
+
+        return [message.object_id for message in pending]
 
     def pull_messages(self, message_ids: Iterable[str]) -> Iterable[Message]:
         """Collect the replies held for the given message IDs."""

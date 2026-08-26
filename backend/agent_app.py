@@ -24,8 +24,13 @@ from backend.trace import Trace
 app = AgentApp()
 
 
-def build_grid(num_firms: int) -> LocalGrid:
-    """Stand up one firm node per party, each with its own isolated context."""
+def build_grid(num_firms: int, reader: object | None = None) -> LocalGrid:
+    """Stand up one firm node per party, each with its own isolated context.
+
+    ``reader`` is ``agent.responses.create``. A ``ClientApp`` never sees an
+    ``AgentSession``, so the only way a firm node reaches a model on SuperGrid is for the
+    harness to hand it down.
+    """
     contexts = {
         100 + partition_id: Context(
             run_id=0,
@@ -36,7 +41,7 @@ def build_grid(num_firms: int) -> LocalGrid:
         )
         for partition_id in range(num_firms)
     }
-    return LocalGrid(make_client_app(), contexts)
+    return LocalGrid(make_client_app(reader), contexts)
 
 
 @app.main()
@@ -51,12 +56,15 @@ def main(agent: AgentSession, context: Context) -> None:
     # `Control.StreamRunEvents` consumer, so `flwr chat` sees the same protocol events
     # the local visualisation reads. Absent on runtimes that do not offer it.
     scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
+    # `agent.responses.create` is the only way a firm node reaches a model here — a
+    # `ClientApp` never sees an `AgentSession`, so the harness hands it down.
     outcome = protocol.run(
-        build_grid(num_firms),
+        build_grid(num_firms, agent.responses.create if model else None),
         num_rounds,
         operator_input,
         trace=Trace(session=agent, scenario=scenario.slug),
         scenario=scenario,
+        model_id=model,
     )
     log(
         INFO,
