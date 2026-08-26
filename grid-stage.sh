@@ -62,9 +62,12 @@ text = once(
 )
 # Anchored on `model` so these land inside `[tool.flwr.app.config]` rather than after the
 # `.agent` subtable that follows it.
+# Anchored on `model`, whatever it is set to, so these land inside `[tool.flwr.app.config]`
+# rather than after the `.agent` subtable that follows it. The value is deliberately not
+# matched: it is the default a judge's run gets and it moves whenever SuperGrid's does.
 text = once(
-    r'^model = ""$',
-    'model = ""\n'
+    r'^(model = ".*")$',
+    "\\1\n"
     "# Which corpus a run stands on. Empty uses the manifest default. Only this surface\n"
     "# has the key: the published app reads the scenario from its environment.\n"
     '\nscenario = ""',
