@@ -1,6 +1,6 @@
 [project]
 name = "consortium"
-version = "0.1.0"
+version = "0.2.0"
 description = "A collaborative disclosure harness for agents that cannot pool their data"
 readme = "README.md"
 # A table with a file, not an SPDX string: fab-format-version 1 requires the file form.

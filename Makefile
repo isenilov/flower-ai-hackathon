@@ -13,7 +13,7 @@ SUPERLINK  ?=
 OPEN       := $(if $(filter Darwin,$(shell uname -s)),open,xdg-open)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds baselines data build ui demo test lint fmt check clean reset
+.PHONY: help setup doctor run rounds harness baselines data build ui demo test lint fmt check clean reset publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -38,7 +38,7 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 	@echo "uv         $$($(UV) --version 2>/dev/null)"
 	@echo "flwr       $$($(RUN) python -c 'import flwr; print(flwr.__version__)' 2>/dev/null)"
 	@echo "ray        $$($(RUN) python -c 'import ray; print(ray.__version__)' 2>/dev/null)"
-	@$(RUN) python -c "from flwr.cli.config_utils import load_and_validate; c, w = load_and_validate(); k = c['tool']['flwr']['app']['components']; print('app        ' + k['serverapp'] + ' / ' + k['clientapp']); print('warnings   ' + (', '.join(w) if w else 'none'))" 2>/dev/null
+	@$(RUN) python -c "from flwr.cli.config_utils import load_and_validate; c, w = load_and_validate(); a = c['tool']['flwr']['app']; k = a['components']; print('components ' + ', '.join(f'{n}={r}' for n, r in k.items())); print('target     flwr ' + str(a.get('flwr-version-target', 'unpinned'))); print('warnings   ' + (', '.join(w) if w else 'none'))"
 	@$(MAKE) --no-print-directory build
 	@echo "environment is good"
 
@@ -47,9 +47,10 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 run: rounds ## Alias for `rounds`
 
 rounds: ## Run the federated protocol — ROUNDS rounds across SUPERNODES firm nodes
-	$(RUN) flwr run . $(SUPERLINK) --stream \
-		--run-config "num-rounds=$(ROUNDS)" \
-		--federation-config "num-supernodes=$(SUPERNODES)"
+	$(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES)
+
+harness: ## Run the published harness the way a judge does — on SuperGrid
+	$(RUN) flwr run . $(SUPERLINK) --stream --run-config "num-rounds=$(ROUNDS)"
 
 baselines: ## Score the three conditions: isolated / consortium / centralised pool
 	$(RUN) python -m backend.baselines
@@ -60,6 +61,13 @@ data: ## Regenerate the corpora — Data owner only, the R4 bio wording is hand-
 build: ## Build the .fab bundle and throw it away, to prove it still builds
 	@$(RUN) flwr build >/dev/null 2>&1 && rm -f ./*.fab && echo "fab        builds clean" \
 		|| { echo "fab        FAILED — run 'uv run flwr build' for the error"; exit 1; }
+
+publish: check ## Publish to Flower Hub — bumps nothing, so bump `version` first for a new one
+	$(RUN) flwr app publish .
+	@echo "-> https://flower.ai/apps/i53n1/consortium/"
+
+chat: ## Talk to the published harness on SuperGrid: @i53n1/consortium <solicitation>
+	$(RUN) flwr chat
 
 ui: ## Serve the coverage matrix, ledger, and SF330 on localhost:PORT
 	@echo "-> http://localhost:$(PORT)/   (ctrl-c to stop)"
