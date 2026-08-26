@@ -51,9 +51,10 @@ flwr chat                 # then: @i53n1/consortium <solicitation>
 Locally, as a three-node federated simulation:
 
 ```bash
-make setup                                    # install dependencies
-make doctor                                   # environment, FAB build, model, cache, traces
-make stage  MODEL=/models/Qwen3.5-397B-A17B-FP8   # the demo: log in this pane, page in the browser
+make setup                # install dependencies
+cp .env.example .env      # then paste the model key — see "Round 2 needs a model"
+make doctor               # environment, FAB build, model, cache, traces
+make stage                # the demo: log in this pane, page in the browser
 ```
 
 `make` on its own lists everything. `make stage` is the demo — it serves the page and waits;

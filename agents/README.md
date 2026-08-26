@@ -121,8 +121,15 @@ The model's sentence stays on the node in both rounds. It is prose derived from 
 the claim this harness makes is that no record content crosses before authorisation — so the
 wire gets a float and requirement-side field names, and the clause goes to the local log.
 Ray forwards a SuperNode's stdout to the driver with the actor's pid attached, which is why
-`reexamine` logs there rather than at the coordinator: it is visible proof that the prose was
+both rounds log there rather than at the coordinator: it is visible proof that the prose was
 read on the firm's own node and only a verdict left it.
+
+Both go through `backend.ansi` — `say` for the flush, `node_line` for the firm's lane colour,
+`took` for the duration. The flush is load-bearing: an actor's stderr is a pipe, so Python
+block-buffers it and Ray forwards nothing until teardown, which puts "firm B found it" on
+screen *after* the verdict. `took` asks the cache whether the answer was on disk rather than
+inferring it from the elapsed time — a rehearsal runs entirely off the cache, and a bare
+"0ms" reads as a model that was never consulted.
 
 ## If round 2 stops finding the cell
 
