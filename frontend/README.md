@@ -48,9 +48,11 @@ the same run — `backend/ansi.py` paints the terminal with the literal colour t
 conference wifi is not the place to listen on `0.0.0.0`. One run at a time; a second Run
 while one is in flight is refused rather than queued.
 
-`make watch` passes `--quiet` to suppress the backend's own duplicate of the matrix, since
-the page is already showing it. `make stage` does not run the protocol at all — it waits for
-you to press Run.
+`--quiet` (passed by `make watch`, and by every run the Run button starts) drops Flower's
+six-line `run_simulation` deprecation notice and Ray's accelerator `FutureWarning` — the two
+things that shout over the protocol without telling a viewer anything. It does not touch the
+matrix or the SF330 table; those still print. `make stage` does not run the protocol at all —
+it waits for you to press Run.
 
 ## The trace contract
 
