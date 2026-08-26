@@ -84,6 +84,14 @@ class CachedReader:
     def _path(self, request: JSONObject) -> Path:
         return self.cache_dir / f"{_fingerprint(request)}.json"
 
+    def cached(self, request: JSONObject) -> bool:
+        """Whether this exact request would be answered from disk.
+
+        Asked *before* the call, so a caller can report a sub-millisecond answer as a replay
+        instead of leaving it looking like the model was never consulted.
+        """
+        return self._path(request).exists()
+
     def __call__(self, request: JSONObject) -> JSONObject:
         path = self._path(request)
         if path.exists():

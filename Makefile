@@ -19,7 +19,7 @@ SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds traces harness baselines data build ui watch demo test lint fmt check clean reset reset-traces publish chat
+.PHONY: help setup doctor run rounds traces harness baselines data build ui stage watch demo test lint fmt check clean reset reset-traces publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -49,6 +49,11 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 	@echo "ray        $$($(RUN) python -c 'import ray; print(ray.__version__)' 2>/dev/null)"
 	@$(RUN) python -c "from flwr.cli.config_utils import load_and_validate; c, w = load_and_validate(); a = c['tool']['flwr']['app']; k = a['components']; print('components ' + ', '.join(f'{n}={r}' for n, r in k.items())); print('target     flwr ' + str(a.get('flwr-version-target', 'unpinned'))); print('warnings   ' + (', '.join(w) if w else 'none'))"
 	@$(MAKE) --no-print-directory build
+	@echo "model      $(if $(MODEL),$(MODEL),NONE - round 2 finds nothing, gap stays open)"
+	@echo "endpoint   $(if $(FLWR_MODEL_API_ENDPOINT),$(FLWR_MODEL_API_ENDPOINT),unset)"
+	@echo "key        $(if $(FLWR_MODEL_API_KEY),set - unset it for Qwen or the call fails,unset)"
+	@echo "cache      $$(ls .cache/model 2>/dev/null | wc -l | tr -d ' ') responses on disk"
+	@echo "traces     $$(ls frontend/state/trace-*.jsonl 2>/dev/null | wc -l | tr -d ' ') of $(words $(SCENARIO_SLUGS)) scenarios ready for the selector"
 	@echo "environment is good"
 
 # ------------------------------------------------------------------- the stack
@@ -59,7 +64,16 @@ rounds: ## Run the federated protocol — ROUNDS rounds across SUPERNODES firm n
 	$(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) \
 		--model "$(MODEL)" $(SCENARIO_ARG)
 
+# Silently traced every scenario with no model once, and got four non-compliant bids for the
+# selector to show a judge. An empty MODEL is a legitimate mode, so this warns rather than
+# refuses — but it warns where it cannot be missed.
 traces: ## Run every scenario once, so the UI's scenario selector is fully populated
+	@test -n "$(MODEL)" || { \
+	   echo ""; \
+	   echo "  !! MODEL is empty. Round 2 will find nothing and every scenario will trace"; \
+	   echo "  !! as NON-COMPLIANT. Set CONSORTIUM_MODEL and FLWR_MODEL_API_ENDPOINT first,"; \
+	   echo "  !! or pass MODEL=... — see 'make doctor'."; \
+	   echo ""; }
 	@for slug in $(SCENARIO_SLUGS); do \
 	   echo "--- $$slug"; \
 	   $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) \
@@ -93,6 +107,22 @@ ui: ## Serve the coverage matrix, ledger, and SF330 on localhost:PORT
 	@( sleep 1 && $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & )
 	@$(RUN) python frontend/serve.py $(PORT)
 
+# The demo. Put this pane on the left of the screen and the browser on the right, then drive
+# every run from the page's Run button: `serve.py` spawns the protocol with stdout inherited,
+# so the log lands here while the animation plays there. Neither half is a recording.
+stage: reset ## Split screen: this pane is the log, the browser is the process
+	@echo ""
+	@echo "  Consortium — stage"
+	@echo "  ------------------"
+	@echo "  page      http://localhost:$(PORT)/"
+	@echo "  model     $(if $(MODEL),$(MODEL),NONE — round 2 finds nothing and the gap stays open)"
+	@echo "  endpoint  $(if $(FLWR_MODEL_API_ENDPOINT),$(FLWR_MODEL_API_ENDPOINT),unset)"
+	@echo ""
+	@echo "  Press Run on the page. The protocol logs here. Ctrl-c to stop."
+	@echo ""
+	@( sleep 1 && $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & )
+	@$(RUN) python frontend/serve.py $(PORT)
+
 # `rounds` then `ui` is the wrong order to watch anything: the protocol has finished before
 # the page can exist. This puts the page up first and runs the protocol into it, so the
 # rounds land on screen as they happen.
@@ -105,7 +135,7 @@ watch: reset ## Serve the UI, then run the protocol into it — watch the rounds
 	 ( $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & ); \
 	 sleep 2; \
 	 $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) \
-	   --model "$(MODEL)" $(SCENARIO_ARG); \
+	   --quiet --model "$(MODEL)" $(SCENARIO_ARG); \
 	 echo ""; \
 	 echo "rounds complete — page still served on :$(PORT), ctrl-c to stop"; \
 	 wait $$ui

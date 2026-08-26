@@ -13,9 +13,31 @@ which makes this the honest way to get genuine per-node process isolation::
 """
 
 import argparse
+import logging
 import os
+import warnings
 
 from backend import protocol, server_app
+
+# Two things both shout over the protocol on a demo screen and neither says anything a
+# viewer can act on: Flower's six-line notice that `run_simulation` is deprecated (the
+# module docstring above explains why it is used anyway), and Ray's advance warning about
+# a future change to accelerator env vars on a run that asks for no GPUs.
+_MUFFLED = ("DEPRECATED FEATURE", "run_simulation` function is deprecated")
+
+
+class _DropNotices(logging.Filter):
+    """Drop the framework notices that have nothing to do with this run."""
+
+    def filter(self, record: logging.LogRecord) -> bool:
+        return not any(phrase in record.getMessage() for phrase in _MUFFLED)
+
+
+def quieten() -> None:
+    """Silence framework notices so the trace is the only thing in the pane."""
+    logging.getLogger("flwr").addFilter(_DropNotices())
+    warnings.filterwarnings("ignore", category=FutureWarning, module=r"ray\..*")
+    warnings.filterwarnings("ignore", category=DeprecationWarning, module=r"flwr\..*")
 
 
 def main() -> None:
@@ -34,7 +56,15 @@ def main() -> None:
     parser.add_argument(
         "--verbose", action="store_true", help="Show the simulation runtime's own logging"
     )
+    parser.add_argument(
+        "--quiet",
+        action="store_true",
+        help="Drop framework deprecation notices, so the trace is the only thing on screen",
+    )
     args = parser.parse_args()
+
+    if args.quiet:
+        quieten()
 
     # `run_simulation` hands the ServerApp an empty run_config and offers no way to seed
     # one, so the round count, scenario and model id travel by environment. The scenario

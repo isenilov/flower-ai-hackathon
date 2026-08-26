@@ -18,13 +18,16 @@ records to look at.
 """
 
 import json
-from logging import WARNING
+import sys
+import time
+from logging import INFO, WARNING
 from pathlib import Path
 from typing import Any
 
 from flwr.common.logger import log
 
 from agents import model
+from backend import ansi
 from backend.schema import Requirement
 
 PROMPT_PATH = Path(__file__).resolve().parent / "prompts" / "round2_reexamine.md"
@@ -131,27 +134,90 @@ def reexamine(
     if not records:
         return {}
 
-    try:
-        response = reader(
-            {
-                "model": model_id,
-                "instructions": instructions(),
-                "input": _payload(library, requirement, records),
-                "max_output_tokens": MAX_OUTPUT_TOKENS,
-            }
+    # Ray forwards a SuperNode's stdout to the driver with the actor's pid attached, so these
+    # lines land in the demo's terminal pane already labelled by node. That is the whole
+    # reason to log here rather than at the coordinator: it is visible proof that the prose
+    # was read on the firm's own node, and that only a verdict left it.
+    who = _firm_of(records)
+    model_name = model_id.rsplit("/", 1)[-1] or model_id
+    _say(
+        _node_line(
+            who, f"gap {requirement.id} - re-reading {len(records)} records with {model_name}"
         )
+    )
+
+    request: dict[str, Any] = {
+        "model": model_id,
+        "instructions": instructions(),
+        "input": _payload(library, requirement, records),
+        "max_output_tokens": MAX_OUTPUT_TOKENS,
+    }
+    # Asked before the call, not inferred from how long it took. A rehearsal runs entirely
+    # off the cache, and "0ms" with no explanation reads as a model that was never asked.
+    replay = bool(getattr(reader, "cached", None) and reader.cached(request))  # type: ignore[attr-defined]
+
+    started = time.monotonic()
+    try:
+        response = reader(request)
         answer = model.extract_json(response)
     except (LookupError, ValueError, OSError, json.JSONDecodeError) as exc:
         # A slow, absent, or rambling model must cost the harness a closed gap, not a
         # crashed run — but say so, or a silent miss looks like a correct empty answer.
         log(WARNING, "round-2 re-examination unavailable for %s: %s", requirement.id, exc)
         return {}
+    elapsed = time.monotonic() - started
 
     known = {record["handle"] for record in records}
     why = answer.get("why") if isinstance(answer.get("why"), dict) else {}
     # Only handles the model was actually shown. A hallucinated handle is not evidence.
-    return {
+    found = {
         handle: str(why.get(handle, "re-examined against the broadcast gap"))
         for handle in answer.get("handles", [])
         if isinstance(handle, str) and handle in known
     }
+
+    if not found:
+        _say(
+            _node_line(
+                who,
+                f"{requirement.id} - nothing here evidences it ({_took(elapsed, replay)})",
+                ansi.DIM,
+            )
+        )
+    for handle, reason in found.items():
+        _say(
+            _node_line(
+                who, f"{requirement.id} <- {handle} - {reason} ({_took(elapsed, replay)})", ansi.OK
+            )
+        )
+    return found
+
+
+def _say(line: str) -> None:
+    """Log from inside a SuperNode, and flush so the line arrives while it is still true.
+
+    A ClientAppActor's stderr is a pipe, not a terminal, so Python block-buffers it and Ray
+    forwards nothing until the actor is torn down — which puts "firm B found it" on screen
+    *after* the verdict. Flushing is what makes the node-side beat land in its own round.
+    """
+    log(INFO, "%s", line)
+    sys.stderr.flush()
+    sys.stdout.flush()
+
+
+def _took(seconds: float, replay: bool) -> str:
+    """How long the model took, or that it was never asked because the answer was on disk."""
+    if replay:
+        return "from cache"
+    return f"{seconds * 1000:.0f}ms" if seconds < 1 else f"{seconds:.1f}s"
+
+
+def _firm_of(records: list[dict[str, Any]]) -> str:
+    """The firm these records belong to, read off a handle rather than passed in."""
+    return str(records[0]["handle"]).split("::", 1)[0]
+
+
+def _node_line(firm: str, detail: str, tone: tuple[int, int, int] | None = None) -> str:
+    """A node-side line in the same columns and lane colour the coordinator's log uses."""
+    name = firm.replace("FIRM_", "firm ")
+    return ansi.paint(f"{name:<9}", ansi.firm_tone(firm), bold=True) + ansi.paint(detail, tone)

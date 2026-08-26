@@ -35,6 +35,9 @@
     <div class="scenario-pick">
       <label for="scenarioPick">Scenario</label>
       <select id="scenarioPick"><option value="">live run</option></select>
+      <button id="run" class="run" title="Run this scenario now — the log lands in the terminal">
+        Run &#9656;
+      </button>
     </div>
     <div class="scenario-text">
       <h1 id="scenarioTitle">Waiting for a trace…</h1>
@@ -52,8 +55,9 @@
     <p>Bring the page up first, then run the protocol into it:</p>
     <pre>make watch</pre>
     <p class="muted">
-      Or <code>make rounds</code> then reload. <code>make traces</code> runs every scenario,
-      which fills the selector above.
+      Or press <b>Run</b> above: the page follows the run and the protocol's log lands in
+      the terminal pane beside it. <code>make traces</code> runs every scenario, which fills
+      the selector.
     </p>
   </section>
 

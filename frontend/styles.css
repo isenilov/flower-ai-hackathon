@@ -732,3 +732,31 @@ button.ghost { padding: 6px 10px; color: var(--ink-dim); }
   .scenario { flex-direction: column; gap: 12px; }
   .scenario-pick select { min-width: 0; width: 100%; }
 }
+
+/* Run button. The only control on the page that changes anything outside the browser, so
+   it is the only one that gets a filled background. */
+.run {
+  font: 600 12px/1 var(--sans);
+  letter-spacing: 0.02em;
+  color: #04101f;
+  background: var(--ok);
+  border: 1px solid var(--ok);
+  border-radius: 7px;
+  padding: 7px 13px;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+
+.run:hover { filter: brightness(1.12); }
+
+/* Running: the same breathing tell the narration uses while a node is thinking, so both
+   say "wait" in one language. */
+.run.busy {
+  cursor: default;
+  color: var(--firm-b);
+  background: transparent;
+  border-color: var(--firm-b);
+  animation: breathe 2.4s ease-in-out infinite;
+}
+
+.run.failed { background: var(--gap); border-color: var(--gap); color: #1a0406; }

@@ -27,6 +27,8 @@ from typing import Any, Protocol
 
 from flwr.common.logger import log
 
+from backend import ansi
+
 STATE_DIR = Path(__file__).resolve().parent.parent / "frontend" / "state"
 TRACE_PATH = STATE_DIR / "trace.jsonl"
 INDEX_PATH = STATE_DIR / "scenarios.json"
@@ -137,56 +139,117 @@ def write_index() -> Path:
 
 
 # ------------------------------------------------------------------ terminal rendering
+#
+# The demo is a split screen: this pane on the left, the page on the right. So the columns
+# are fixed and the colours are the page's own tokens (see `backend.ansi`) — a judge should
+# be able to look from one to the other and see the same run, not two renderings of it.
 
-_FIRM = "{:<11}"
+# Tag gutter. Every line starts with what kind of thing it is, in one word, so the eye can
+# skip down the left edge and find the round boundaries without reading.
+_TAG = 9
+
+
+def _tag(word: str, rgb: tuple[int, int, int] | None = None, *, bold: bool = False) -> str:
+    """One tag, padded before it is painted so escape codes never shift the column."""
+    return ansi.paint(f"{word:<{_TAG}}", rgb, bold=bold)
+
+
+def _cell(row: dict[str, Any]) -> str:
+    """One coverage cell, red or green, the same two colours the matrix uses on screen."""
+    met = row["met"]
+    return ansi.paint(f"{row['id']} {'ok' if met else 'GAP'}", ansi.OK if met else ansi.GAP)
 
 
 def _terminal_line(event: dict[str, Any]) -> str:
     """Render one event as a terminal line, or '' for events the log should skip."""
     kind = event["type"]
 
+    if kind == "flower":
+        return _tag("flower", ansi.FLOWER, bold=True) + ansi.paint(
+            f"flwr {event['flwr']} · {event['runtime']} · {event['transport']} · "
+            f"{event['nodes']} SuperNodes, one process each",
+            ansi.FLOWER,
+        )
+
     if kind == "run_started":
-        firms = ", ".join(event["firms"])
-        return (
-            f"trace v{event['version']} — {len(event['requirements'])} requirements, firms {firms}"
+        scenario = event["scenario"]
+        return _tag("trace", ansi.DIM) + (
+            f"{ansi.paint(scenario['slug'], ansi.INK, bold=True)} · "
+            f"{len(event['requirements'])} requirements · {len(event['firms'])} firms · "
+            f"trace v{event['version']}"
         )
 
     if kind == "round_started":
-        gap = ",".join(event["gap"]) or "—"
-        return f"round {event['round']}  gap broadcast: {gap}"
-
-    if kind == "broadcast":
-        gap = ",".join(event["gap"]) or "—"
+        gap = ",".join(event["gap"])
+        tone = ansi.FIRM[1] if gap else ansi.INK
+        note = (
+            f"gap {gap} goes back to the firms — the hole, never the evidence"
+            if gap
+            else "firms answer from declared fields only — no gap known yet"
+        )
+        # The rule takes Flower's `INFO :` prefix so the round line itself starts at column
+        # zero — an empty log record would print the prefix onto a blank line instead, and a
+        # pane with one of those per round reads as noise.
+        rule = ansi.paint("-" * 78, ansi.FAINT)
         return (
-            f"  coordinator -> {_FIRM.format('all firms')} QUERY  "
-            f"requirements={event['requirements']}  gap={gap:<10} {_bytes(event['bytes'])}"
+            rule + "\n" + _tag(f"round {event['round']}", tone, bold=True) + ansi.paint(note, tone)
         )
 
+    if kind == "broadcast":
+        # This event *is* the Flower call, so it wears the framework's colour. The gap's own
+        # byte count rides along because it is the safety claim: 2 B out, kilobytes back.
+        gap = ",".join(event["gap"])
+        detail = (
+            f"{event['transport']}.send_and_receive · {event['messages']} × "
+            f"Message({event['message_type'].upper()}) · {_bytes(event['bytes'])} out"
+        )
+        aside = ansi.paint(f"  (gap {gap} = {event['gap_bytes']} B)", ansi.FIRM[1]) if gap else ""
+        return _tag("flower", ansi.FLOWER) + ansi.paint(detail, ansi.FLOWER) + aside
+
     if kind == "reply":
+        firm = event["firm"]
+        tone = ansi.firm_tone(firm)
         new = ",".join(event["new_requirements"])
-        note = f"  new={new}" if new else ""
+        note = (
+            ansi.paint(f"   new {new}", ansi.OK if event["round"] > 1 else ansi.DIM) if new else ""
+        )
         return (
-            f"  {_FIRM.format(event['firm'])} -> coordinator REPLY  "
-            f"attestations={event['attestations']:<4} {_bytes(event['bytes'])}{note}"
+            _tag(f"  {_short(firm)}", tone, bold=True)
+            + ansi.paint("-> coordinator", ansi.DIM)
+            + f"   {event['attestations']:>3} attestations   {_bytes(event['bytes']):>7}"
+            + note
         )
 
     if kind == "matrix":
-        cells = "  ".join(f"{row['id']}{'ok' if row['met'] else 'GAP':>4}" for row in event["rows"])
-        return f"  matrix  {cells}"
+        closed = ",".join(event.get("closed") or [])
+        cells = "  ".join(_cell(row) for row in event["rows"])
+        won = ansi.paint(f"   {closed} closed", ansi.OK, bold=True) if closed else ""
+        return _tag("  matrix", ansi.DIM) + cells + won
 
     if kind == "run_ended":
+        compliant = event["compliant"]
+        tone = ansi.OK if compliant else ansi.GAP
         gaps = ", ".join(event["open_gaps"]) or "none"
         return (
-            f"trace complete — {event['rounds_run']} rounds, open gaps: {gaps}, "
-            f"banded on wire {_bytes(event['banded_bytes'])}, "
-            f"record bytes {event['record_bytes']}"
+            ansi.paint("-" * 78, ansi.FAINT)
+            + "\n"
+            + _tag("verdict", tone, bold=True)
+            + ansi.paint("compliant" if compliant else "NON-COMPLIANT", tone, bold=True)
+            + f" · {event['rounds_run']} rounds · open gaps {gaps}"
+            + f" · {_bytes(event['banded_bytes'])} banded on the wire · "
+            + ansi.paint(f"{event['record_bytes']} B of record content", ansi.OK)
         )
 
     return ""
 
 
+def _short(firm: str) -> str:
+    """`FIRM_A` as the page writes it, so both panes name the same lane the same way."""
+    return firm.replace("FIRM_", "firm ") if firm.startswith("FIRM_") else firm
+
+
 def _bytes(count: int) -> str:
-    """Human-readable byte count, right-padded to keep the log columns aligned."""
+    """Human-readable byte count."""
     if count < 1024:
         return f"{count} B"
     return f"{count / 1024:.1f} kB"

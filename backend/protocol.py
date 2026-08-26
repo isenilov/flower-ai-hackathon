@@ -14,6 +14,7 @@ import json
 import os
 from dataclasses import dataclass
 
+from flwr import __version__ as flwr_version
 from flwr.app import ConfigRecord, Message, MessageType, RecordDict
 from flwr.serverapp import Grid
 
@@ -27,6 +28,14 @@ from backend.trace import TRACE_VERSION, Trace
 ROUNDS_ENV = "CONSORTIUM_NUM_ROUNDS"
 SCENARIO_ENV = "CONSORTIUM_SCENARIO"
 DEFAULT_ROUNDS = 3
+
+# Which runtime each `Grid` implementation belongs to. Named rather than inferred so the
+# terminal states what is actually carrying the messages instead of implying a SuperLink.
+RUNTIMES = {
+    "InMemoryGrid": "run_simulation",
+    "GrpcGrid": "SuperLink / SuperGrid",
+    "LocalGrid": "AgentApp, in process",
+}
 
 
 @dataclass
@@ -107,6 +116,17 @@ def run(
     answered: dict[str, set[str]] = {}
 
     if trace:
+        # The framework facts first, because the demo's left-hand pane is the only place
+        # Flower's own part in this is visible. The Grid class is the honest name for the
+        # transport: `InMemoryGrid` under the simulation runtime, `GrpcGrid` against a real
+        # SuperLink, `LocalGrid` inside the published harness. Same protocol, three wires.
+        trace.emit(
+            "flower",
+            flwr=flwr_version,
+            runtime=RUNTIMES.get(type(grid).__name__, "runtime"),
+            transport=type(grid).__name__,
+            nodes=len(node_ids),
+        )
         trace.emit(
             "run_started",
             version=TRACE_VERSION,
@@ -179,6 +199,9 @@ def run(
                 # what travels back to the firms is the hole, never the evidence.
                 gap_bytes=len(gap_ids.encode()),
                 reads_text=bool(gap_ids),
+                transport=type(grid).__name__,
+                message_type=MessageType.QUERY,
+                messages=len(messages),
             )
 
         attestations: list[Attestation] = []

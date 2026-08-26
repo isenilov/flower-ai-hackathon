@@ -11,6 +11,7 @@ const POLL_MS = 400;
 
 // Beat durations at 1x, in ms. The stage is legible or it is decoration.
 const BEAT = {
+  flower: 700,
   run_started: 1400,
   round_started: 1500,
   broadcast: 1600,
@@ -51,6 +52,7 @@ const dom = {
   coordinatorState: el('coordinatorState'),
   reqStrip: el('reqStrip'),
   firms: el('firms'),
+  run: el('run'),
   roundBanner: el('roundBanner'),
   matrix: el('matrix'),
   verdict: el('verdict'),
@@ -598,9 +600,10 @@ function logLine(event) {
 
 function describe(e) {
   switch (e.type) {
+    case 'flower': return `flwr ${e.flwr} · ${e.runtime} · ${e.transport} · ${e.nodes} SuperNodes`;
     case 'run_started': return `trace v${e.version} · ${e.requirements.length} requirements · ${e.firms.length} firms`;
     case 'round_started': return `round ${e.round} — gap ${e.gap.join(',') || '—'}`;
-    case 'broadcast': return `coordinator → all firms · ${bytes(e.bytes)}${e.gap.length ? ` · gap ${bytes(e.gap_bytes)}` : ''}`;
+    case 'broadcast': return `${e.transport ? `${e.transport}.send_and_receive · ` : ''}coordinator → all firms · ${bytes(e.bytes)}${e.gap.length ? ` · gap ${bytes(e.gap_bytes)}` : ''}`;
     case 'reply': return `${e.firm} → coordinator · ${e.attestations} attestations · ${bytes(e.bytes)}${e.new_requirements.length ? ` · new ${e.new_requirements.join(',')}` : ''}`;
     case 'matrix': return `matrix · open ${e.open_gaps.join(',') || 'none'}${e.closed?.length ? ` · closed ${e.closed.join(',')}` : ''}`;
     case 'round_ended': return e.stopped ? `round ${e.round} ended — ${e.stopped}` : '';
@@ -671,6 +674,61 @@ function reset() {
   dom.stage.querySelectorAll('.packet').forEach((p) => p.remove());
 }
 
+// ------------------------------------------------------------------ starting a run
+//
+// `serve.py` spawns the protocol with stdout inherited, so pressing Run fills the terminal
+// pane beside the page. The page's own job is only to go back to following the live trace,
+// which the run truncates and rewrites.
+
+const RUN_POLL_MS = 700;
+
+function showRun({ running, exit }) {
+  const failed = !running && exit != null && exit !== 0;
+  dom.run.classList.toggle('busy', !!running);
+  dom.run.classList.toggle('failed', failed);
+  dom.run.disabled = !!running;
+  dom.run.innerHTML = running ? 'Running…' : (failed ? 'Run failed' : 'Run ▸');
+}
+
+async function runState() {
+  try {
+    const res = await fetch('/run', { cache: 'no-store' });
+    return res.ok ? await res.json() : null;
+  } catch {
+    return null;   // served as plain files, with no `serve.py` behind them
+  }
+}
+
+async function watchRun() {
+  const info = await runState();
+  if (!info) return;
+  showRun(info);
+  if (info.running) setTimeout(watchRun, RUN_POLL_MS);
+}
+
+dom.run.onclick = async () => {
+  const slug = dom.scenarioPick.value;
+
+  // Point the page at the live trace before the run truncates it. Starting a run while
+  // pinned to a stored scenario would leave the animation on the wrong file.
+  dom.scenarioPick.value = '';
+  dom.follow.checked = true;
+  state.url = LIVE_TRACE;
+  state.raw = '';
+  state.ref = null;
+  reset();
+
+  showRun({ running: true });
+  const res = await fetch(`/run?scenario=${encodeURIComponent(slug)}`, { method: 'POST' });
+  // 409 means a run is already going, which the poll renders on its own.
+  if (!res.ok && res.status !== 409) {
+    showRun({ running: false, exit: 1 });
+    return;
+  }
+  watchRun();
+  poll();
+};
+
 dom.play.onclick = () => (state.playing ? stop() : play());
 dom.step.onclick = () => { stop(); advance(); };
 dom.restart.onclick = () => { reset(); play(); };
@@ -703,7 +761,9 @@ async function load({ autoplay }) {
 
   // `started_at` is the run's identity. A different one means the backend truncated the
   // file and began again, so the page starts over rather than splicing two runs together.
-  const ref = events[0]?.started_at;
+  // Found by field rather than taken from events[0]: the first event is whatever the round
+  // loop happens to emit first, and only `run_started` carries the stamp.
+  const ref = events.find((e) => e.started_at)?.started_at;
   const restarted = ref !== state.ref || events.length < state.events.length;
   state.ref = ref;
   state.events = events;
@@ -758,3 +818,4 @@ dom.scenarioPick.onchange = () => {
 // Polling a static file is free, so following is the default: it makes `make watch` fill
 // the page as the rounds land, and picks up any later run without a reload.
 loadScenarios().then(() => (dom.follow.checked ? poll() : load({ autoplay: true })));
+watchRun();
