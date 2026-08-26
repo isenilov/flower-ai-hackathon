@@ -28,6 +28,11 @@ SCENARIO   ?=
 # a run without a model is honest, not broken. Endpoints are in docs/event.md.
 MODEL      ?= $(CONSORTIUM_MODEL)
 ENDPOINT   ?= $(FLWR_MODEL_API_ENDPOINT)
+# A different model, because a different SuperLink resolves it. `flwr run` asks whichever
+# SuperLink serves the run, and that process reads its own `FLWR_MODEL_API_ENDPOINT` — so on
+# supergrid.flower.ai the shared endpoints in docs/event.md are not in play and their ids come
+# back `400 not a valid model ID`. This one SuperGrid serves.
+HARNESS_MODEL ?= openai/gpt-5.5
 OPEN       := $(if $(filter Darwin,$(shell uname -s)),open,xdg-open)
 SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
@@ -43,7 +48,7 @@ help: ## List the targets
 		| awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "  Overrides: PORT=$(PORT) SLIDE_PORT=$(SLIDE_PORT) ROUNDS=$(ROUNDS) SUPERNODES=$(SUPERNODES) SUPERLINK=$(SUPERLINK)"
-	@echo "             SCENARIO=$(SCENARIO) MODEL=$(MODEL)"
+	@echo "             SCENARIO=$(SCENARIO) MODEL=$(MODEL) HARNESS_MODEL=$(HARNESS_MODEL)"
 	@echo "  SCENARIO picks a corpus; empty uses the manifest default. Slugs: $(SCENARIO_SLUGS)"
 	@echo "  SUPERLINK names a connection from your Flower config; empty uses its default."
 	@echo "  MODEL enables round-2 re-examination; empty runs round 1 and leaves the gap open."
@@ -64,6 +69,7 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 	@$(RUN) python -c "from flwr.cli.config_utils import load_and_validate; c, w = load_and_validate(); a = c['tool']['flwr']['app']; k = a['components']; print('components ' + ', '.join(f'{n}={r}' for n, r in k.items())); print('target     flwr ' + str(a.get('flwr-version-target', 'unpinned'))); print('warnings   ' + (', '.join(w) if w else 'none'))"
 	@$(MAKE) --no-print-directory build
 	@echo "model      $(if $(MODEL),$(MODEL),NONE - round 2 finds nothing, gap stays open)"
+	@echo "supergrid  $(HARNESS_MODEL) - what 'make harness' asks SuperGrid for"
 	@echo "endpoint   $(if $(ENDPOINT),$(ENDPOINT),unset)"
 	@echo "key        $(if $(strip $(FLWR_MODEL_API_KEY)),set,unset - correct for Qwen, wrong for GLM/Kimi/MiniMax)"
 	@echo "dotenv     $(if $(wildcard .env),.env found,no .env - copy .env.example and fill in the key)"
@@ -98,7 +104,7 @@ traces: ## Run every scenario once, so the UI's scenario selector is fully popul
 
 harness: ## Run the published harness the way a judge does — on SuperGrid
 	$(RUN) flwr run . $(SUPERLINK) --stream \
-		--run-config "num-rounds=$(ROUNDS) model='$(MODEL)'"
+		--run-config "num-rounds=$(ROUNDS) model='$(HARNESS_MODEL)'"
 
 # NOT BUILT. `backend/baselines.py` is a docstring, so this prints nothing at all. The three
 # readings it would score are already derived in `data/ground_truth.json` — `round_one_coverage`

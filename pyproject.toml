@@ -70,9 +70,11 @@ num-rounds = 3
 num-firms = 3
 tau = 0.6
 section-f-cap = 10
-# Set to a model the target SuperGrid serves to get a narrated report; empty prints the
-# coverage table only, so the harness still runs where no model endpoint is configured.
-model = ""
+# The model a judge's run gets when they pass no run-config, so it has to be one SuperGrid
+# itself serves — the shared endpoints in docs/event.md belong to a SuperLink you run
+# yourself, and their ids come back `400 not a valid model ID` there. Empty is still a
+# supported mode: round 1 runs, round 2 finds nothing, and the gap stays open honestly.
+model = "openai/gpt-5.5"
 
 [tool.flwr.app.config.agent]
 input = ""

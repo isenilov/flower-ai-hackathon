@@ -110,6 +110,14 @@ reports which model, endpoint and key a run will actually use.
 
 Two things that will cost someone twenty minutes otherwise:
 
+- **Those model ids are for a SuperLink you run yourself, not for SuperGrid.** The
+  provider reads `FLWR_MODEL_API_ENDPOINT` from the environment of the SuperLink that
+  serves the run, so on `supergrid.flower.ai` the endpoint is Flower's own
+  `api.flower.ai/v1/responses` and the table above does not apply. Ask it for
+  `glm-5.2-fp8` there and the run comes back `400 glm-5.2-fp8 is not a valid model ID`,
+  round 2 finds nothing, and the bid reads NON-COMPLIANT. **`openai/gpt-5.5` is the id
+  that works on SuperGrid** — measured end to end: round 1 grading 43–55s per firm,
+  round 2 closing R4 in 13.5s, `compliant · 2 rounds · 0 B of record content`.
 - **Qwen takes no key.** Run `unset FLWR_MODEL_API_KEY` or the call fails.
 - **Each task has a five-minute ceiling** — the organisers' own note, "starting from when the
   task switches to Running". Round-1 grading measured 83–215s per firm on GLM and *over 280s
