@@ -13,20 +13,19 @@ the protocol; both call it.
 import json
 import os
 from dataclasses import dataclass
-from pathlib import Path
 
 from flwr.app import ConfigRecord, Message, MessageType, RecordDict
 from flwr.serverapp import Grid
 
 from backend.firm_node import ATTESTATIONS_KEY, decode
+from backend.scenarios import Scenario, resolve
 from backend.schema import Attestation, Requirement
 from backend.trace import TRACE_VERSION, Trace
 
-RFP_PATH = Path(__file__).resolve().parent.parent / "data" / "rfp.json"
-
 # `flwr.simulation.run_simulation` hands the ServerApp an empty run_config, so the
-# federated surface reads its round count from the environment instead.
+# federated surface reads its round count and scenario from the environment instead.
 ROUNDS_ENV = "CONSORTIUM_NUM_ROUNDS"
+SCENARIO_ENV = "CONSORTIUM_SCENARIO"
 DEFAULT_ROUNDS = 3
 
 
@@ -51,13 +50,13 @@ class Outcome:
         return [r.id for r in self.requirements if r.kind == "MANDATORY" and r.id in open_gaps]
 
 
-def load_rfp() -> tuple[str, str, list[Requirement]]:
-    """Decompose the reference solicitation into typed requirements.
+def load_rfp(scenario: Scenario | None = None) -> tuple[str, str, list[Requirement]]:
+    """Decompose a scenario's solicitation into typed requirements.
 
     ``as_of`` fixes the reference date for recency banding, so the same corpora give the
     same answer at rehearsal and on stage.
     """
-    rfp = json.loads(RFP_PATH.read_text())
+    rfp = json.loads((scenario or resolve(None)).rfp_path.read_text())
     return (
         rfp["solicitation"],
         rfp["as_of"],
@@ -72,14 +71,23 @@ def resolve_rounds(configured: object = None) -> int:
     return int(os.environ.get(ROUNDS_ENV, DEFAULT_ROUNDS))
 
 
+def resolve_scenario(configured: object = None) -> Scenario:
+    """Scenario from the run config, else the environment, else the manifest default."""
+    if configured not in (None, ""):
+        return resolve(str(configured))
+    return resolve(os.environ.get(SCENARIO_ENV) or None)
+
+
 def run(
     grid: Grid,
     num_rounds: int,
     solicitation: str | None = None,
     trace: Trace | None = None,
+    scenario: Scenario | None = None,
 ) -> Outcome:
     """Run the protocol to convergence or to ``num_rounds``, whichever comes first."""
-    rfp_solicitation, as_of, requirements = load_rfp()
+    scenario = scenario or resolve(None)
+    rfp_solicitation, as_of, requirements = load_rfp(scenario)
     requirements_json = json.dumps([r.__dict__ for r in requirements])
     node_ids = list(grid.get_node_ids())
 
@@ -97,6 +105,12 @@ def run(
             "run_started",
             version=TRACE_VERSION,
             started_at=trace.started_at,
+            scenario={
+                "slug": scenario.slug,
+                "title": scenario.title,
+                "headline": scenario.headline,
+                "gap": scenario.gap,
+            },
             solicitation=solicitation or rfp_solicitation,
             as_of=as_of,
             num_rounds=num_rounds,
@@ -109,6 +123,7 @@ def run(
                     "min_count": r.min_count,
                     "weight": r.weight,
                     "description": r.description,
+                    "predicate": r.predicate,
                 }
                 for r in requirements
             ],
@@ -118,7 +133,15 @@ def run(
         gap_ids = ",".join(open_gaps)
         content = RecordDict(
             {
-                "rfp": ConfigRecord({"requirements": requirements_json, "as_of": as_of}),
+                # The slug selects which synthetic corpus a partition stands for. A real
+                # SuperNode carries its own `library-path` and ignores it.
+                "rfp": ConfigRecord(
+                    {
+                        "requirements": requirements_json,
+                        "as_of": as_of,
+                        "scenario": scenario.slug,
+                    }
+                ),
                 # Round 1 broadcasts no gap. Later rounds carry it, and nothing else —
                 # each firm re-queries its own library with a question it did not know
                 # to ask, and the answer never travels in the other direction.
@@ -198,6 +221,16 @@ def run(
                         "have": len(covered[r.id]),
                         "firms": sorted({a.firm for a in covered[r.id]}),
                         "met": len(covered[r.id]) >= r.min_count,
+                        "attested": [
+                            {
+                                "firm": a.firm,
+                                "handle": a.handle,
+                                "kind": a.kind,
+                                "disclosure_cost": a.disclosure_cost,
+                                "banded": a.banded,
+                            }
+                            for a in covered[r.id]
+                        ],
                     }
                     for r in requirements
                 ],

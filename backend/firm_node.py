@@ -15,27 +15,31 @@ from typing import Any
 from flwr.app import ConfigRecord, Context, Message, RecordDict
 from flwr.clientapp import ClientApp
 
+from backend.scenarios import resolve
 from backend.schema import VOCABULARY, Attestation, Requirement
 
 # Firm order is the simulation's partition order.
 FIRMS = ("a", "b", "c")
 
-DATA_DIR = Path(__file__).resolve().parent.parent / "data"
-
 ATTESTATIONS_KEY = "attestations"
 
 
-def load_library(context: Context) -> dict[str, Any]:
+def load_library(context: Context, scenario: str = "") -> dict[str, Any]:
     """Load this node's private library.
 
     Simulation and deployment are discriminated on ``node_config`` exactly as the Hub's
     dual-runtime requirement specifies: a simulated SuperNode carries ``partition-id``
     and ``num-partitions``, a real one carries a ``library-path`` to its own data.
+
+    ``scenario`` only reaches the simulated branch: it names which synthetic corpus this
+    partition stands for. A real node's data is whatever its ``library-path`` points at,
+    and no coordinator gets to redirect that.
     """
     node_config = context.node_config
     if "partition-id" in node_config and "num-partitions" in node_config:
         partition_id = int(node_config["partition-id"])
-        path = DATA_DIR / f"firm_{FIRMS[partition_id % len(FIRMS)]}.json"
+        firm = FIRMS[partition_id % len(FIRMS)]
+        path = resolve(scenario or None).library_path(firm)
     else:
         path = Path(str(node_config["library-path"]))
     return json.loads(path.read_text())
@@ -252,7 +256,7 @@ def make_client_app() -> ClientApp:
         as_of = str(rfp["as_of"])
         # Only a broadcast gap licenses reading free text — that is round 2.
         read_text = bool(str(msg.content["gap"]["requirement_ids"]))
-        library = load_library(context)
+        library = load_library(context, str(rfp["scenario"]) if "scenario" in rfp else "")
         attestations = attest(library, requirements, as_of, read_text)
         return Message(content=encode(attestations), reply_to=msg)
 

@@ -24,13 +24,18 @@ def main() -> None:
     parser.add_argument("--rounds", type=int, default=protocol.DEFAULT_ROUNDS)
     parser.add_argument("--supernodes", type=int, default=3)
     parser.add_argument(
+        "--scenario", default="", help="scenario slug; empty uses the manifest default"
+    )
+    parser.add_argument(
         "--verbose", action="store_true", help="Show the simulation runtime's own logging"
     )
     args = parser.parse_args()
 
     # `run_simulation` hands the ServerApp an empty run_config and offers no way to seed
-    # one, so the round count travels by environment.
+    # one, so the round count and scenario travel by environment. Resolved here so an
+    # unknown slug fails before Ray starts.
     os.environ[protocol.ROUNDS_ENV] = str(args.rounds)
+    os.environ[protocol.SCENARIO_ENV] = protocol.resolve_scenario(args.scenario).slug
 
     # Imported here so `--help` does not pay for loading Ray.
     from flwr.simulation import run_simulation

@@ -31,13 +31,30 @@
     </div>
   </header>
 
-  <p id="solicitation" class="solicitation">Waiting for a trace…</p>
+  <section class="scenario">
+    <div class="scenario-pick">
+      <label for="scenarioPick">Scenario</label>
+      <select id="scenarioPick"><option value="">live run</option></select>
+    </div>
+    <div class="scenario-text">
+      <h1 id="scenarioTitle">Waiting for a trace…</h1>
+      <p id="scenarioHeadline"></p>
+    </div>
+  </section>
+
+  <div id="narration" class="narration">
+    <span class="narr-step" id="narrStep">idle</span>
+    <span class="narr-text" id="narrText">Press Play, or run <code>make watch</code>.</span>
+  </div>
 
   <section id="empty" class="empty">
     <h2>No trace yet</h2>
-    <p>Run the protocol, then reload — or tick <strong>follow</strong> to watch it arrive.</p>
-    <pre>make rounds</pre>
-    <p class="muted">Writes <code>frontend/state/trace.jsonl</code>, which this page reads.</p>
+    <p>Bring the page up first, then run the protocol into it:</p>
+    <pre>make watch</pre>
+    <p class="muted">
+      Or <code>make rounds</code> then reload. <code>make traces</code> runs every scenario,
+      which fills the selector above.
+    </p>
   </section>
 
   <section id="stage" class="stage" hidden>
@@ -48,6 +65,7 @@
       <div class="node-title">Coordinator</div>
       <div class="node-sub" id="coordinatorState">idle</div>
       <div class="reqs" id="reqStrip"></div>
+      <div class="node-foot">sees banded existence proofs — never a record</div>
     </div>
 
     <div class="firms" id="firms"></div>
@@ -56,7 +74,7 @@
   <section id="panels" class="panels" hidden>
 
     <div class="panel coverage">
-      <h2>Coverage <span class="hint">need vs. attested, across all three firms</span></h2>
+      <h2>Coverage <span class="hint">need vs. attested — click any requirement</span></h2>
       <div class="matrix" id="matrix"></div>
       <div class="verdict" id="verdict"></div>
     </div>
@@ -80,5 +98,10 @@
   </section>
 
 </main>
+
+<dialog id="detail" class="detail">
+  <button id="detailClose" class="detail-close" aria-label="Close">✕</button>
+  <div id="detailBody"></div>
+</dialog>
 
 <script src="app.js"></script>

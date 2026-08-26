@@ -50,8 +50,13 @@ def main(agent: AgentSession, context: Context) -> None:
     # The session doubles as an event sink: `push_run_events` reaches every
     # `Control.StreamRunEvents` consumer, so `flwr chat` sees the same protocol events
     # the local visualisation reads. Absent on runtimes that do not offer it.
+    scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
     outcome = protocol.run(
-        build_grid(num_firms), num_rounds, operator_input, trace=Trace(session=agent)
+        build_grid(num_firms),
+        num_rounds,
+        operator_input,
+        trace=Trace(session=agent, scenario=scenario.slug),
+        scenario=scenario,
     )
     log(
         INFO,

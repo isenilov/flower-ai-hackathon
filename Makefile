@@ -10,10 +10,13 @@ PORT       ?= 8000
 ROUNDS     ?= 3
 SUPERNODES ?= 3
 SUPERLINK  ?=
+SCENARIO   ?=
 OPEN       := $(if $(filter Darwin,$(shell uname -s)),open,xdg-open)
+SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
+SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds harness baselines data build ui watch demo test lint fmt check clean reset publish chat
+.PHONY: help setup doctor run rounds traces harness baselines data build ui watch demo test lint fmt check clean reset publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -23,6 +26,7 @@ help: ## List the targets
 		| awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-11s\033[0m %s\n", $$1, $$2}'
 	@echo ""
 	@echo "  Overrides: PORT=$(PORT) ROUNDS=$(ROUNDS) SUPERNODES=$(SUPERNODES) SUPERLINK=$(SUPERLINK)"
+	@echo "  SCENARIO picks a corpus; empty uses the manifest default. Slugs: $(SCENARIO_SLUGS)"
 	@echo "  SUPERLINK names a connection from your Flower config; empty uses its default."
 
 # ----------------------------------------------------------------- environment
@@ -47,7 +51,15 @@ doctor: ## Verify the environment against the brief's §9.1 / §9.2 checklist
 run: rounds ## Alias for `rounds`
 
 rounds: ## Run the federated protocol — ROUNDS rounds across SUPERNODES firm nodes
-	$(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES)
+	$(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) $(SCENARIO_ARG)
+
+traces: ## Run every scenario once, so the UI's scenario selector is fully populated
+	@for slug in $(SCENARIO_SLUGS); do \
+	   echo "--- $$slug"; \
+	   $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) \
+	     --scenario $$slug >/dev/null 2>&1 || exit 1; \
+	 done
+	@echo "all scenarios traced — the selector can switch between them offline"
 
 harness: ## Run the published harness the way a judge does — on SuperGrid
 	$(RUN) flwr run . $(SUPERLINK) --stream --run-config "num-rounds=$(ROUNDS)"
@@ -85,7 +97,7 @@ watch: reset ## Serve the UI, then run the protocol into it — watch the rounds
 	 echo "-> http://localhost:$(PORT)/   (the page follows the run)"; \
 	 ( $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & ); \
 	 sleep 2; \
-	 $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES); \
+	 $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES) $(SCENARIO_ARG); \
 	 echo ""; \
 	 echo "rounds complete — page still served on :$(PORT), ctrl-c to stop"; \
 	 wait $$ui

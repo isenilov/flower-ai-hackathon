@@ -7,9 +7,13 @@ events to `state/trace.jsonl` and this page replays them.
 
 ```bash
 make watch      # page up first, then the protocol runs into it — watch it land live
+make traces     # run every scenario once, so the selector can switch offline
 make rounds     # just write frontend/state/trace.jsonl
 make ui         # just serve this directory on :8000, replaying whatever trace exists
 ```
+
+Any of them takes `SCENARIO=<slug>`; empty uses the manifest default. `make help` lists
+the slugs.
 
 `make rounds && make ui` is the wrong order to watch anything: the protocol finishes before
 the page can exist, so you only ever get the replay. `make watch` serves first and runs the
@@ -36,11 +40,11 @@ rendering half a run. **Adding a field is safe; renaming or removing one breaks 
 
 | Event | Carries |
 |---|---|
-| `run_started` | `version`, `started_at`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` |
+| `run_started` | `version`, `started_at`, `scenario{slug,title,headline,gap}`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` (each with `predicate`) |
 | `round_started` | `round`, `gap[]` |
 | `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text` |
 | `reply` | `round`, `firm`, `attestations`, `bytes`, `per_requirement`, `new_requirements[]`, `handles[]` |
-| `matrix` | `round`, `rows[]`, `open_gaps[]`, `closed[]` |
+| `matrix` | `round`, `rows[]` (each with `attested[]`: firm, handle, kind, `disclosure_cost`, `banded`), `open_gaps[]`, `closed[]` |
 | `round_ended` | `round`, `open_gaps[]`, `stopped` |
 | `run_ended` | `rounds_run`, `open_gaps[]`, `mandatory_gaps[]`, `compliant`, `banded_bytes`, `record_bytes` |
 
@@ -55,6 +59,30 @@ the timings on screen are the measured ones, not the presentation ones.
 lands on screen as it happens — that is what `make watch` relies on. A changed
 `run_started.started_at` means the backend truncated the file and began again, so the page
 starts over rather than splicing two runs together. Untick it to pin the page to one trace.
+
+## Scenarios
+
+`data/scenarios.json` is the manifest; `backend/scenarios.py` is the only thing that reads
+it on the run path. Every scenario uses the same requirement ids and record shapes, so
+nothing here branches per scenario.
+
+Each run writes its trace twice — `trace.jsonl` for a following page, and
+`trace-<slug>.jsonl` for the selector — plus `state/scenarios.json`, which is how the page
+learns the catalogue without being able to read `data/`. A scenario the selector shows as
+`not run` has no trace yet; `make traces` fills them all in.
+
+**Before the demo, run `make traces`.** The selector then switches between scenarios
+instantly with no re-run and no network, which is what you want with a judge at the table.
+
+## Reading the page
+
+- **The narration bar** under the scenario title says what the protocol is doing right
+  now, in one sentence. It is derived from the current event, not scripted, so it stays
+  true on any scenario. Judges read the page cold; this is the line that lets them.
+- **Click any requirement** — a coverage cell or a chip on the coordinator — for what
+  satisfies it, which predicate keys are declared fields versus text-only (the round
+  boundary, made explicit), and every attestation behind it with its disclosure cost. An
+  uncovered requirement says what the coordinator knows, which is *only* that it is unmet.
 
 ## What the stage is arguing
 

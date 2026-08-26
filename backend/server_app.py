@@ -22,5 +22,6 @@ app = ServerApp()
 def main(grid: Grid, context: Context) -> None:
     """Run the protocol: blind attestation, gap re-examination, disclosure."""
     num_rounds = protocol.resolve_rounds(context.run_config.get("num-rounds"))
-    outcome = protocol.run(grid, num_rounds, trace=Trace())
+    scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
+    outcome = protocol.run(grid, num_rounds, trace=Trace(scenario=scenario.slug), scenario=scenario)
     log(INFO, "\n%s", protocol.render(outcome))

@@ -27,7 +27,9 @@ from typing import Any, Protocol
 
 from flwr.common.logger import log
 
-TRACE_PATH = Path(__file__).resolve().parent.parent / "frontend" / "state" / "trace.jsonl"
+STATE_DIR = Path(__file__).resolve().parent.parent / "frontend" / "state"
+TRACE_PATH = STATE_DIR / "trace.jsonl"
+INDEX_PATH = STATE_DIR / "scenarios.json"
 
 # Trace format version. The frontend refuses a trace it does not understand rather than
 # rendering half a run — this is the contract between backend/ and frontend/.
@@ -47,8 +49,12 @@ class Trace:
     Construct once per run and pass it down; ``emit`` is the whole surface.
     """
 
-    def __init__(self, path: Path | None = None, session: object | None = None) -> None:
-        self._path = TRACE_PATH if path is None else path
+    def __init__(
+        self,
+        path: Path | None = None,
+        session: object | None = None,
+        scenario: str = "",
+    ) -> None:
         self._session = session if hasattr(session, "push_run_events") else None
         self._forward_failed = False
         self._origin = time.monotonic()
@@ -57,8 +63,17 @@ class Trace:
         # run from the next, and every run's first `t_ms` is the same handful of ms.
         self.started_at = time.strftime("%Y-%m-%dT%H:%M:%S")
 
-        self._path.parent.mkdir(parents=True, exist_ok=True)
-        self._path.write_text("")
+        # Two paths, same bytes. `trace.jsonl` is the one a following page tails; the
+        # per-scenario copy is what the scenario selector loads, so switching scenarios at
+        # the table does not mean re-running one.
+        self._paths = [TRACE_PATH if path is None else path]
+        if scenario and path is None:
+            self._paths.append(STATE_DIR / f"trace-{scenario}.jsonl")
+
+        for target in self._paths:
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_text("")
+        write_index()
 
     def emit(self, event_type: str, **fields: Any) -> dict[str, Any]:
         """Record one event and return it."""
@@ -70,12 +85,14 @@ class Trace:
             **fields,
         }
 
-        with self._path.open("a", encoding="utf-8") as handle:
-            handle.write(json.dumps(event, separators=(",", ":")) + "\n")
+        line = json.dumps(event, separators=(",", ":")) + "\n"
+        for target in self._paths:
+            with target.open("a", encoding="utf-8") as handle:
+                handle.write(line)
 
-        line = _terminal_line(event)
-        if line:
-            log(INFO, "%s", line)
+        rendered = _terminal_line(event)
+        if rendered:
+            log(INFO, "%s", rendered)
 
         self._forward(event)
         return event
@@ -91,6 +108,32 @@ class Trace:
             # warning per run is signal where one per event is noise.
             self._forward_failed = True
             log(WARNING, "run-event forwarding disabled: %s", exc)
+
+
+def write_index() -> Path:
+    """List every scenario and whether a trace for it is on disk.
+
+    The page cannot read ``data/scenarios.json`` — only ``frontend/`` is served — so the
+    selector reads this instead. Rewritten on every run, so a scenario becomes selectable
+    the moment it has been run once.
+    """
+    from backend.scenarios import catalogue, default_slug
+
+    STATE_DIR.mkdir(parents=True, exist_ok=True)
+    entries = [
+        {
+            "slug": scenario.slug,
+            "title": scenario.title,
+            "headline": scenario.headline,
+            "trace": f"trace-{scenario.slug}.jsonl",
+            "available": (STATE_DIR / f"trace-{scenario.slug}.jsonl").exists(),
+        }
+        for scenario in catalogue().values()
+    ]
+    INDEX_PATH.write_text(
+        json.dumps({"default": default_slug(), "scenarios": entries}, indent=2) + "\n"
+    )
+    return INDEX_PATH
 
 
 # ------------------------------------------------------------------ terminal rendering
