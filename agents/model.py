@@ -149,6 +149,13 @@ def extract_text(response: JSONObject) -> str:
 
 def extract_json(response: JSONObject) -> JSONObject:
     """Parse a JSON object out of the model's text, tolerating fences and preamble."""
+    # A refusal to answer arrives as `status: failed` with an empty `output`, so without
+    # this the caller degrades on `''` and the reason never reaches the log. What it cost
+    # to learn that: SuperGrid rejects `glm-5.2-fp8` outright, and the round said only
+    # "no JSON object in model reply".
+    error = response.get("error")
+    if isinstance(error, dict) and error.get("message"):
+        raise ValueError(str(error["message"]))
     text = extract_text(response)
     start, end = text.find("{"), text.rfind("}")
     if start == -1 or end <= start:
