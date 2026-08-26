@@ -734,6 +734,7 @@ Verified against the Hub docs and the installed CLI. **Owner: Flower. First run 
 ```bash
 flwr login supergrid                 # browser auth against the Flower account
 flwr app publish .                   # uploads SOURCE; Hub builds the FAB server-side
+# ...but publish ignores `fab-exclude`, so `make publish` publishes a staged tree — §10.2
 # -> https://flower.ai/apps/i53n1/consortium/
 ```
 
@@ -743,7 +744,7 @@ one because it exercises the account, the publisher name, the license file and t
 filter all at once; the tenth is free.
 
 Wrap both in the Makefile at T0 so nobody publishes by hand at 16:25: `make publish` should
-bump nothing, run `make check`, then `flwr app publish .`. Add `make chat` for the SuperGrid
+bump nothing, run `make check`, then publish the staged tree. Add `make chat` for the SuperGrid
 side of the demo.
 
 ### 10.2 `pyproject.toml` deltas required for Hub
@@ -789,6 +790,17 @@ And **`fab-exclude` became necessary rather than optional**: Hub keeps only
 surviving file must match the list — which is why `.gitignore` is itself excluded. The rest is
 excluded so the published app is the harness and not our desk.
 
+**And then, ~15:00, `fab-exclude` turned out not to govern the publish at all.** It is read by
+`flwr build`; `flwr app publish` uploads source filtered only by the extension allowlist,
+`.flwr/`, `__pycache__` and `.gitignore` (`flwr/cli/utils.py`, `filter_paths_for_publish`). So
+`0.1.0`–`0.3.0` each shipped `docs/`, `tests/`, `frontend/`, `CLAUDE.md` and the slide deck's
+358 KB `package-lock.json` — 71 files, 832 KB — while `make build` proved a clean 55-file FAB
+locally. `make publish` now stages the harness alone (`publish-stage.sh`) and publishes that
+directory: 55 files, 312 KB. The staged `pyproject.toml` drops `fab-exclude`, because
+`flwr build` raises on an exclude pattern that matches no file and Hub builds the FAB
+server-side. Nothing was over Hub's limits, so this was tidiness rather than a fire — but the
+sentence above was false for three published versions, which is why it is still here.
+
 ### 10.3 Constraints that change the plan
 
 | Constraint | Consequence for us |
@@ -797,6 +809,7 @@ excluded so the published app is the harness and not our desk.
 | `publisher` must equal the Flower account username | `i53n1`. Settled ~10:45; recorded in `decisions.md`. |
 | `LICENSE` file required for `fab-format-version = 1` | Added at T0 (`ad87d06`) — it is also the open-source gate. |
 | **A FAB may declare `agentapp` *or* `serverapp`+`clientapp`, never both** | Not in the plan, and the constraint that reshaped the codebase. `422` at publish time only. §6.1. |
+| **`fab-exclude` applies to `flwr build`, not to `flwr app publish`** | Publish uploads source filtered by the extension allowlist and `.gitignore` alone. Hence the staged publish (§10.2, `publish-stage.sh`). Only visible by reading the upload manifest — the CLI prints every attached file, and says nothing about what it ignored. |
 | Allowed extensions: `.py .toml .md .yaml .json .jsonl`, LICENSE, `.gitignore`, `.editorconfig` | **`frontend/` HTML, CSS and JS are silently excluded from the published app.** See below. |
 | 1,000 files, 1 MB per file, 10 MB total | Our corpora are far inside this. Keep each `data/*.json` under 1 MB anyway. |
 | Files deeper than 10 directory levels are excluded | Not a risk with the current layout. |
