@@ -6,16 +6,20 @@
 Consortium is a harness for agents that are not allowed to pool their data. Parties that
 must jointly prove a property none of them can verify alone exchange **attestations** —
 banded, anonymised evidence that a matching record exists — rather than records. The
-coordinator finds the gap, broadcasts it so each agent re-queries its *own* data with a
-question it did not know to ask, then solves for the minimum set of disclosures that closes
-the gap and routes each one through a human owner.
+coordinator finds the gap and broadcasts it, so each agent re-queries its *own* data with a
+question it did not know to ask.
 
 ```
-attest  ->  detect gap  ->  re-examine locally against the gap  ->  minimise disclosure, gate on a human
+attest  ->  detect gap  ->  re-examine locally against the gap  ->  [minimise disclosure, gate on a human]
 ```
+
+The first three stages run. The fourth — the disclosure optimiser and the human approval
+gate — is designed (see the brief, §5.4) and **not built**; the stubs in `backend/` say so.
+What ships is the part that carries the argument: no single party could have found the gap,
+and closing it cost 2 bytes travelling back to the firms.
 
 Three things are domain-specific and pluggable: a requirement set, a closed banding
-vocabulary, and a disclosure-cost function.
+vocabulary, and a disclosure-cost function. Four scenarios ship against the same harness.
 
 ## The reference application
 
@@ -24,9 +28,8 @@ venture, and compete against each other on the next three. To produce a complian
 they must establish together that the team covers every requirement in the solicitation —
 without any firm exposing its client relationships, contract values, or full roster.
 
-*Three firms discover their joint bid is non-compliant, fix it, and assemble the SF330 —
-while each firm releases nine records out of forty and never names its confidential
-clients.*
+*Three firms discover their joint bid is non-compliant, and fix it — while never naming a
+confidential client and never putting a single byte of record content on the wire.*
 
 The SF330 is the example; the harness is the product.
 
@@ -36,43 +39,81 @@ From Flower Hub, on SuperGrid:
 
 ```bash
 flwr login supergrid
-flwr chat                 # then: @<publisher>/consortium <solicitation>
+flwr chat                 # then: @i53n1/consortium <solicitation>
 ```
 
 Locally, as a three-node federated simulation:
 
 ```bash
-make setup     # install dependencies
-make doctor    # verify the environment against the brief's §9.1 / §9.2 checklist
-make demo      # clean state -> three rounds -> baselines -> UI
+make setup                                    # install dependencies
+make doctor                                   # check the environment and that the FAB builds
+make watch  MODEL=/models/Qwen3.5-397B-A17B-FP8   # UI up first, protocol runs into it
 ```
 
-`make` on its own lists everything. During the build the two you want are `make rounds`
-(the federated protocol, streaming) and `make check` (lint + invariant tests) before you
-push.
+`make` on its own lists everything. The two you want during a build are `make rounds` (the
+federated protocol, streaming to the terminal) and `make check` (lint + invariant tests)
+before you push.
+
+### Round 2 needs a model
+
+`MODEL=` is what enables round-2 re-examination, because round 2 is a model reading prose.
+Without it the run is honest rather than broken: round 1 completes, R4 stays red, and the
+harness reports the bid non-compliant. The shared endpoints are in `docs/event.md`:
+
+```bash
+export FLWR_MODEL_API_ENDPOINT='http://129.212.182.232:8001/v1/responses'
+unset FLWR_MODEL_API_KEY                      # Qwen takes no key — an empty one fails
+make rounds MODEL=/models/Qwen3.5-397B-A17B-FP8
+```
+
+Responses are cached under `.cache/model/`, keyed on the exact request. **Editing the
+round-2 prompt invalidates the cache** — re-warm it with `make traces MODEL=…` while an
+endpoint is reachable, or the demo falls back to an open gap.
 
 The simulation runs **three** supernodes because three firms is the scenario — Flower 1.34
-defaults to two, so `make rounds` passes the count explicitly. Override it, the round count,
-or the UI port on the command line: `make rounds SUPERNODES=2 ROUNDS=1`.
+defaults to two, so `make rounds` passes the count explicitly. Override the count, the
+rounds, the scenario, or the UI port on the command line:
+
+```bash
+make rounds SUPERNODES=2 ROUNDS=1 SCENARIO=transit-tunnel
+```
+
+`make help` lists the scenario slugs. `make traces` runs every scenario once so the UI's
+selector can switch between them with no re-run and no network.
 
 ## Layout
 
 | Directory | Owner | Contents |
 |---|---|---|
-| `data/` | Data | Solicitation, per-firm corpora, closed vocabulary, ground truth |
-| `backend/` | Flower + Fusion | Coordinator, firm node, transport, bander, optimiser, assembly, baselines |
-| `agents/` | Agent | Per-firm matcher, local search, round-2 re-examination, prompts |
-| `frontend/` | Viz | Coverage matrix, disclosure ledger, SF330 render — local demo skin |
-| `docs/` | all | Brief, demo script, decisions |
+| `data/` | Data | Four solicitations, per-firm corpora, closed vocabulary, derived ground truth |
+| `backend/` | Flower + Fusion | Protocol loop, firm node, both app surfaces, scenarios, event trace |
+| `agents/` | Agent | Round-2 re-examination, model client and cache, prompts |
+| `frontend/` | Viz | Coverage matrix, disclosure ledger, event replay — local demo skin |
+| `docs/` | all | Brief, demo script, decisions, the organisers' post |
 | `tests/` | all | Invariants on the schema and the corpora |
 
-Each directory has a README naming the modules, their owning task, and the invariants
-that hold there.
+Each directory has a README naming what it holds, what is **not** built, and the invariants
+that actually hold there. `backend/` and `agents/` are the two importable packages, and the
+dependency runs one way: `agents` imports `backend.schema` and nothing else from `backend`.
 
-`frontend/` is a local skin over the JSON the backend writes. Flower Hub accepts only
-`.py`, `.toml`, `.md`, `.yaml`, `.json` and `.jsonl`, so HTML, CSS and JS are excluded from
-the published app — the shipped output surface is the text renderer in `backend/render.py`.
-See brief §10.3.
+### One protocol, two surfaces
+
+`backend/protocol.py` owns the round loop and neither surface owns it:
+
+- **`backend/agent_app.py`** — the `AgentApp` published to Hub and driven from `flwr chat`.
+  It has no `Grid`, so the loop runs over `backend/local_grid.py`, one `Context` per firm.
+- **`backend/server_app.py`** — the `ServerApp`, same loop over a real grid, one SuperNode
+  per firm. Driven by `make rounds`.
+
+The published FAB declares `agentapp` **only**: Hub rejects a bundle carrying both
+surfaces (`422`), and the SuperLink derives the task type from that declaration alone — so
+`flwr run .` starts the harness, and the federated surface goes through
+`flwr.simulation.run_simulation` instead. `docs/decisions.md` records that call.
+
+`frontend/` is a local skin over the JSON the backend writes. Hub accepts only `.py`,
+`.toml`, `.md`, `.yaml`, `.json` and `.jsonl`, so HTML, CSS and JS are excluded from the
+published app — the shipped output surface is `protocol.render()`, which prints the
+coverage matrix as text. See brief §10.3.
 
 ## Working in this repo
 
@@ -81,5 +122,7 @@ branch works: every task runs in its own **git worktree**, and `main` is the **o
 branch on `origin`.
 
 The plan — submission gates, pitch, architecture, Hub publishing runbook, task breakdown,
-milestones, cut list, judge Q&A — is `docs/consortium-brief.md`. Start at §0: it maps each
-scored axis to the artefact that evidences it, and names the two gates that are pass/fail.
+milestones, cut list, judge Q&A — is `docs/consortium-brief.md`. It is the plan **as
+written at the start of the day** and has not been rewritten to match what got built;
+`docs/README.md` lists where the two diverge, and the per-directory READMEs are the
+authority on what exists.
