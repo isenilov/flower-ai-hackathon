@@ -18,6 +18,7 @@ export
 endif
 PORT       ?= 8000
 SLIDES     := docs/slides
+PUBDIR     := .publish-stage
 SLIDE_PORT ?= 3030
 ROUNDS     ?= 3
 SUPERNODES ?= 3
@@ -113,8 +114,15 @@ build: ## Build the .fab bundle and throw it away, to prove it still builds
 	@$(RUN) flwr build >/dev/null 2>&1 && rm -f ./*.fab && echo "fab        builds clean" \
 		|| { echo "fab        FAILED — run 'uv run flwr build' for the error"; exit 1; }
 
+# Publishes a staged copy, not the repo: `flwr app publish` never reads `fab-exclude`, so
+# the root would ship docs/, tests/ and the deck's lockfile. See publish-stage.sh. Build the
+# stage first — Hub builds server-side, and that build is where a bad stage would surface.
 publish: check ## Publish to Flower Hub — bumps nothing, so bump `version` first for a new one
-	$(RUN) flwr app publish .
+	@sh publish-stage.sh $(PUBDIR) >/dev/null
+	@$(RUN) flwr build --app $(PUBDIR)/consortium >/dev/null 2>&1 && rm -f ./*.fab \
+		|| { echo "stage      FAILED — run 'uv run flwr build --app $(PUBDIR)/consortium'"; exit 1; }
+	$(RUN) flwr app publish $(PUBDIR)/consortium
+	@rm -rf $(PUBDIR)
 	@echo "-> https://flower.ai/apps/i53n1/consortium/"
 
 chat: ## Talk to the published harness on SuperGrid: @i53n1/consortium <solicitation>
