@@ -37,7 +37,9 @@ extend-exclude = ["*.md"]
 select = ["E", "F", "I", "UP", "B"]
 
 [tool.flwr.app]
-publisher = "consortium"
+# Must equal the Flower account name exactly, and the app name below cannot change after
+# the first publication. Published as @i53n1/consortium.
+publisher = "i53n1"
 fab-format-version = 1
 flwr-version-target = "1.35.0"
 # Hub keeps only .py/.toml/.md/.yaml/.json/.jsonl and LICENSE, and once any user rule is
@@ -52,10 +54,12 @@ fab-exclude = [
     "tests/**",
 ]
 
+# Hub rejects a mixed bundle — 422 "must contain either only 'agentapp' or exactly
+# 'serverapp' and 'clientapp'". The local CLI validates all three happily, so this only
+# surfaces at publish time. `serverapp` / `clientapp` stay in the repo as modules; the
+# federated surface runs via `flwr.simulation.run_simulation`, not `flwr run .`.
 [tool.flwr.app.components]
 agentapp = "backend.agent_app:app"
-serverapp = "backend.server_app:app"
-clientapp = "backend.client_app:app"
 
 [tool.flwr.app.config]
 num-rounds = 3
