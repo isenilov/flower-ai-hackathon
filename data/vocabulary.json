@@ -1,0 +1,9 @@
+{
+  "value_band": ["0-10M", "10-50M", "50-100M", "100-250M", "250M+"],
+  "recency_band": ["0-3y", "3-7y", "7y+"],
+  "sector": ["healthcare", "education", "transport", "civic", "industrial", "defence"],
+  "delivery": ["design-build", "design-bid-build", "cm-at-risk", "ipd"],
+  "credentials": ["PMP", "SE", "PE", "AIA", "LEED-AP"],
+  "client_type": ["federal", "state", "municipal", "private"],
+  "certification": ["LEED-Silver", "LEED-Gold", "LEED-Platinum", "none"]
+}

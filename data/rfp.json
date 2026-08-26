@@ -1,0 +1,80 @@
+{
+  "solicitation": "Federal healthcare facility, seismic zone, design-build",
+  "section_f_cap": 10,
+  "requirements": [
+    {
+      "id": "R1",
+      "section": "F",
+      "kind": "MANDATORY",
+      "min_count": 3,
+      "weight": 1.0,
+      "description": "Healthcare projects at or above $50M completed within seven years",
+      "predicate": {
+        "sector": "healthcare",
+        "value_band_min": "50-100M",
+        "recency_band_max": "3-7y"
+      }
+    },
+    {
+      "id": "R2",
+      "section": "F",
+      "kind": "MANDATORY",
+      "min_count": 2,
+      "weight": 1.0,
+      "description": "Design-build delivery for a federal client",
+      "predicate": {
+        "delivery": "design-build",
+        "client_type": "federal"
+      }
+    },
+    {
+      "id": "R3",
+      "section": "E",
+      "kind": "MANDATORY",
+      "min_count": 1,
+      "weight": 1.0,
+      "description": "Project manager, PMP credentialed, with healthcare experience",
+      "predicate": {
+        "role": "PM",
+        "credentials": "PMP",
+        "sector": "healthcare"
+      }
+    },
+    {
+      "id": "R4",
+      "section": "G",
+      "kind": "MANDATORY",
+      "min_count": 1,
+      "weight": 2.0,
+      "description": "One individual with both healthcare and seismic retrofit evidence, as a Section G cell",
+      "predicate": {
+        "sector": "healthcare",
+        "experience": "seismic-retrofit",
+        "join": "person_x_project"
+      }
+    },
+    {
+      "id": "R5",
+      "section": "E",
+      "kind": "WEIGHTED",
+      "min_count": 1,
+      "weight": 0.5,
+      "description": "Structural lead holding an SE credential",
+      "predicate": {
+        "role": "structural-lead",
+        "credentials": "SE"
+      }
+    },
+    {
+      "id": "R6",
+      "section": "F",
+      "kind": "WEIGHTED",
+      "min_count": 2,
+      "weight": 0.5,
+      "description": "Projects certified LEED Gold or better",
+      "predicate": {
+        "certification_min": "LEED-Gold"
+      }
+    }
+  ]
+}

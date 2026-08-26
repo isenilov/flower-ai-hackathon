@@ -1,19 +1,52 @@
 [project]
-name = "flower-ai-hackathon"
+name = "consortium"
 version = "0.1.0"
-description = "Add your description here"
+description = "Federated bid assembly — SF330 compliance without disclosing private libraries"
 readme = "README.md"
-authors = [
-    { email = "slav.lukin@axomic.com" }
-]
+license = "Apache-2.0"
 requires-python = ">=3.13"
 dependencies = [
-    "flwr>=1.34.0",
+    "flwr[simulation]>=1.34.0",
+    "numpy>=2.0",
 ]
 
-[project.scripts]
-flower-ai-hackathon = "flower_ai_hackathon:main"
-
 [build-system]
-requires = ["uv_build>=0.12.5,<0.13.0"]
-build-backend = "uv_build"
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["backend", "agents"]
+
+[tool.flwr.app]
+publisher = "consortium"
+
+[tool.flwr.app.components]
+serverapp = "backend.server_app:app"
+clientapp = "backend.client_app:app"
+
+[tool.flwr.app.config]
+num-rounds = 3
+tau = 0.6
+section-f-cap = 10
+
+
+#######################################################################
+# CONFIGURATION MIGRATION NOTICE:
+#
+# What was previously called "federation config" for SuperLink
+# connections in pyproject.toml has been renamed and moved.
+#
+# These settings are now **SuperLink connection configuration**
+# and are defined in the Flower configuration file.
+#
+# The entries below are commented out intentionally and are kept
+# only as a migration reference.
+#
+# Docs: https://flower.ai/docs/framework/ref-flower-configuration.html
+#######################################################################
+
+# [tool.flwr.federations]
+# default = "local-sim"
+
+# [tool.flwr.federations.local-sim]
+# options.num-supernodes = 3

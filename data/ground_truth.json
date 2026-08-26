@@ -1,0 +1,4 @@
+{
+  "coverage": {},
+  "notes": "Per requirement: the handles that genuinely satisfy it, across all three firms. Used only by backend/baselines.py to score the isolated / consortium / centralised-pool conditions. Never read by a firm node."
+}

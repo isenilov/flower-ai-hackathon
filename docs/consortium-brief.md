@@ -95,42 +95,44 @@ Nobody finds R4 alone. The federated round finds it.
 
 ### 5.1 Components
 
+```mermaid
+flowchart TB
+    coord["<b>ServerApp — Coordinator</b><br/>backend/server_app.py<br/>RFP decomposition · coverage matrix · gap analysis<br/>minimum disclosure optimiser · SF330 assembly"]
+
+    subgraph firm_a["ClientApp: Firm A — backend/client_app.py"]
+        direction TB
+        match_a["matcher agent<br/>agents/matcher.py"]
+        search_a["local search<br/>agents/search.py"]
+        band_a["bander, egress<br/>backend/bander.py"]
+        gate_a["BD approval gate<br/>backend/approval.py"]
+        match_a --> search_a --> band_a --> gate_a
+    end
+
+    subgraph firm_b["ClientApp: Firm B"]
+        same_b["same stack"]
+    end
+
+    subgraph firm_c["ClientApp: Firm C"]
+        same_c["same stack"]
+    end
+
+    lib_a[("<b>PRIVATE LIBRARY</b> — never leaves the firm<br/>projects · people · clients · fees<br/>data/firm_a.json")]
+
+    coord <== "attestations (banded) / disclosure requests / approved content" ==> firm_a
+    coord <==> firm_b
+    coord <==> firm_c
+    search_a --> lib_a
 ```
-                    +-------------------------------------+
-                    |  ServerApp — Coordinator            |
-                    |                                     |
-                    |  - RFP decomposition                |
-                    |  - coverage matrix                  |
-                    |  - gap analysis                     |
-                    |  - minimum disclosure optimiser     |
-                    |  - SF330 assembly                   |
-                    +---+-------------+-------------+-----+
-                        |             |             |
-          attestations (banded) / disclosure requests / approved content
-                        |             |             |
-     +------------------+   +---------+--------+    +------------------+
-     | ClientApp: Firm A|   | ClientApp: Firm B|    | ClientApp: Firm C|
-     |                  |   |                  |    |                  |
-     |  matcher agent   |   |      ...         |    |      ...         |
-     |       |          |   |                  |    |                  |
-     |  local search    |   |                  |    |                  |
-     |       |          |   |                  |    |                  |
-     |  bander (egress) |   |                  |    |                  |
-     |       |          |   |                  |    |                  |
-     |  BD approval gate|   |                  |    |                  |
-     +-------|----------+   +------------------+    +------------------+
-             |
-     +-------v-----------+
-     |  PRIVATE LIBRARY  |   <-- never leaves the firm
-     |  projects, people,|
-     |  clients, fees    |
-     +-------------------+
-```
+
+The coordinator lives in `backend/`, the matcher in `agents/`, and the private libraries
+in `data/` — one file per firm, read only by that firm's node. Directory ownership and
+the rules for working across it are in `CLAUDE.md` at the repo root.
 
 ### 5.2 The attestation schema — the privacy boundary
 
 The schema is the guarantee. A struct that structurally cannot carry a client name, a fee,
-or a person's identity.
+or a person's identity. It ships as `backend/schema.py` and is **frozen at 11:20** — every
+other task depends on it.
 
 ```python
 from dataclasses import dataclass, field
@@ -313,6 +315,10 @@ No web framework. No database. No embedding service — see R5 below.
 - [ ] `data/firm_c.json` — same
 - [ ] `data/vocabulary.json` — closed sets for sector, bands, credentials, delivery
 - [ ] `data/ground_truth.json` — true coverage, for scoring the three conditions
+- [ ] `data/generate.py` — the scripted generation pass itself
+
+Record shapes for projects and people are fixed in `data/README.md` before generation
+starts.
 
 **Engineering requirements for the corpora — non-negotiable:**
 
@@ -331,24 +337,24 @@ No web framework. No database. No embedding service — see R5 below.
 
 Assumes 4 people. With 3, drop the viz owner; the pitch still gets a named owner.
 
-| # | Task | Owner | Window | Blocks |
-|---|---|---|---|---|
-| T1 | Align on scenario + attestation schema. Everyone can state the demo moment in one sentence. | all | 11:00–11:20 | everything |
-| T2 | **Synthetic corpora + RFP + vocabulary** (scripted LLM pass, fixed schema first) | Data | 11:20–12:10 | T4, T7 |
-| T3 | Repo skeleton, `pyproject.toml`, `flwr run` executing a no-op round | Flower | 11:20–12:00 | T5 |
-| T4 | Local search + structured predicate matcher | Agent | 12:10–13:00 | T6 |
-| T5 | Attestation serialisation into `RecordDict`, both directions | Flower | 12:00–13:30 | T7 |
-| T6 | Matcher agent prompt, round-1 attestation emission | Agent | 13:00–14:15 | T7 |
-| T7 | **End-to-end round 1 + coverage matrix, R4 showing red** | Flower+Agent | → 15:00 | T8 |
-| T8 | **Round 2 re-examination** — gap-directed local re-query | Agent | 15:00–16:00 | demo |
-| T9 | Bander + byte counter | Flower | 13:30–14:00 | T12 |
-| T10 | Disclosure optimiser (greedy weighted set cover) | Fusion | 12:00–14:30 | T11 |
-| T11 | Approval gate + denial-and-substitute re-run | Fusion | 14:30–15:15 | demo |
-| T12 | Three-condition baseline harness + results table | Fusion | 15:15–16:00 | demo |
-| T13 | Coverage matrix + disclosure ledger visual | Viz | 13:30–16:00 | cut candidate |
-| T14 | SF330 assembly render (HTML with Sections E/F/G is plenty) | Viz | 14:00–16:00 | demo |
-| T15 | Slides: problem, architecture, baselines, roadmap | Viz | 15:00–16:40 | demo |
-| T16 | **Code freeze.** Rehearse twice, timed. | all | 16:40–17:15 | — |
+| # | Task | Owner | Where it lands | Window | Blocks |
+|---|---|---|---|---|---|
+| T1 | Align on scenario + attestation schema. Everyone can state the demo moment in one sentence. | all | `backend/schema.py` | 11:00–11:20 | everything |
+| T2 | **Synthetic corpora + RFP + vocabulary** (scripted LLM pass, fixed schema first) | Data | `data/` | 11:20–12:10 | T4, T7 |
+| T3 | Repo skeleton, `pyproject.toml`, `flwr run` executing a no-op round | Flower | `pyproject.toml`, `backend/` | 11:20–12:00 | T5 |
+| T4 | Local search + structured predicate matcher | Agent | `agents/search.py` | 12:10–13:00 | T6 |
+| T5 | Attestation serialisation into `RecordDict`, both directions | Flower | `backend/transport.py` | 12:00–13:30 | T7 |
+| T6 | Matcher agent prompt, round-1 attestation emission | Agent | `agents/matcher.py`, `agents/prompts/` | 13:00–14:15 | T7 |
+| T7 | **End-to-end round 1 + coverage matrix, R4 showing red** | Flower+Agent | `backend/coverage.py`, `backend/server_app.py` | → 15:00 | T8 |
+| T8 | **Round 2 re-examination** — gap-directed local re-query | Agent | `agents/reexamine.py` | 15:00–16:00 | demo |
+| T9 | Bander + byte counter | Flower | `backend/bander.py` | 13:30–14:00 | T12 |
+| T10 | Disclosure optimiser (greedy weighted set cover) | Fusion | `backend/optimiser.py` | 12:00–14:30 | T11 |
+| T11 | Approval gate + denial-and-substitute re-run | Fusion | `backend/approval.py` | 14:30–15:15 | demo |
+| T12 | Three-condition baseline harness + results table | Fusion | `backend/baselines.py` | 15:15–16:00 | demo |
+| T13 | Coverage matrix + disclosure ledger visual | Viz | `frontend/` | 13:30–16:00 | cut candidate |
+| T14 | SF330 assembly render (HTML with Sections E/F/G is plenty) | Viz | `backend/assemble.py`, `frontend/` | 14:00–16:00 | demo |
+| T15 | Slides: problem, architecture, baselines, roadmap | Viz | `docs/`, slides | 15:00–16:40 | demo |
+| T16 | **Code freeze.** Rehearse twice, timed. | all | `docs/demo-script.md` | 16:40–17:15 | — |
 
 ### Milestones
 
@@ -440,22 +446,48 @@ pool the data. It is also a product Axomic could plausibly ship.
 
 ```
 consortium/
-├── pyproject.toml
-├── data/
-│   ├── rfp.json
-│   ├── firm_a.json
-│   ├── firm_b.json
+├── CLAUDE.md                     # working agreement: worktrees, one branch, ownership
+├── README.md
+├── pyproject.toml                # flwr app config, hatchling packages: backend, agents
+├── data/                         # Data owner — T2
+│   ├── README.md                 # record shapes + the non-negotiable corpus rules
+│   ├── rfp.json                  # 6 typed requirements per §4
+│   ├── vocabulary.json           # closed sets: sector, bands, credentials, delivery
+│   ├── firm_a.json               # private library, one file per firm
+│   ├── firm_b.json               #   — holds the sole R4 match
 │   ├── firm_c.json
-│   ├── vocabulary.json
-│   └── ground_truth.json
-├── consortium/
-│   ├── __init__.py
-│   ├── schema.py         # Requirement, Attestation, bander, byte counter
-│   ├── client_app.py     # firm matcher agent, local search, approval gate
-│   ├── server_app.py     # coordinator, coverage matrix, round orchestration
-│   ├── optimiser.py      # greedy weighted set cover
-│   ├── assemble.py       # SF330 Sections E / F / G render
-│   ├── baselines.py      # isolated / federated / pooled harness
-│   └── viz.py            # coverage matrix, disclosure ledger
-└── README.md
+│   ├── ground_truth.json         # true coverage, for scoring the three conditions
+│   └── generate.py               # scripted LLM generation pass
+├── backend/                      # Flower + Fusion owners
+│   ├── schema.py                 # Requirement, Attestation, closed vocabulary — frozen 11:20
+│   ├── bander.py                 # egress validator + outbound byte counter
+│   ├── transport.py              # Attestation <-> RecordDict, both directions
+│   ├── server_app.py             # coordinator: decomposition, round loop, gap broadcast
+│   ├── client_app.py             # firm node: agent dispatch, approval gate
+│   ├── coverage.py               # coverage matrix, gap analysis
+│   ├── optimiser.py              # greedy weighted set cover under the Section F cap
+│   ├── approval.py               # BD approval gate, denial-and-substitute re-run
+│   ├── assemble.py               # SF330 Sections E / F / G
+│   └── baselines.py              # isolated / consortium / centralised-pool harness
+├── agents/                       # Agent owner
+│   ├── search.py                 # structured predicate prefilter over banded fields
+│   ├── matcher.py                # round-1 matching, attestation emission
+│   ├── reexamine.py              # round-2 gap-directed re-query — never cut
+│   ├── model.py                  # model client + response cache
+│   └── prompts/
+│       ├── round1_match.md
+│       └── round2_reexamine.md
+├── frontend/                     # Viz owner — static HTML, no build step
+│   ├── index.html                # coverage matrix, disclosure ledger, SF330
+│   ├── app.js
+│   ├── styles.css
+│   └── state/                    # run state written by the backend, gitignored
+└── docs/
+    ├── consortium-brief.md       # this document
+    ├── demo-script.md
+    └── decisions.md
 ```
+
+Each directory carries a README naming its modules, the task that owns each one, and the
+invariants that hold there. `backend/` and `agents/` are the two importable packages; the
+dependency runs one way — `agents` imports `backend.schema` and nothing else from it.
