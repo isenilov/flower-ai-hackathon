@@ -754,7 +754,8 @@ side of the demo.
 [project]
 name = "consortium"
 version = "0.3.0"                       # bump before every publish; `make publish` does not
-description = "A collaborative disclosure harness for agents that cannot pool their data"
+# Hub renders this as the app description, and it carries the team; >200 chars makes publish ask
+description = "A collaborative disclosure harness for agents that cannot pool their data. Team Axomic: Vyacheslav Lukin, Ivan Senilov."
 license = { file = "LICENSE" }          # NOT license = "Apache-2.0" — a table, with a file
 
 [tool.flwr.app]
