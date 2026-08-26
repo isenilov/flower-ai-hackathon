@@ -259,6 +259,10 @@ def run(
                                 "kind": a.kind,
                                 "disclosure_cost": a.disclosure_cost,
                                 "banded": a.banded,
+                                # What the model made of the record's own prose. Additive
+                                # fields, so a frontend built against v1 ignores them.
+                                "match_strength": a.match_strength,
+                                "note": a.note,
                             }
                             for a in covered[r.id]
                         ],

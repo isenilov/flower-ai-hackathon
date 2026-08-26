@@ -26,7 +26,7 @@ from typing import Any
 
 from flwr.common.logger import log
 
-from agents import model
+from agents import model, search
 from backend import ansi
 from backend.schema import Requirement
 
@@ -67,20 +67,18 @@ def _describe(requirement: Requirement) -> str:
 
 
 def _candidates(library: dict[str, Any], requirement: Requirement) -> list[dict[str, Any]]:
-    """The records worth re-reading: right kind, not blocked, and carrying prose.
+    """The records worth re-reading: eligible for the requirement, and carrying prose.
 
-    Cost-3 records are excluded here as well as in round 1. A refusal that a second look
-    could route around would not be a refusal.
+    Eligibility — the right half of the library, blocked records excluded — belongs to
+    ``agents.search``, so the two rounds cannot drift on what a node is allowed to look at.
+    Cost-3 records are out here exactly as in round 1: a refusal that a second look could
+    route around would not be a refusal.
     """
-    group = "people" if requirement.section in ("E", "G") else "projects"
-    records = []
-    for record in library.get(group, []):
-        if int(record.get("disclosure_cost", 0)) >= 3:
-            continue
-        prose = str(record.get("bio") or record.get("narrative") or "").strip()
-        if prose:
-            records.append(record)
-    return records
+    return [
+        record
+        for record in search.eligible(library, requirement)
+        if str(record.get("bio") or record.get("narrative") or "").strip()
+    ]
 
 
 def _payload(

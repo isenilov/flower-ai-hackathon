@@ -17,6 +17,7 @@ from flwr.app import ConfigRecord, Context, Message, RecordDict
 from flwr.clientapp import ClientApp
 from flwr.common.logger import log
 
+from agents import matcher, search
 from backend.scenarios import resolve
 from backend.schema import NOTE_MAX_CHARS, VOCABULARY, Attestation, Requirement
 
@@ -194,38 +195,53 @@ def _band_of(record: dict[str, Any], declared_sector: dict[str, str], as_of: str
 
 
 def attest(
-    library: dict[str, Any], requirements: list[Requirement], as_of: str
+    library: dict[str, Any],
+    requirements: list[Requirement],
+    as_of: str,
+    reader: object | None = None,
+    model_id: str = "",
 ) -> list[Attestation]:
     """Round 1: emit one attestation per (requirement, declared match) pair.
 
-    ``disclosure_cost`` 3 means blocked: those records never enter the candidate set, so a
-    refusal cannot be routed around downstream. This is why attestation counts sit below
-    ``ground_truth.json``'s ``coverage`` — that is the oracle over every record, blocked
-    ones included, while a node only ever attests to what it could actually offer.
+    The pairs come from ``agents.search``: declared fields only, blocked records excluded,
+    Section G's join enforced. ``disclosure_cost`` 3 means blocked, so those records never
+    enter the candidate set and a refusal cannot be routed around downstream. This is why
+    attestation counts sit below ``ground_truth.json``'s ``coverage`` — that is the oracle
+    over every record, blocked ones included, while a node only ever attests to what it
+    could actually offer.
+
+    ``reader`` and ``model_id`` add the grading pass in ``agents.matcher``, which fills in
+    ``match_strength`` and the note by reading each shortlisted record's own prose. It
+    cannot change *which* pairs there are — see that module for why — so a run without a
+    model produces the same matrix with less said about it.
     """
     firm = str(library.get("firm", "UNKNOWN"))
     declared_sector = {p["handle"]: p["sector"] for p in library.get("projects", [])}
+
+    def banded_of(record: dict[str, Any]) -> dict[str, str]:
+        return _band_of(record, declared_sector, as_of)
+
+    shortlists = [
+        (requirement, search.shortlist(library, requirement, firm, banded_of, matches))
+        for requirement in requirements
+    ]
+    grades = matcher.grade(shortlists, reader, model_id)  # type: ignore[arg-type]
+
     attestations: list[Attestation] = []
-
-    for requirement in requirements:
-        wants_join = requirement.predicate.get("join") == "person_x_project"
-        records = library.get("people" if requirement.section in ("E", "G") else "projects", [])
-
-        for record in records:
-            if int(record.get("disclosure_cost", 0)) >= 3:
-                continue
-
-            is_person = "bio" in record or "projects" in record
-            banded = _band_of(record, declared_sector, as_of)
-            if not matches(requirement.predicate, banded):
-                continue
-
-            links = [h for h in record.get("projects", []) if h.startswith(firm)]
-            if wants_join and not links:
-                # Section G needs the person-on-project join, not just the person.
-                continue
-
-            attestations.append(_attestation(record, firm, requirement, banded, is_person, 1.0))
+    for requirement, candidates in shortlists:
+        for candidate in candidates:
+            grade = grades.get((requirement.id, candidate.handle), matcher.DECLARED)
+            attestations.append(
+                _attestation(
+                    candidate.record,
+                    firm,
+                    requirement,
+                    candidate.banded,
+                    candidate.is_person,
+                    match_strength=grade.strength,
+                    note=grade.note,
+                )
+            )
 
     return attestations
 
@@ -330,10 +346,12 @@ def make_client_app(injected_reader: object | None = None) -> ClientApp:
         gap_ids = [gid for gid in str(msg.content["gap"]["requirement_ids"]).split(",") if gid]
 
         library = load_library(context, str(rfp["scenario"]) if "scenario" in rfp else "")
-        attestations = attest(library, requirements, as_of)
+        # One reader for both rounds, so both go through the same on-disk cache: round 1
+        # grades what the declared fields matched, round 2 re-reads what they missed.
+        reader = model_client.resolve_reader(injected_reader) if model_id else None  # type: ignore[arg-type]
+        attestations = attest(library, requirements, as_of, reader, model_id)
         if gap_ids:
             # A broadcast gap is the only thing that licenses re-reading prose.
-            reader = model_client.resolve_reader(injected_reader)  # type: ignore[arg-type]
             attestations += reexamine_gaps(library, requirements, gap_ids, as_of, reader, model_id)
 
         return Message(content=encode(attestations), reply_to=msg)
