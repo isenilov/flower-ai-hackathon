@@ -448,6 +448,7 @@ pool the data. It is also a product Axomic could plausibly ship.
 consortium/
 ├── CLAUDE.md                     # working agreement: worktrees, one branch, ownership
 ├── README.md
+├── Makefile                      # make demo, make check — `make` lists the rest
 ├── pyproject.toml                # flwr app config, hatchling packages: backend, agents
 ├── data/                         # Data owner — T2
 │   ├── README.md                 # record shapes + the non-negotiable corpus rules
@@ -482,6 +483,8 @@ consortium/
 │   ├── app.js
 │   ├── styles.css
 │   └── state/                    # run state written by the backend, gitignored
+├── tests/                        # everyone
+│   └── test_invariants.py        # schema vs data, and the engineered R4 gap
 └── docs/
     ├── consortium-brief.md       # this document
     ├── demo-script.md

@@ -58,6 +58,7 @@ directory, say so in chat first.
 | `agents/` | Agent | Matcher agent, local search, round-2 re-examination, prompts |
 | `frontend/` | Viz | Coverage matrix, disclosure ledger, SF330 render |
 | `docs/` | all | Brief, demo script, decisions |
+| `tests/` | all | Invariants on the schema and the corpora. Whoever breaks one owns the fix. |
 
 Two rules that matter more than the table:
 
@@ -70,11 +71,22 @@ Two rules that matter more than the table:
 
 ## 4. Environment
 
+Everything goes through the Makefile — `make` lists the targets. The four you need:
+
 ```bash
-uv sync                      # once, and after any dependency change
-uv run flwr run .            # local simulation, 3 supernodes
-uv run python -m backend.baselines   # three-condition results table
+make setup     # once, and after anyone touches uv.lock
+make rounds    # the federated protocol, logs streaming
+make check     # lint + invariant tests — run this before every push
+make demo      # the full 90-second run
 ```
+
+`make check` is not optional. The invariant tests in `tests/` guard the two things that
+break silently: `data/vocabulary.json` drifting from `backend/schema.py`, and a corpus edit
+that destroys the engineered R4 gap. They fail here or they fail on stage.
+
+`make fmt` exists but read §3 first — running it over the whole tree reformats files you
+do not own and turns a two-line conflict into a whole-file one. Pass paths you own:
+`uv run ruff format agents/`.
 
 Python ≥ 3.13, `uv`, `flwr >= 1.34`. Dependencies are stdlib-first per the brief (§9.3):
 `dataclasses` over pydantic, `re` for the bander, `numpy` for optimiser arithmetic. Adding

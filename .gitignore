@@ -8,5 +8,7 @@ CLAUDE.local.md
 .env.*
 *.fab
 .cache/
+.pytest_cache/
+.ruff_cache/
 frontend/state/*.json
 .DS_Store

@@ -20,15 +20,18 @@ clients.*
 ## Run it
 
 ```bash
-uv sync
-uv run flwr run .                     # local simulation, three firm nodes
-uv run python -m backend.baselines    # isolated / consortium / centralised-pool table
-open frontend/index.html              # coverage matrix, ledger, assembled SF330
+make setup     # install dependencies
+make doctor    # verify the environment against the brief's §9.1 / §9.2 checklist
+make demo      # clean state -> three rounds -> baselines -> UI
 ```
 
-`flwr run` prints a deprecation warning about `options.` in the SuperLink connection
-config. Ignore it — that block is what gives the simulation **three** supernodes instead
-of the 1.34 default of two, and three firms is the scenario.
+`make` on its own lists everything. During the build the two you want are `make rounds`
+(the federated protocol, streaming) and `make check` (lint + invariant tests) before you
+push.
+
+The simulation runs **three** supernodes because three firms is the scenario — Flower 1.34
+defaults to two, so `make rounds` passes the count explicitly. Override it, the round count,
+or the UI port on the command line: `make rounds SUPERNODES=2 ROUNDS=1`.
 
 ## Layout
 
@@ -39,6 +42,7 @@ of the 1.34 default of two, and three firms is the scenario.
 | `agents/` | Agent | Per-firm matcher, local search, round-2 re-examination, prompts |
 | `frontend/` | Viz | Coverage matrix, disclosure ledger, SF330 render |
 | `docs/` | all | Brief, demo script, decisions |
+| `tests/` | all | Invariants on the schema and the corpora |
 
 Each directory has a README naming the modules, their owning task, and the invariants
 that hold there.
