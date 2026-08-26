@@ -48,9 +48,12 @@ html.dark .tile {
   font-size: 0.9rem;
 }
 
-/* Coverage grid cells */
+/* Coverage grid cells. `.maybe` matters as much as the other two: a field search that admits
+   no record has not established that no record exists, and drawing that as a red cross is
+   what made the deck look like it contradicted itself on the round-2 slide. */
 .ok,
-.no {
+.no,
+.maybe {
   text-align: center;
   border-radius: 0.25rem;
   padding: 0.15rem 0;
@@ -64,6 +67,10 @@ html.dark .tile {
   background: #fee2e2;
   color: #b91c1c;
 }
+.maybe {
+  background: #fef3c7;
+  color: #b45309;
+}
 html.dark .ok {
   background: #14532d;
   color: #86efac;
@@ -71,6 +78,10 @@ html.dark .ok {
 html.dark .no {
   background: #7f1d1d;
   color: #fca5a5;
+}
+html.dark .maybe {
+  background: #78350f;
+  color: #fcd34d;
 }
 
 /* Big-number layout */

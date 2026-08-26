@@ -52,8 +52,8 @@ deck can be checked against `docs/event.md` rather than against taste.
 |---|---|---|
 | 1 | Cover | the problem and the solution, two lines each |
 | 2 | **One contract. Three firms. Nobody can check.** | three firms, one question, three "cannot answer" |
-| 3 | **What the database fields can prove** | the 6 × 3 coverage grid, one row red |
-| 4 | The fourth row is in a paragraph, not a field | the database fields beside the bio sentence |
+| 3 | **What the database fields can prove** | the 6 × 3 grid: five rows ✓, the fourth `?` |
+| 4 | **Firm B had the person all along** | the record's fields beside its bio, then the fourth row scored both ways |
 | 5 | The loop | four stages, stage 4 dashed because it is not built |
 | 6 | Architecture | the trust boundary, three identical stacks under it |
 | 7 | The coordinator sends the gap, not the answer | 2 bytes out, two "nothing here", one hit |
@@ -84,12 +84,13 @@ mechanism appears.
   that the optimiser, the human gate, and the baselines have somewhere honest to live. The
   appendix's *Not claimed* list is the checklist — keep it in sync with
   `docs/demo-script.md`'s closing section.
-- **Slide 3 is a field search, not an inventory.** Every firm clears five rows alone and all
-  three miss the fourth *on declared fields*. Firm B holds the person the whole time;
+- **Slide 3 is a field search, not an inventory, and the marks carry that.** Five rows are ✓ at
+  every firm; the fourth is an amber `?`, never a red ✗, because a predicate that admits no
+  record has not established that no record exists. Firm B holds the person the whole time:
   `agents/search.py` is a structured predicate and `agents/matcher.py` may only grade what it
-  admits, so a record filed `sector: civic` never reaches a model in round 1. If slide 3 ever
-  reads as "nobody has such a person", slide 7 looks like a contradiction and the deck loses
-  the argument. Keep the "not the same as nobody having it" clause.
+  admits, so a record filed `sector: civic` never reaches a model in round 1. Put a red ✗ back
+  on that row and slide 7 reads as a contradiction — that is the bug this deck already had
+  once. The legend and slide 4's two-way strip are the fix; keep both.
 - Do not revive the brief's "each firm self-assesses compliant and is confidently wrong" —
   that is `ground_truth.json`'s `self_assessment` baseline, and it never executes.
 - **Validate Mermaid before pushing:** `node ~/.claude/tools/mermaid-lint/validate.mjs

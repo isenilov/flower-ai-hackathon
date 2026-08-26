@@ -106,7 +106,7 @@ class: text-left
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
 
 <div class="font-bold">One person: hospital <i>and</i> earthquake retrofit</div>
-<div class="no">✗</div><div class="no">✗</div><div class="no">✗</div>
+<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div>
 
 <div>Chartered structural lead</div>
 <div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
@@ -116,10 +116,15 @@ class: text-left
 
 </div>
 
-<div v-click class="cap mt-4">
+<div class="flex gap-6 mt-3 text-xs opacity-70">
+<div><span class="ok px-2">✓</span> &nbsp;the fields settle it</div>
+<div><span class="maybe px-2">?</span> &nbsp;the fields cannot say either way</div>
+</div>
 
-Every firm clears five rows on its own. On the fields alone, nobody can show the fourth —
-**which is not the same as nobody having it.**
+<div v-click class="cap mt-3">
+
+Five rows are settled by the fields at every firm. The fourth one the fields cannot answer, so
+the coordinator records it as an open gap. **An open gap is not the same as nobody having it.**
 
 </div>
 
@@ -140,59 +145,71 @@ layout: center
 class: text-left
 ---
 
-# The fourth row is in a paragraph, not a field
+# Firm B had the person all along
+
+<div class="text-xs opacity-55 mt-1">one record at Firm B, read two ways</div>
 
 <div class="grid grid-cols-2 gap-6 mt-3">
 <div>
 
-### what the form asks for
-
-<div class="tile">
-The <b style="display:inline">same named person</b> on a hospital project <i>and</i> on an
-earthquake-strengthening project. Both projects named.
-<div class="mt-2 opacity-60">SF330 Section G — the person-by-project grid on the US federal form every bid team files.</div>
-</div>
-
-</div>
-<div v-click>
-
-### what firm B's database says
+### on file — what round 1 matched
 
 ```text
 person   FIRM_B::PERSON::007
 role     structural lead
-sector   civic          <- not healthcare
+sector   civic        <- not healthcare
 ```
 
-<div class="mt-2 text-xs opacity-70">what the person's written bio says:</div>
+<div class="mt-2 text-xs opacity-70">The predicate needs <code>sector=healthcare</code>. This record fails it, so round 1 never even offers it to a model.</div>
 
-<div class="tile mt-1">
+</div>
+<div v-click>
+
+### in prose — what round 2 read
+
+<div class="tile">
 "… <b style="display:inline">seismic</b> base isolation and strengthening on an
 <b style="display:inline">acute care wing</b> upgrade …"
 </div>
 
+<div class="mt-2 text-xs opacity-70">A hospital wing, filed as civic work by a firm that saw a concrete frame and a city client.</div>
+
 </div>
 </div>
 
-<div v-click class="cap mt-4">
+<div v-click class="mt-5">
 
-**Firm B has the person.** The fields say civic, so the field search never offered them, and
-round 1 never opened the bio: reading every paragraph against every requirement is the
-expensive half. That is what the red row on the last slide actually meant.
+<div class="text-xs opacity-55 mb-1">the fourth row, both ways</div>
+
+<div class="grid grid-cols-[13rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm">
+<div></div>
+<div class="text-center text-xs font-bold opacity-60">Firm A</div>
+<div class="text-center text-xs font-bold opacity-60">Firm B</div>
+<div class="text-center text-xs font-bold opacity-60">Firm C</div>
+
+<div>matched on fields</div>
+<div class="maybe">?</div><div class="maybe">?</div><div class="maybe">?</div>
+
+<div>read in the bios</div>
+<div class="no">✗</div><div class="ok">✓</div><div class="no">✗</div>
+</div>
 
 </div>
 
 <!--
 This slide is the answer to "wait, you said nobody had one". Firm B held the person the whole
 time. `agents/search.py` is a structured predicate over declared banded fields, and
-`agents/matcher.py` grades what that prefilter admits without being allowed to add to it - so
-a record filed `sector: civic` never reaches the model in round 1.
+`agents/matcher.py` grades what that prefilter admits without being allowed to add to it, so a
+record filed `sector: civic` never reaches a model in round 1. In the trace it is one field:
+round 1 broadcasts `reads_text: false`, round 2 broadcasts `reads_text: true`.
+
+Why round 1 does not just read everything: cost. Matching six predicates over a library is
+cheap; reading every paragraph against every requirement is the expensive half, and the joint
+grid is what licenses spending it on exactly one requirement.
 
 Two glosses for anyone outside construction, ten seconds: seismic means earthquake, and a
-retrofit is strengthening a building that already stands.
-
-Why it was filed as civic: a structural engineering firm saw a concrete frame and a city
-client, not a hospital. An ordinary filing decision, not a contrived one.
+retrofit is strengthening a building that already stands. The fourth row is SF330 Section G,
+the person-by-project grid on the US federal form every bid team files.
 -->
 
 ---
@@ -385,6 +402,12 @@ nobody covered. Firm B's agent went looking only because it was told about a hol
 
 <!--
 The beat. Hold here for as long as the question takes.
+
+Slide 4 already gave away that Firm B holds the person, deliberately - a judge who is still
+confused about that cannot hear this slide. So the beat here is not "Firm B has it", it is
+that *nobody told Firm B where to look*. The coordinator does not know which firm has the
+hole, and Firm B's agent re-read its own bios on the strength of two bytes about somebody
+else's coverage. Say that, not the result.
 
 If they ask why round 1 does not read everything: cost. `agents/search.py` is a cheap
 structured predicate over six requirements; reading every paragraph against every requirement
