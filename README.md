@@ -1,7 +1,7 @@
 # Consortium — a collaborative disclosure harness for Flower Agents
 
 **Collaborative Agent Hackathon — Flower Labs, University of Cambridge, Wed 26 Aug 2026**
-**Track: Flower Agent Harness**
+**Track 1: SuperGrid**
 
 Consortium is a harness for agents that are not allowed to pool their data. Parties that
 must jointly prove a property none of them can verify alone exchange **attestations** —

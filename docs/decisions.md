@@ -5,10 +5,9 @@ argument happening twice under time pressure.
 
 | Time | Decision | Why |
 |---|---|---|
-| — | | |
+| — | **Track 1: SuperGrid.** That is what goes on the submission form. | The forum post offers only Track 1 (SuperGrid) and Track 2 (Infrastructure); "Flower Agent Harness" is our own framing and appears nowhere the organisers wrote. Track 1 is the tighter brief and matches what we are building. |
 
 Decisions that are already scheduled and must land here when they are made:
-
 - **10:45** — who owns the Flower account. Their username becomes the Hub `publisher` and
   the app name `consortium` becomes immutable at the first publish.
 - **11:20** — attestation schema frozen. Everything downstream depends on it.

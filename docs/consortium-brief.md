@@ -1,8 +1,9 @@
 # Consortium — a collaborative disclosure harness for Flower Agents
 
 **Collaborative Agent Hackathon — Flower Labs, University of Cambridge, Wed 26 Aug 2026**
-**Track: Flower Agent Harness** — *"Agents can significantly accelerate our work; how would
-collaborative agents multiply that?"*
+**Track 1: SuperGrid** — *"showcase the collaborative aspect of Flower Agents running on
+SuperGrid."* We build that as an agent **harness**: *"Agents can significantly accelerate
+our work; how would collaborative agents multiply that?"*
 
 Reference application: AEC qualifications packages (SF330), grounded in the
 OpenAsset / Axomic workflow.
@@ -24,6 +25,10 @@ pass/fail gates and six scored axes. Everything in this document is arranged aro
 
 Neither is a demo feature. A perfect demo with no published app does not qualify. §10 is
 the publishing runbook; **T0 in §11 clears both gates before we write scenario code.**
+
+The organisers' own wording — schedule, venue, Slack channel, required reading, the shared
+model endpoints and their 5-minute task timeout, the submission fields, and the six judging
+axes — is in `event.md`. Read it once.
 
 ### 0.2 Scored axes, and the artefact that evidences each
 
