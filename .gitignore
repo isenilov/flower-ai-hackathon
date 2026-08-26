@@ -21,3 +21,4 @@ docs/slides/.slidev/
 
 # The federated surface staged for `flwr run` — carries the model key, so never commit it.
 .grid-stage/
+.supernodes/
