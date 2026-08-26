@@ -85,6 +85,117 @@ layout: center
 class: text-left
 ---
 
+# Architecture
+
+<div class="coordinator">
+<b>Coordinator</b>builds the team grid &nbsp;·&nbsp; names the gap &nbsp;·&nbsp; never sees a record
+</div>
+
+<div class="flex justify-center gap-14 my-2 text-xs opacity-70">
+<div>↓ &nbsp;the requirements, and the gap</div>
+<div>↑ &nbsp;banded answers, nothing else</div>
+</div>
+
+<div class="boundary">trust boundary</div>
+
+<div class="grid grid-cols-3 gap-4 mt-3">
+
+<div class="firm">
+<b>Firm A · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
+
+<div class="firm">
+<b>Firm B · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
+
+<div class="firm">
+<b>Firm C · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
+
+</div>
+
+<div class="cap mt-4">
+
+Three identical stacks, on purpose. A library never leaves its own node. What crosses the
+boundary is a handle and a band: `FIRM_B::PERSON::007`, `sector=civic`, `value=50-100M`. The
+message has no field that could carry a name, a client or a fee.
+
+</div>
+
+<style>
+.coordinator {
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border: 1px solid #7dd3fc;
+  border-radius: 0.4rem;
+  padding: 0.55rem;
+  text-align: center;
+  font-size: 0.78rem;
+}
+.coordinator b { display: block; font-size: 0.9rem; }
+.boundary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+.boundary::before, .boundary::after {
+  content: "";
+  flex: 1;
+  border-top: 2px dashed currentColor;
+}
+.firm {
+  border: 1px solid #d9a441;
+  background: #fffbeb;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  text-align: center;
+  color: #78350f;
+}
+html.dark .firm { background: #241d12; border-color: #a16207; color: #fcd34d; }
+.firm b { display: block; font-size: 0.76rem; margin-bottom: 0.35rem; }
+.step {
+  background: #fef3c7;
+  border-radius: 0.25rem;
+  padding: 0.22rem 0.3rem;
+  font-size: 0.66rem;
+  line-height: 1.3;
+}
+html.dark .step { background: #3d3218; color: #fde68a; }
+.arrow { font-size: 0.6rem; opacity: 0.5; line-height: 1.3; }
+</style>
+
+<!--
+Use of Flower, plus Safety. The three firm stacks are drawn identically on purpose - that is
+the harness claim as a picture.
+
+If they push on centralisation: the coordinator sees banded yes/no answers, the same
+relationship that gradients have to training data.
+-->
+
+---
+layout: center
+class: text-left
+---
+
 # What the database fields can prove
 
 <div class="sub">each firm searches its own records on declared fields &nbsp;·&nbsp; the coordinator joins the answers</div>
@@ -270,116 +381,5 @@ somebody else's coverage. The line the log prints:
           and strengthening on an acute care wing upgrade
 
 Be straight about the dashed box. A judge who catches an overclaim stops believing the rest.
--->
-
----
-layout: center
-class: text-left
----
-
-# Architecture
-
-<div class="coordinator">
-<b>Coordinator</b>builds the team grid &nbsp;·&nbsp; names the gap &nbsp;·&nbsp; never sees a record
-</div>
-
-<div class="flex justify-center gap-14 my-2 text-xs opacity-70">
-<div>↓ &nbsp;the requirements, and the gap</div>
-<div>↑ &nbsp;banded answers, nothing else</div>
-</div>
-
-<div class="boundary">trust boundary</div>
-
-<div class="grid grid-cols-3 gap-4 mt-3">
-
-<div class="firm">
-<b>Firm A · SuperNode</b>
-<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
-<div class="arrow">↓</div>
-<div class="step">agent: match · re-read</div>
-<div class="arrow">↓</div>
-<div class="step">band to a fixed vocabulary</div>
-</div>
-
-<div class="firm">
-<b>Firm B · SuperNode</b>
-<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
-<div class="arrow">↓</div>
-<div class="step">agent: match · re-read</div>
-<div class="arrow">↓</div>
-<div class="step">band to a fixed vocabulary</div>
-</div>
-
-<div class="firm">
-<b>Firm C · SuperNode</b>
-<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
-<div class="arrow">↓</div>
-<div class="step">agent: match · re-read</div>
-<div class="arrow">↓</div>
-<div class="step">band to a fixed vocabulary</div>
-</div>
-
-</div>
-
-<div class="cap mt-4">
-
-Three identical stacks, on purpose. A library never leaves its own node. What crosses the
-boundary is a handle and a band: `FIRM_B::PERSON::007`, `sector=civic`, `value=50-100M`. The
-message has no field that could carry a name, a client or a fee.
-
-</div>
-
-<style>
-.coordinator {
-  background: #e0f2fe;
-  color: #0c4a6e;
-  border: 1px solid #7dd3fc;
-  border-radius: 0.4rem;
-  padding: 0.55rem;
-  text-align: center;
-  font-size: 0.78rem;
-}
-.coordinator b { display: block; font-size: 0.9rem; }
-.boundary {
-  display: flex;
-  align-items: center;
-  gap: 0.7rem;
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  opacity: 0.5;
-}
-.boundary::before, .boundary::after {
-  content: "";
-  flex: 1;
-  border-top: 2px dashed currentColor;
-}
-.firm {
-  border: 1px solid #d9a441;
-  background: #fffbeb;
-  border-radius: 0.4rem;
-  padding: 0.5rem;
-  text-align: center;
-  color: #78350f;
-}
-html.dark .firm { background: #241d12; border-color: #a16207; color: #fcd34d; }
-.firm b { display: block; font-size: 0.76rem; margin-bottom: 0.35rem; }
-.step {
-  background: #fef3c7;
-  border-radius: 0.25rem;
-  padding: 0.22rem 0.3rem;
-  font-size: 0.66rem;
-  line-height: 1.3;
-}
-html.dark .step { background: #3d3218; color: #fde68a; }
-.arrow { font-size: 0.6rem; opacity: 0.5; line-height: 1.3; }
-</style>
-
-<!--
-Use of Flower, plus Safety. The three firm stacks are drawn identically on purpose - that is
-the harness claim as a picture.
-
-If they push on centralisation: the coordinator sees banded yes/no answers, the same
-relationship that gradients have to training data.
 -->
 

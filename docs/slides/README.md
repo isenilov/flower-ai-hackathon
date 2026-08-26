@@ -29,7 +29,7 @@ person is standing next to the screen. If a slide starts growing a third line of
 prose goes in the notes.
 
 **It assumes the audience has never seen a bid.** No "joint venture", no "solicitation", no
-"past performance". SF330 appears on no slide at all — it is a ten-second gloss in slide 4's
+"past performance". SF330 appears on no slide at all — it is a ten-second gloss in slide 5's
 presenter note. Say "hospital" and "earthquake strengthening", not "healthcare sector" and
 "seismic retrofit".
 
@@ -57,14 +57,14 @@ against `docs/event.md` rather than against taste.
 |---|---|---|
 | 1 | Cover | the problem and the solution, two lines each |
 | 2 | **One contract. Three firms. Nobody can check.** | three firms, one question, three "cannot answer" |
-| 3 | **What the database fields can prove** | R1–R6 × three firms plus the joint column: no firm's column complete, R4 an amber `?` |
-| 4 | **Firm B had the person all along** | the record's fields beside its bio, then the fourth row scored both ways |
-| 5 | The loop | four stages, stage 4 dashed because it is not built |
-| 6 | Architecture | the trust boundary, three identical stacks under it |
+| 3 | Architecture | the trust boundary, three identical stacks under it |
+| 4 | **What the database fields can prove** | R1–R6 × three firms plus the joint column: no firm's column complete, R4 an amber `?` |
+| 5 | **Firm B had the person all along** | the record's fields beside its bio, then the fourth row scored both ways |
+| 6 | The loop | four stages, stage 4 dashed because it is not built |
 
-Slides 1–3 are the ones that decide whether the rest lands. They state the problem before any
-mechanism appears. Slide 6 is the last one, so the presenter closes over it rather than on a
-closing slide.
+Slides 1, 2 and 4 are the ones that decide whether the rest lands — they state the problem, and
+slide 3's architecture is the only mechanism among them. Slide 6 is the last one, so the
+presenter closes over it rather than on a closing slide.
 
 ## Rules for editing this deck
 
@@ -76,18 +76,18 @@ closing slide.
   onto a slide, it comes off `frontend/state/trace-healthcare-seismic.jsonl` and nowhere else.
 - **Nothing on a slide may claim something the code does not do.** With the roadmap slide gone,
   the optimiser, the human gate, and the baselines have no honest home in the deck — so they
-  are spoken, and slide 5's dashed stage 4 is the only place the deck admits an unbuilt piece.
+  are spoken, and slide 6's dashed stage 4 is the only place the deck admits an unbuilt piece.
   Keep that dash. `docs/demo-script.md`'s closing section is the *Not claimed* checklist.
-- **Slide 3's three marks are three different claims, and R4 is the only `?`.** A green ✓ means
+- **Slide 4's three marks are three different claims, and R4 is the only `?`.** A green ✓ means
   the fields prove it and a red ✗ means the fields rule it out — both are settled either way,
   and `data/ground_truth.json`'s `coverage` (the oracle, reading every paragraph) agrees with
   `round_one_coverage` on all five. R4 is the amber `?` because a predicate that admits no
   record has not established that no record exists: `agents/search.py` is a structured predicate
   and `agents/matcher.py` may only grade what it admits, so Firm B's `sector: civic` record
   never reaches a model in round 1 — Firm B holds the person the whole time. **Put a red ✗ on
-  R4 and slide 4 reads as a contradiction** — that is the bug this deck already had once. The
-  legend and slide 4's strip are the fix; keep both.
-- **Every mark on slide 3 comes off `data/ground_truth.json`, and it is read per firm, not
+  R4 and slide 5 reads as a contradiction** — that is the bug this deck already had once. The
+  legend and slide 5's strip are the fix; keep both.
+- **Every mark on slide 4 comes off `data/ground_truth.json`, and it is read per firm, not
   jointly.** Round 1 gives A 7/3 on R1 and 0 on R5; B 2/3 on R1 and 0 on R3; C 0 on R3 and 0 on
   R5. The row ids are `data/rfp.json`'s own R1–R6 in that order, so R4 here is R4 in the log.
   The joint column is derived — one firm's tick makes the team's tick.
@@ -105,7 +105,7 @@ closing slide.
 - **Check nothing spills off the canvas.** The slide is 980 × 552, and a Mermaid diagram that
   is 40px too wide silently clips at both edges. Run `make slides`, walk every slide, and look
   at the left and right margins. Mermaid `{scale: …}` is the dial: 0.7 for a four-node `LR`
-  flowchart is about the ceiling. Slide 3's table has ~9px of vertical headroom and its
+  flowchart is about the ceiling. Slide 4's table has ~9px of vertical headroom and its
   right-hand chip is flush with the margin, so a seventh row, a wider mark column, or a bigger
   `.rq` font has to be paid for out of the row gap and cell padding.
 - **Both colour schemes.** Slidev follows the browser, and a laptop in dark mode at 18:45 is

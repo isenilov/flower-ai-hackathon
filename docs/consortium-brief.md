@@ -62,7 +62,7 @@ axes — is in `event.md`. Read it once.
 
 | Axis | Our evidence | Where it lives | State |
 |---|---|---|---|
-| **Impact** | JVs bid federal work by emailing spreadsheets; the harness is the missing primitive | §1 pitch, §14 roadmap, deck slides 1–3 | holds |
+| **Impact** | JVs bid federal work by emailing spreadsheets; the harness is the missing primitive | §1 pitch, §14 roadmap, deck slides 1, 2, 4 | holds |
 | **Innovation** | ~~a *constrained disclosure optimiser* with a human gate~~ → **gap-directed re-examination**: the coordinator broadcasts what nobody can answer, and a node answers it from data it already had | §5.3 round 2 | **axis re-aimed** — the optimiser is not built (§5.4), so innovation rests on round 2, which is built and demonstrable |
 | **Flower** | genuine `AgentApp` on SuperGrid, published to Hub, run from `flwr chat`; one protocol over three `Grid` transports | §6 mapping, §10 runbook | holds |
 | **Execution** | it runs end to end, live, from a page-driven split screen | §7, §8, `demo-script.md` | holds — but the three-condition table is **not** built (§7.1) |

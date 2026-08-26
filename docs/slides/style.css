@@ -96,7 +96,7 @@ html.dark .maybe {
   justify-content: center;
 }
 
-/* The coverage table, shared by slides 3 and 4. Both use `.fields`, so the mark columns land on
+/* The coverage table, shared by slides 4 and 5. Both use `.fields`, so the mark columns land on
    the same x positions on both slides and the joint cell visibly flips from `?` to `✓` between
    them. Changing the column template breaks that link. */
 .sub { font-size: 0.85rem; opacity: 0.6; margin-top: 0.2rem; }
