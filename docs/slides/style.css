@@ -1,0 +1,99 @@
+/* The deck is presenter support, so the headline stays small and the diagram gets the room.
+   theme-default's h1 is ~3rem, which pushes every diagram off the bottom edge. */
+.slidev-layout h1 {
+  font-size: 1.9rem;
+  line-height: 1.15;
+  margin-bottom: 0.5rem;
+}
+
+.slidev-layout.cover h1,
+.slidev-layout h1.big {
+  font-size: 3.2rem;
+}
+
+.slidev-layout h3 {
+  font-size: 0.95rem;
+  font-weight: 700;
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  margin-bottom: 0.35rem;
+}
+
+/* One caption per slide, under the visual. Everything else belongs in the notes. */
+.cap {
+  font-size: 0.82rem;
+  line-height: 1.45;
+  opacity: 0.8;
+}
+
+.tile {
+  border-radius: 0.4rem;
+  padding: 0.7rem 0.8rem;
+  background: #f3f4f6;
+  font-size: 0.78rem;
+  line-height: 1.4;
+}
+html.dark .tile {
+  background: #26262b;
+}
+.tile b {
+  display: block;
+  font-size: 0.85rem;
+  margin-bottom: 0.2rem;
+}
+.tile b code {
+  background: transparent;
+  padding: 0;
+  font-size: 0.9rem;
+}
+
+/* Coverage grid cells */
+.ok,
+.no {
+  text-align: center;
+  border-radius: 0.25rem;
+  padding: 0.15rem 0;
+  font-weight: 700;
+}
+.ok {
+  background: #dcfce7;
+  color: #15803d;
+}
+.no {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+html.dark .ok {
+  background: #14532d;
+  color: #86efac;
+}
+html.dark .no {
+  background: #7f1d1d;
+  color: #fca5a5;
+}
+
+/* Big-number layout */
+.num {
+  font-size: 3rem;
+  font-weight: 700;
+  line-height: 1;
+  font-variant-numeric: tabular-nums;
+}
+.numlabel {
+  font-size: 0.72rem;
+  opacity: 0.6;
+  margin-top: 0.3rem;
+}
+
+.slidev-layout pre {
+  font-size: 0.68rem !important;
+  line-height: 1.35 !important;
+}
+
+/* Mermaid renders into a shadow root whose SVG keeps its intrinsic width, so the host has to
+   do the centring. Without this every diagram sits hard against the left margin. */
+.slidev-layout .mermaid {
+  display: flex;
+  justify-content: center;
+}

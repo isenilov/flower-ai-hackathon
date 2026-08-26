@@ -1,6 +1,6 @@
 ---
 theme: default
-title: Consortium — a collaborative disclosure harness
+title: Consortium
 titleTemplate: '%s'
 info: |
   Collaborative Agent Hackathon — Flower Labs, University of Cambridge, 26 Aug 2026.
@@ -17,20 +17,24 @@ fonts:
 
 # Consortium
 
-## A collaborative disclosure harness for Flower Agents
-
-<div class="mt-8 text-xl opacity-80">
-Three firms discover their joint bid is non-compliant, fix it,<br>
-and never let a record leave the building.
+<div class="mt-6 text-2xl leading-relaxed">
+Three firms have to prove their joint bid qualifies.<br>
+None of them will show the others their data.
 </div>
 
-<div class="mt-12 text-sm opacity-60">
+<div class="mt-10 text-lg opacity-80">
+This is the protocol that settles it. No record moves.
+</div>
+
+<div class="mt-14 text-sm opacity-50">
 Track 1 — SuperGrid &nbsp;·&nbsp; <code>flwr chat</code> → <code>@i53n1/consortium</code>
 </div>
 
 <!--
-Say the harness sentence once here and once at the end: "the SF330 is the example;
-the harness is the product." On stage it is the only thing anyone remembers.
+Read the two lines and stop. Everything else is on the next slide as a picture.
+
+The through-line, said here and again at the end: the bidding form is the example, the
+harness is the product.
 -->
 
 ---
@@ -38,124 +42,184 @@ layout: center
 class: text-left
 ---
 
-# The business problem
+# One contract. Three firms. Nobody can check.
 
-Large federal infrastructure is bid by **joint ventures** — three or four firms partner on one
-pursuit, each contributing project qualifications and key personnel.
+```mermaid {scale: 0.82}
+flowchart BT
+    a["<b>Firm A</b><br/>sees only its own<br/>clients · fees · staff"]
+    b["<b>Firm B</b><br/>sees only its own<br/>clients · fees · staff"]
+    c["<b>Firm C</b><br/>sees only its own<br/>clients · fees · staff"]
+    q["<b>Together, does this team meet every requirement in the contract?</b>"]
 
-<div v-click class="mt-6">
+    a -. "cannot answer" .-> q
+    b -. "cannot answer" .-> q
+    c -. "cannot answer" .-> q
 
-Those same firms **compete against each other on the next three pursuits.**
-
-</div>
-
-<div v-click class="mt-6">
-
-To submit, the partners must prove **together** that the team covers every requirement in the
-solicitation. But a firm's project history exposes its client relationships and its contract
-values, and its roster is a recruiter's shopping list.
-
-</div>
-
-<div v-click class="mt-8 p-4 border-l-4 border-red-400 bg-red-50 dark:bg-red-900 dark:bg-opacity-20">
-
-Today this is done by **emailing spreadsheets around and hoping.**
-
-</div>
-
-<!--
-Impact axis. Keep it in the judge's language — no SF330 yet, no architecture. If the room is
-UK-heavy, ten seconds later: "US federal qualifications form, Section G is a person-by-project
-matrix." Do not explain more than that.
--->
-
----
-layout: center
-class: text-left
----
-
-# Why nobody can just check
-
-The form asks for a **matrix**, not a list. Not "the team has healthcare people and seismic
-people" — *this named individual, on that named project.*
-
-<div class="grid grid-cols-3 gap-4 mt-8 text-sm">
-<div v-click class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Firm A</div>
-<div class="opacity-70 mt-2">Has healthcare people.<br>Has seismic people.<br><b>Nobody who is both.</b></div>
-</div>
-<div v-click class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Firm B</div>
-<div class="opacity-70 mt-2">Has exactly one such person — on a hospital wing it filed as <b>civic work</b>.</div>
-</div>
-<div v-click class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Firm C</div>
-<div class="opacity-70 mt-2">Strong federal past performance. Not this cell.</div>
-</div>
-</div>
-
-<div v-click class="mt-8">
-
-Each firm covers **five of six** requirements on its own, so each looks like a fine partner.
-The sixth is invisible to structured search **at every one of them** — it only exists in a bio.
-
-**No single firm can assess whether the joint venture is compliant.** If one could, the system
-did not need to be distributed.
-
-</div>
-
-<!--
-This is the design constraint, and the corpora are engineered backwards from it.
-
-Do NOT say "every firm self-assesses compliant and is confidently wrong" — the run does not
-show that. Every firm misses R4, because no firm's declared fields describe it. The correction
-is the stronger claim: it takes the joint matrix to license the local re-read.
--->
-
----
-layout: center
-class: text-left
----
-
-# The harness
-
-A protocol for agents that are **not allowed to pool their data.**
-
-```mermaid {scale: 0.72}
-flowchart LR
-    attest["<b>1 · attest</b><br/>each agent searches only<br/>its own library and returns<br/><i>banded existence proofs</i>"]
-    detect["<b>2 · detect</b><br/>coordinator builds the joint<br/>coverage matrix and finds<br/>what nobody covers"]
-    reexamine["<b>3 · re-examine</b><br/>the <i>gap</i> is broadcast, never<br/>the answer — each agent re-reads<br/>its own prose against it"]
-    minimise["<b>4 · minimise</b><br/>solve for the cheapest set of<br/>disclosures that closes it,<br/>gate each one on a human"]
-
-    attest --> detect --> reexamine --> minimise
-    reexamine -. "still open" .-> detect
-
-    style attest fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
-    style detect fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
-    style reexamine fill:#dcfce7,stroke:#15803d,color:#14532d
-    style minimise fill:#f3f4f6,stroke:#9ca3af,color:#4b5563,stroke-dasharray: 5 3
+    style q fill:#fee2e2,stroke:#dc2626,color:#7f1d1d
+    style a fill:#f3f4f6,stroke:#9ca3af,color:#374151
+    style b fill:#f3f4f6,stroke:#9ca3af,color:#374151
+    style c fill:#f3f4f6,stroke:#9ca3af,color:#374151
 ```
 
-<div class="grid grid-cols-2 gap-8 mt-4 text-sm">
-<div>
+<div class="cap mt-2">
 
-Nothing in that loop is about architecture firms. The domain enters through **three pluggable
-pieces**: a requirement set, a closed banding vocabulary, and a disclosure-cost function.
+Work too big for one firm gets bid by three. The client wants one proof that the
+**whole team** qualifies. They compete against each other next month, and today that proof is
+assembled by emailing spreadsheets.
 
-</div>
-<div>
-
-Stages 1–3 run today. Stage 4 is designed and not built — the dashed box, and the roadmap
-slide.
-
-</div>
 </div>
 
 <!--
-Innovation axis, and the answer to "isn't this federated RAG?" — retrieval establishes what
-exists; this decides what to reveal. Be straight about stage 4 being the dashed box; a judge
-who catches you overclaiming stops believing the rest.
+Impact axis, and the slide that has to land. Say it in the judge's own language: a hospital,
+a tunnel, an airport - too big for one firm, so three of them bid it as a team.
+
+The tension in one sentence: to prove the team qualifies they would each have to hand over the
+client list, the fee history and the staff roster they are about to compete with.
+
+Do not say "joint venture", "solicitation" or "SF330" yet. None of those words earn anything
+in the first minute.
+-->
+
+---
+layout: center
+class: text-left
+---
+
+# Five of six, at every firm
+
+<div class="grid grid-cols-[20rem_4.5rem_4.5rem_4.5rem] gap-x-3 gap-y-1 text-sm mt-4">
+
+<div></div>
+<div class="text-center text-xs font-bold opacity-60">Firm A</div>
+<div class="text-center text-xs font-bold opacity-60">Firm B</div>
+<div class="text-center text-xs font-bold opacity-60">Firm C</div>
+
+<div>Hospital projects over $50m</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+
+<div>Design-build, federal client</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+
+<div>Project manager with hospital work</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+
+<div class="font-bold">One person: hospital <i>and</i> earthquake retrofit</div>
+<div class="no">✗</div><div class="no">✗</div><div class="no">✗</div>
+
+<div>Chartered structural lead</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+
+<div>Green-certified projects</div>
+<div class="ok">✓</div><div class="ok">✓</div><div class="ok">✓</div>
+
+</div>
+
+<div v-click class="cap mt-5">
+
+Every firm looks like a fine partner. The fourth row is empty at all three of them, so the
+team is not qualified and no firm can find that out alone.
+
+</div>
+
+<!--
+This is the design constraint. The corpora are built backwards from this grid.
+
+Careful with the wording: it is NOT "each firm thinks it is fine and is wrong". Every firm
+genuinely misses the fourth row, because no firm's database fields describe it. Verified off
+the run - round 1 has have=0 on that row and every firm alone clears the other five.
+-->
+
+---
+layout: center
+class: text-left
+---
+
+# The fourth row is in a paragraph, not a field
+
+<div class="grid grid-cols-2 gap-6 mt-3">
+<div>
+
+### what the form asks for
+
+<div class="tile">
+The <b style="display:inline">same named person</b> on a hospital project <i>and</i> on an
+earthquake-strengthening project. Both projects named.
+<div class="mt-2 opacity-60">SF330 Section G — the person-by-project grid on the US federal form every bid team files.</div>
+</div>
+
+</div>
+<div v-click>
+
+### what firm B's database says
+
+```text
+person   FIRM_B::PERSON::007
+role     structural lead
+sector   civic          <- not healthcare
+```
+
+<div class="mt-2 text-xs opacity-70">what the person's written bio says:</div>
+
+<div class="tile mt-1">
+"… <b style="display:inline">seismic</b> base isolation and strengthening on an
+<b style="display:inline">acute care wing</b> upgrade …"
+</div>
+
+</div>
+</div>
+
+<div v-click class="cap mt-4">
+
+The fields say civic, so no keyword search reaches it. The prose says hospital. Firm B has the
+answer, does not know it is the answer, and has no reason to go looking.
+
+</div>
+
+<!--
+The crux for anyone outside construction. Two glosses, ten seconds: seismic means earthquake,
+and a retrofit is strengthening a building that already exists.
+
+Why it was filed as civic: a structural engineering firm saw a concrete frame and a city
+client, not a hospital. That is an ordinary filing decision, not a contrived one.
+-->
+
+---
+layout: center
+class: text-left
+---
+
+# The loop
+
+```mermaid {scale: 0.7}
+flowchart LR
+    ask["<b>1 · ask</b><br/>each agent searches<br/>its own records only"]
+    compare["<b>2 · compare</b><br/>build the team grid,<br/>find the empty row"]
+    reread["<b>3 · re-read</b><br/>send the gap back,<br/>agents re-read their prose"]
+    release["<b>4 · release</b><br/>disclose the least you can,<br/>a human approves each"]
+
+    ask --> compare --> reread --> release
+    reread -. "still open" .-> compare
+
+    style ask fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+    style compare fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+    style reread fill:#dcfce7,stroke:#15803d,color:#14532d
+    style release fill:#f3f4f6,stroke:#9ca3af,color:#4b5563,stroke-dasharray: 5 3
+```
+
+<div class="cap mt-3">
+
+Stages 1–3 run today. Stage 4 is the dashed box: designed, specified, not built.
+Nothing in the loop is about construction. The domain enters through three pluggable pieces: a
+requirement list, a fixed vocabulary, and a cost per disclosure.
+
+</div>
+
+<!--
+Innovation axis, and the answer to "isn't this just federated retrieval?" Retrieval settles
+what exists. This settles what to reveal, and it broadcasts the question rather than the
+answer.
+
+Be straight about the dashed box. A judge who catches an overclaim stops believing the rest.
 -->
 
 ---
@@ -165,64 +229,155 @@ class: text-left
 
 # Architecture
 
-```mermaid {scale: 0.62}
-flowchart TB
-    coord["<b>Coordinator</b> — backend/protocol.py<br/>decompose · coverage matrix · gap analysis<br/><i>sees banded existence proofs, never a record</i>"]
+<div class="coordinator">
+<b>Coordinator</b>builds the team grid &nbsp;·&nbsp; names the gap &nbsp;·&nbsp; never sees a record
+</div>
 
-    subgraph fa["Firm A — SuperNode"]
-        direction TB
-        aa["matcher · re-examiner<br/><small>agents/</small>"]
-        ba["banding · closed vocabulary<br/><small>backend/firm_node.py</small>"]
-        aa --> ba
-    end
+<div class="flex justify-center gap-14 my-2 text-xs opacity-70">
+<div>↓ &nbsp;the requirements, and the gap</div>
+<div>↑ &nbsp;banded answers, nothing else</div>
+</div>
 
-    subgraph fb["Firm B — SuperNode"]
-        direction TB
-        ab["matcher · re-examiner"]
-        bb["banding · closed vocabulary"]
-        ab --> bb
-    end
+<div class="boundary">trust boundary</div>
 
-    subgraph fc["Firm C — SuperNode"]
-        direction TB
-        ac["matcher · re-examiner"]
-        bc["banding · closed vocabulary"]
-        ac --> bc
-    end
+<div class="grid grid-cols-3 gap-4 mt-3">
 
-    la[("<b>private library</b><br/>projects · people<br/>clients · fees")]
-    lb[("<b>private library</b>")]
-    lc[("<b>private library</b>")]
+<div class="firm">
+<b>Firm A · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
 
-    la --> aa
-    lb --> ab
-    lc --> ac
+<div class="firm">
+<b>Firm B · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
 
-    coord == "requirements · the gap" ==> aa
-    coord == "requirements · the gap" ==> ab
-    coord == "requirements · the gap" ==> ac
-    ba == "banded attestations" ==> coord
-    bb == "banded attestations" ==> coord
-    bc == "banded attestations" ==> coord
+<div class="firm">
+<b>Firm C · SuperNode</b>
+<div class="step">private library<div class="opacity-60">projects · people · clients · fees</div></div>
+<div class="arrow">↓</div>
+<div class="step">agent: match · re-read</div>
+<div class="arrow">↓</div>
+<div class="step">band to a fixed vocabulary</div>
+</div>
 
-    style coord fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
-    style la fill:#fef3c7,stroke:#b45309,color:#78350f
-    style lb fill:#fef3c7,stroke:#b45309,color:#78350f
-    style lc fill:#fef3c7,stroke:#b45309,color:#78350f
+</div>
+
+<div class="cap mt-4">
+
+Three identical stacks, on purpose. A library never leaves its own node. What crosses the
+boundary is a handle and a band: `FIRM_B::PERSON::007`, `sector=civic`, `value=50-100M`. The
+message has no field that could carry a name, a client or a fee.
+
+</div>
+
+<style>
+.coordinator {
+  background: #e0f2fe;
+  color: #0c4a6e;
+  border: 1px solid #7dd3fc;
+  border-radius: 0.4rem;
+  padding: 0.55rem;
+  text-align: center;
+  font-size: 0.78rem;
+}
+.coordinator b { display: block; font-size: 0.9rem; }
+.boundary {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0.5;
+}
+.boundary::before, .boundary::after {
+  content: "";
+  flex: 1;
+  border-top: 2px dashed currentColor;
+}
+.firm {
+  border: 1px solid #d9a441;
+  background: #fffbeb;
+  border-radius: 0.4rem;
+  padding: 0.5rem;
+  text-align: center;
+  color: #78350f;
+}
+html.dark .firm { background: #241d12; border-color: #a16207; color: #fcd34d; }
+.firm b { display: block; font-size: 0.76rem; margin-bottom: 0.35rem; }
+.step {
+  background: #fef3c7;
+  border-radius: 0.25rem;
+  padding: 0.22rem 0.3rem;
+  font-size: 0.66rem;
+  line-height: 1.3;
+}
+html.dark .step { background: #3d3218; color: #fde68a; }
+.arrow { font-size: 0.6rem; opacity: 0.5; line-height: 1.3; }
+</style>
+
+<!--
+Use of Flower, plus Safety. The three firm stacks are drawn identically on purpose - that is
+the harness claim as a picture.
+
+If they push on centralisation: the coordinator sees banded yes/no answers, the same
+relationship that gradients have to training data.
+-->
+
+---
+layout: center
+class: text-left
+---
+
+# The coordinator sends the gap, not the answer
+
+```mermaid {scale: 0.72}
+flowchart LR
+    c["<b>Coordinator</b><br/>sends <b>R4</b><br/><i>2 bytes</i>"]
+    a["Firm A<br/>re-reads its 8 bios"]
+    b["Firm B<br/>re-reads its 8 bios"]
+    x["Firm C<br/>re-reads its 8 bios"]
+    ra["nothing here"]
+    rb["<b>PERSON::007</b><br/>found in a paragraph"]
+    rx["nothing here"]
+
+    c ==> a --> ra
+    c ==> b --> rb
+    c ==> x --> rx
+
+    style c fill:#e0f2fe,stroke:#0369a1,color:#0c4a6e
+    style rb fill:#dcfce7,stroke:#15803d,color:#14532d
+    style ra fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
+    style rx fill:#f3f4f6,stroke:#9ca3af,color:#4b5563
 ```
 
-<div class="text-sm mt-2 opacity-80">
+<div class="cap mt-3">
 
-The library never crosses its own node boundary. What crosses is a **handle and a band** —
-`FIRM_B::PERSON::007`, `sector=civic`, `value_band=50-100M`. A struct that structurally cannot
-carry a client name, a fee, or a person.
+Firm B's agent went looking only because it was told about a hole in **somebody else's**
+coverage. That is the whole argument: one agent answers a question none of them could ask
+alone.
 
 </div>
 
 <!--
-Use of Flower + Safety. The three firm stacks are identical on purpose — that is the harness
-claim in a picture. If they push on centralisation: the coordinator sees banded existence
-proofs, the same relationship gradients have to training data.
+The beat. Hold here for as long as the question takes.
+
+The line the log actually prints:
+  firm B  R4 <- FIRM_B::PERSON::007 - prose details seismic base isolation
+          and strengthening on an acute care wing upgrade
+
+Two bytes is the literal payload: the string "R4". Not which firm has the hole, not what would
+fill it. The model reads Firm B's bios on Firm B's node; the sentence it reasons over never
+leaves.
 -->
 
 ---
@@ -230,64 +385,36 @@ layout: center
 class: text-left
 ---
 
-# Round 2 is the whole argument
+# What crossed the wire
 
-<div class="grid grid-cols-2 gap-10 mt-4">
-<div>
-
-### What the coordinator sends
-
-**`R4`. Two bytes.**
-
-Not which firm has the hole. Not what would fill it. Not a record, a name, or a hint.
-
-<div v-click class="mt-6">
-
-### What each agent then does
-
-Re-reads **its own** eight bios with a model **on its own node**, asking a question it could
-not have posed in round 1.
-
-Firm A: *nothing here evidences it.*
-Firm C: *nothing here evidences it.*
-
+<div class="grid grid-cols-4 gap-4 mt-6 text-center">
+<div><div class="num">2</div><div class="numlabel">rounds to converge</div></div>
+<div><div class="num">2 B</div><div class="numlabel">the gap, broadcast back</div></div>
+<div><div class="num">32.4 kB</div><div class="numlabel">banded answers, forward</div></div>
+<div><div class="num text-green-600">0 B</div><div class="numlabel">record content, either way</div></div>
 </div>
-</div>
-<div>
 
-<div v-click>
+<div class="cap mt-8">
 
-### What Firm B finds
-
-```text
-firm B  gap R4 - re-reading 8 records
-firm B  R4 <- FIRM_B::PERSON::007
-        prose details seismic base isolation
-        and strengthening on an acute care
-        wing upgrade project
-```
-
-Filed as civic work. Only the bio says the building was a hospital.
+Zero is structural: the message format has no field that can carry a record. Nothing is
+disclosed until a human releases a handle.
 
 </div>
 
-<div v-click class="mt-6 p-4 border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:bg-opacity-20">
+<div v-click class="cap mt-4">
 
-Firm B's agent only looked because it was told about a hole in **somebody else's** coverage.
+Model answers are cached on disk, so a rehearsed run replays exactly and a dead endpoint costs
+nothing. Two invariant tests guard the vocabulary and the engineered gap.
 
-That is the multiplier. Not three agents working faster — one agent answering a question none
-of them could pose alone.
-
-</div>
-</div>
 </div>
 
 <!--
-This is the beat. The information that unlocks the search is held by a party that cannot see
-the data the search runs over. Hold here for as long as the question takes.
+Technical execution axis. Every number here was read off the run in
+frontend/state/trace-healthcare-seismic.jsonl - round 1 attests 19, 13 and 18; the round-2
+broadcast carries gap_bytes 2; banded_bytes 33191, which the page prints as 32.4 kB;
+record_bytes 0; converged after 2 rounds.
 
-The model's reasoning stays on the node — what crossed the wire was requirement-side
-vocabulary, not the sentence.
+If a judge wants to see it again, press Run.
 -->
 
 ---
@@ -295,49 +422,38 @@ layout: center
 class: text-left
 ---
 
-# What actually ran
+# Safety by construction
 
-<div class="grid grid-cols-2 gap-8 text-sm">
-<div>
+<div class="grid grid-cols-2 gap-4 mt-4">
 
-| | |
-|---|---|
-| requirements decomposed | **6** typed |
-| firms | **3** SuperNodes, one process each |
-| round 1 attestations | **19 · 13 · 18** |
-| round 1 verdict | **R4 uncovered** — non-compliant |
-| the gap broadcast back | **2 bytes** |
-| round 2 | Firm B closes R4 |
-| rounds to converge | **2** — it stops early |
-| banded on the wire | **32.4 kB** forward |
-| **record content on the wire** | **0 B** |
+<div class="tile"><b>A fixed vocabulary on the way out</b>
+Exact fees and dates become ranges before anything leaves the node.</div>
 
-</div>
-<div>
+<div class="tile"><b>Reject, never scrub</b>
+An unknown field is an error. A filter that quietly deletes teaches an agent that leaky output
+is fine.</div>
 
-Zero is **by construction, not by policy** — the protocol has no field that can carry a
-record. It stays zero until a human releases a handle.
+<div class="tile"><b>Reading stays home</b>
+The model reads a firm's own paragraphs on the firm's own node.</div>
 
-<div v-click class="mt-6">
-
-The run is **deterministic and offline.** Model responses are cached on disk, so a rehearsed
-run replays byte for byte and the demo survives a dead endpoint. The pane prints
-`(from cache)` when that happens, rather than hiding it.
+<div class="tile"><b>A refusal cannot be walked around</b>
+Blocked records never enter the candidate set, so nothing downstream can pick one.</div>
 
 </div>
 
-<div v-click class="mt-6">
+<div v-click class="cap mt-5">
 
-**Invariant tests** guard the two things that break silently: the vocabulary drifting from the
-schema, and a corpus edit that closes the engineered gap.
+No firm can assert anything about another firm. And the coordinator can prove the team
+qualifies, or does not, **before a single record is disclosed**.
 
-</div>
-</div>
 </div>
 
 <!--
-Technical execution axis. Everything on this slide is copied off a real run — if a judge asks
-to see it again, press Run.
+A scored axis, not a compliance chore: the organisers weight transparency, reliability and
+supervision, and say agent performance is not the deciding factor. So raise it deliberately.
+
+Do not offer a rejection count or an approval count. Nothing counts them, and the human gate
+is roadmap.
 -->
 
 ---
@@ -345,46 +461,34 @@ layout: center
 class: text-left
 ---
 
-# Safety and oversight
+# One protocol, three wires
 
-<div class="grid grid-cols-2 gap-8 mt-4 text-sm">
-
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Banded egress, closed vocabulary</div>
-<div class="opacity-75 mt-2">Every field is reduced to a value from a closed set before it leaves the node. Exact contract values become bands; exact dates become ranges.</div>
+<div class="grid grid-cols-3 gap-4 mt-5">
+<div class="tile"><b><code>LocalGrid</code></b>The published <b style="display:inline">AgentApp</b>, in process. What a judge gets from <code>flwr chat</code>.</div>
+<div class="tile"><b><code>InMemoryGrid</code></b>Simulation runtime. Three SuperNodes, real per-node data isolation. The table demo.</div>
+<div class="tile"><b><code>GrpcGrid</code></b>A real SuperLink. Same <code>send_and_receive</code>, same <code>Message(QUERY)</code>.</div>
 </div>
 
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Reject, do not sanitise</div>
-<div class="opacity-75 mt-2">An unknown key is an error, not something dropped quietly. A sanitising filter teaches an agent that leaky output is acceptable and ships whatever the regex missed.</div>
-</div>
+<div class="cap mt-6">
 
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">Reasoning stays on the node</div>
-<div class="opacity-75 mt-2">Round 2's model reads a firm's own bios locally. What crosses the wire is requirement-side vocabulary — never the model's sentence about a record.</div>
-</div>
-
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">A refusal cannot be routed around</div>
-<div class="opacity-75 mt-2">Records marked blocked never enter the candidate set, so no downstream step can select one. The agent never even offers it.</div>
-</div>
+No code changes between them, and the demo's log names which one is carrying the messages.
+A node knows whether it is simulated or real from its own `node_config`, and no coordinator
+gets to redirect that.
 
 </div>
 
-<div v-click class="mt-6 p-4 border-l-4 border-blue-400 text-sm">
+<div class="cap mt-4">
 
-A firm cannot assert facts about another firm — links are restricted to same-firm handles. And
-the coordinator can prove compliance or non-compliance **before any record is disclosed at all.**
+Published: **`flower.ai/apps/i53n1/consortium`** &nbsp;·&nbsp; `flwr chat` → `@i53n1/consortium`
 
 </div>
 
 <!--
-Safety is a scored axis, not a compliance chore. The organisers weight transparency,
-reliability and appropriate supervision — and note that agent performance is not the decisive
-factor. Surface this deliberately.
+Use of Flower axis. The honest answer to "does it really run on SuperGrid": it is published
+and invokable. We drive the table demo locally because 130 people share the wifi, not because
+the deployment path is a mock.
 
-Do NOT quote a rejection count or an approval count: there is no instrumented counter, and the
-human gate is roadmap.
+Every model call goes through agent.responses.create, the Open Responses shape.
 -->
 
 ---
@@ -392,94 +496,37 @@ layout: center
 class: text-left
 ---
 
-# Flower and SuperGrid
+# The form is the example. The harness is the product.
 
-<div class="text-sm">
+<div class="grid grid-cols-2 gap-4 mt-4">
 
-One protocol, parameterised by a `Grid`. **Three wires, no code change** — the demo's left
-pane names which one is carrying the messages, so we never imply a SuperLink we are not using.
+<div class="tile"><b><span class="float-right">Firm B</span>Hospital in an earthquake zone</b>
+A hospital wing filed as civic work</div>
 
-</div>
+<div class="tile"><b><span class="float-right">Firm C</span>Transit station and tunnel</b>
+A bore under a live platform, billed as a relief conduit</div>
 
-<div class="grid grid-cols-3 gap-4 mt-6 text-sm">
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<code class="font-bold">LocalGrid</code>
-<div class="opacity-75 mt-2">The published <b>AgentApp</b>, in process. This is what a judge invokes from <code>flwr chat</code>.</div>
-</div>
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<code class="font-bold">InMemoryGrid</code>
-<div class="opacity-75 mt-2">The simulation runtime, three SuperNodes with genuine per-node data isolation. The table demo.</div>
-</div>
-<div class="p-4 rounded bg-gray-100 dark:bg-gray-800">
-<code class="font-bold">GrpcGrid</code>
-<div class="opacity-75 mt-2">A real SuperLink. Same <code>send_and_receive</code>, same <code>Message(QUERY)</code>.</div>
-</div>
-</div>
+<div class="tile"><b><span class="float-right">Firm A</span>Secure research laboratory</b>
+A containment suite booked to the client who paid for it</div>
 
-<div class="grid grid-cols-2 gap-8 mt-8 text-sm">
-<div>
-
-Dual-runtime by `node_config`, as Hub requires: a simulated node carries `partition-id`, a
-real one carries its own `library-path` — and **no coordinator gets to redirect that.**
-
-Every model call goes through `agent.responses.create`, the Open Responses shape.
-
-</div>
-<div>
-
-**Published:** `flower.ai/apps/i53n1/consortium`
-
-```bash
-flwr login supergrid
-flwr chat        # @i53n1/consortium <solicitation>
-```
-
-Hub keeps only `.py .toml .md .json`, so the shipped output surface is what Python prints —
-the HTML is a local skin over the same trace.
-
-</div>
-</div>
-
-<!--
-Use of Flower axis. The honest framing on "does it really run on SuperGrid": it is published
-and invokable; we drive the table demo locally because 130 people are on the same wifi, not
-because the deployment path is a mock.
--->
-
----
-layout: center
-class: text-left
----
-
-# The SF330 is the example. The harness is the product.
-
-Four solicitations. **Same protocol, same code, no per-scenario branches.** The gap sits at a
-different firm in each, and the harness does not know which.
-
-<div class="mt-6 text-sm">
-
-| Solicitation | The hidden cell | Gap held by |
-|---|---|---|
-| Federal healthcare facility, seismic zone | A hospital wing filed as civic work by a structural firm | **Firm B** |
-| Transit station box and running tunnel | A bore beneath a live platform, billed as a relief conduit | **Firm C** |
-| Secure research laboratory on an active installation | A containment suite booked to the pharma client who paid for it | **Firm A** |
-| Campus decarbonisation and deep energy retrofit | An energy centre procured by the city, serving the university | **Firm B** |
+<div class="tile"><b><span class="float-right">Firm B</span>Campus energy retrofit</b>
+An energy centre bought by the city, serving the university</div>
 
 </div>
 
-<div v-click class="mt-6">
+<div v-click class="cap mt-5">
 
-Swap the three pluggable pieces and the same loop runs **cross-hospital cohort feasibility**,
-**cross-bank sanctions triage**, or **supply-chain conformance** — any set of parties who must
-jointly prove a property none can verify alone and cannot pool data to check.
-
-That separation is why this belongs on Hub rather than in a repo.
+Same protocol, same code, no per-scenario branches. The hidden row moves, and the harness does
+not know where. Swap the three pluggable pieces and the loop runs for hospitals sizing a trial
+cohort without sharing patients, or banks checking one name against each other's alerts.
 
 </div>
 
 <!--
-Innovation + Impact. This is the slide that turns "an app" into "a harness" in a judge's head.
-At the table, use the live scenario selector instead — it costs eight seconds and lands harder.
+Innovation and Impact together. This is the slide that turns "an app" into "a harness".
+
+At the table, use the live scenario selector instead - it costs eight seconds and lands harder
+than the tiles do.
 -->
 
 ---
@@ -489,36 +536,37 @@ class: text-left
 
 # Roadmap
 
-<div class="text-sm opacity-70 mt-2">Next, in order. The first item is designed, specified, and deliberately not built today.</div>
+<div class="grid grid-cols-2 gap-4 mt-5">
 
-<div class="mt-6 space-y-4 text-sm">
+<div class="tile" style="border-left: 4px solid #60a5fa">
+<b>1 · Disclose as little as possible</b>
+Clear every requirement at the lowest total disclosure cost.</div>
 
-<div class="p-4 rounded border-l-4 border-blue-400 bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">1 · Minimum-disclosure optimiser</div>
-<div class="opacity-80 mt-1">Greedy weighted set cover: minimise total disclosure cost subject to every mandatory requirement being covered, under the form's hard cap of ten example projects. Deterministic and explainable — <b>compliance achieved, disclosure minimised</b>, and you win on both axes.</div>
-</div>
+<div class="tile" style="border-left: 4px solid #60a5fa">
+<b>2 · A named human approves each record</b>
+A refusal makes the plan find the next-cheapest substitute.</div>
 
-<div class="p-4 rounded border-l-4 border-blue-400 bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">2 · Per-record human authorisation</div>
-<div class="opacity-80 mt-1">Each disclosure request routes to a named owner at the firm that holds it. A denial makes the optimiser <b>re-plan</b> and find the next-cheapest substitute — the refusal is honoured, not routed around. Every released record carries an approver.</div>
-</div>
+<div class="tile" style="border-left: 4px solid #9ca3af">
+<b>3 · Measure it against a central pool</b>
+Match what one pooled database finds, at a fraction of the disclosure.</div>
 
-<div class="p-4 rounded border-l-4 border-gray-400 bg-gray-100 dark:bg-gray-800">
-<div class="font-bold">3 · The three-condition evaluation</div>
-<div class="opacity-80 mt-1">Isolated self-assessment vs. federated consortium vs. a centralised pool of all libraries. The claim to falsify: <b>match the centralised oracle's compliance at a fraction of the disclosure.</b></div>
-</div>
-
-<div v-click class="p-4 rounded border-l-4 border-green-500 bg-green-50 dark:bg-green-900 dark:bg-opacity-20">
-<div class="font-bold">4 · Federated learning over commercial outcomes</div>
-<div class="opacity-80 mt-1">Every completed pursuit is a labelled example: this evidence set, against this solicitation, won or lost. Firms federate a <b>win-rate prior</b> over requirement-to-evidence matching — learning which qualification patterns actually convert — without any firm exposing its bid history or its losses. Federated learning in a market where nobody will ever pool the data.</div>
-</div>
+<div class="tile" style="border-left: 4px solid #22c55e">
+<b>4 · Learn from who actually wins</b>
+A shared win-rate model over past bids, with no bid history exposed.</div>
 
 </div>
 
 <!--
-Items 1–3 are this afternoon's cut list, in order. Item 4 is the one to say out loud if there
-is time for exactly one: it is the reason the harness is worth more than the demo, and it is a
-product someone could plausibly ship.
+Items 1-3 are today's cut list, in order.
+
+1 is greedy weighted set cover, inside the form's limit of ten example projects: deterministic
+and explainable. 2 routes each request to a named owner at the firm that holds the record, and
+the refusal is honoured rather than routed around. 3 is the claim to try to break.
+
+Item 4 is the one to say out loud if there is time for exactly one: every finished bid is a
+labelled example of which evidence won, so firms can federate a win-rate prior over
+requirement-to-evidence matching. Federated learning in a market where nobody will ever pool
+the data. That is why the harness is worth more than the demo.
 -->
 
 ---
@@ -526,27 +574,22 @@ layout: center
 class: text-center
 ---
 
-# Consortium
+# The form is the example. The harness is the product.
 
-<div class="text-xl mt-6 opacity-90">
-A harness for agents that are not allowed to pool their data.
+<div class="mt-8 text-xl opacity-85">
+ask &nbsp;→&nbsp; find what nobody covers &nbsp;→&nbsp; re-read locally against it &nbsp;→&nbsp; release the least you can
 </div>
 
-<div class="mt-10 text-lg">
-attest &nbsp;→&nbsp; detect the gap &nbsp;→&nbsp; re-examine locally against it &nbsp;→&nbsp; minimise disclosure
+<div class="mt-12 text-lg">
+A protocol for agents that are not allowed to pool their data.
 </div>
 
-<div class="mt-10 text-2xl font-bold">
-The SF330 is the example. The harness is the product.
-</div>
-
-<div class="mt-12 text-sm opacity-60">
-Track 1 — SuperGrid &nbsp;·&nbsp; <code>@i53n1/consortium</code> &nbsp;·&nbsp; Apache-2.0
+<div class="mt-14 text-sm opacity-50">
+<code>@i53n1/consortium</code> &nbsp;·&nbsp; Apache-2.0 &nbsp;·&nbsp; Track 1 — SuperGrid
 </div>
 
 <!--
-Stop talking here. Four minutes of a five-minute slot; the last minute is theirs, and the
-judges' questions are where the marks actually are. Brief §13 is the Q&A prep.
+Stop talking. Four minutes of a five-minute slot, and the questions are where the marks are.
 -->
 
 ---
@@ -556,28 +599,28 @@ class: text-left
 
 # Appendix — the six axes
 
-<div class="text-sm">
+<div class="text-xs">
 
 | Axis | What evidences it | Slide |
 |---|---|---|
-| **Impact** | Joint ventures bid federal work by emailing spreadsheets; this is the missing primitive | 2, 11 |
-| **Innovation** | Not retrieval — broadcast the *gap*, not the answer, so an agent answers a question it could not pose | 4, 7 |
-| **Use of Flower** | Genuine `AgentApp` published to Hub; one protocol over three `Grid`s; dual-runtime by `node_config` | 10 |
-| **Technical execution** | Runs end to end, converges in 2 rounds, four scenarios, deterministic and offline, invariant tests | 8, 11 |
-| **Demo and delivery** | Split screen: the protocol's own log beside a live visualisation of the same run, driven from the page | live |
-| **Safety and oversight** | Banded egress over a closed vocabulary, reject-not-sanitise, reasoning stays on the node, 0 B by construction | 9 |
+| **Impact** | Teams of firms bid public work by emailing spreadsheets; this is the missing primitive | 2, 12 |
+| **Innovation** | Broadcast the *gap*, not the answer, so an agent answers a question it could not ask | 5, 7 |
+| **Use of Flower** | Real `AgentApp` on Hub; one protocol over three `Grid`s; runtime chosen by `node_config` | 10 |
+| **Technical execution** | Runs end to end, converges in 2 rounds, four scenarios, replays offline, invariant tests | 8 |
+| **Demo and delivery** | Split screen: the protocol's own log beside a live picture of the same run | live |
+| **Safety and oversight** | Fixed egress vocabulary, reject-not-scrub, reading stays on the node, 0 B by construction | 9 |
 
 </div>
 
-<div class="mt-6 text-sm opacity-75">
+<div class="cap mt-4">
 
-**Not claimed:** a disclosure count, a denial, a live substitution, an assembled SF330, a
-human approval gate, a bander rejection count, or the centralised-pool baseline. Those are the
-roadmap slide, and saying so is why the rest holds up under a follow-up question.
+**Not claimed:** a disclosure count, a denial, a live substitution, an assembled form, a human
+approval gate, a rejection count, or the central-pool baseline. Those are slide 12, and saying
+so is why the rest holds up under a follow-up question.
 
 </div>
 
 <!--
-Do not present this slide. It is for the rehearsal, and for the moment a judge asks "how does
-this score against your own criteria" — which happens more often than you would think.
+Not presented. This is for the rehearsal, and for the judge who asks how we score ourselves -
+which happens more often than you would think.
 -->
