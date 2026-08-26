@@ -28,20 +28,29 @@ there.
 
 - [ ] Hub app page open in a browser tab: `flower.ai/apps/i53n1/consortium/`
 - [ ] Second tab: the public GitHub repo
-- [ ] **`make traces MODEL=/models/Qwen3.5-397B-A17B-FP8` has been run**, against a
-      reachable endpoint, *after the last prompt edit*. This is the one non-negotiable
-      item — see below.
-- [ ] `ls .cache/model/` is non-empty. That is what makes the demo survive the wifi.
-- [ ] Terminal 1: `make watch MODEL=…` rehearsed once on this machine, this hour
+- [ ] **`make traces MODEL=/models/Qwen3.5-397B-A17B-FP8` has been run twice**, against a
+      reachable endpoint, *after the last prompt edit*. Twice, not once — see below. This is
+      the one non-negotiable item.
+- [ ] `make doctor` shows a non-zero `cache` line and `4 of 4` traces ready
+- [ ] `make stage MODEL=…` up, terminal pane left, browser right, rehearsed once on this
+      machine, this hour
 - [ ] Terminal 2: `flwr chat` logged in, ready to type `@i53n1/consortium`
 - [ ] Laptop on hotspot, not venue wifi
-- [ ] Font size up. Two people can read a terminal over your shoulder; four cannot.
+- [ ] Font size up in **both** panes. Two people can read a terminal over your shoulder;
+      four cannot.
 
-**The cache is the demo.** Round 2 is a model reading prose, and the shared Qwen endpoint
-answered in ~240s under load — most of SuperGrid's five-minute task budget for one firm.
-Cached, the same round lands in milliseconds. The cache is keyed on the exact request, so
-**any edit to `agents/prompts/round2_reexamine.md` throws all of it away.** If you touch the
-prompt after 16:00, re-warm before the freeze or you will be narrating an open gap.
+**The cache is the demo.** Both rounds call a model and the shared Qwen endpoint answers in
+~240s under load. Cached, the same run lands in milliseconds. The cache is keyed on the exact
+request, so **any edit to either prompt in `agents/prompts/` throws away every entry for that
+round.** If you touch a prompt after 16:00, re-warm before the freeze or you will be
+narrating an open gap.
+
+**Warm it twice.** Round-1 grading has a 120s budget against round 2's 280s, and on a cold
+cache against the shared endpoint *it times out* — measured, not hypothetical. That is a
+designed degrade, not a failure: the in-flight call is left to finish into the cache, the
+matrix comes out identical, and the second run gets the grades for nothing. But the first run
+of a scenario will not have them, so warm every scenario twice and check `make doctor` before
+you unplug.
 
 **Who talks.** One narrator, one driver. The narrator never touches the keyboard and the
 driver never explains — the single most common way a table demo runs to seven minutes is
@@ -58,9 +67,9 @@ is where the marks actually are.
 |---|---|---|
 | 0:00–0:30 | **The problem.** "Three architecture firms bid one federal hospital as a joint venture. Next month they compete. To submit, they must prove *together* that the team covers every requirement — without any of them exposing their client list, their fees, or their roster. Today that is done by emailing spreadsheets." | narrator |
 | 0:30–1:00 | **The gate, up front.** Hub tab: "this is published — `flwr chat`, `@i53n1/consortium`, runs on SuperGrid." Second tab: the repo. Then: *"the SF330 is the example; the harness is the product."* | narrator + driver |
-| 1:00–1:50 | **Round 1.** `make watch MODEL=…`. Each firm's agent searches only its own library — **structured fields only, no model call** — and returns banded attestations. Every firm self-assesses **compliant**. The joint matrix does not: **R4 red.** "No single firm could have seen this. Each one is confidently wrong." | driver narrates the matrix, narrator holds the line |
+| 1:00–1:50 | **Round 1.** Press **Run** on the page. Each firm's agent searches only its own library — a structured prefilter over declared fields, then its own model grading whether each filing is borne out by its own prose — and returns banded attestations. The log fills the left pane as the animation plays on the right; same run, two views. Every firm self-assesses **compliant**. The joint matrix does not: **R4 red.** "No single firm could have seen this. Each one is confidently wrong." | driver narrates the matrix, narrator holds the line |
 | 1:50–2:50 | **Round 2 — the beat.** The coordinator broadcasts the *gap*: the string `R4`, two bytes, and nothing else. Firm B's agent re-reads a bio it had already classified as purely structural — its projects are all *filed* as civic — and the prose says acute-care wing. It returns the handle; the coordinator checks the Section G join in code. **R4 goes green, and the run converges — 2 rounds, not 3.** "Firm B's agent only found that because it was told about a hole in *Firm A's* coverage. That is the multiplier." | narrator |
-| 2:50–3:30 | **The safety ledger.** Click a requirement in the UI. `record content on the wire: 0 B` — zero by construction, not by policy: no field on an `Attestation` can carry a title, a client, a fee, or a name. **33 kB of attestations forward; 2 bytes back.** Cost-3 records were never offered, in either round. The model's own sentence never left Firm B's node — the wire got requirement vocabulary. | narrator |
+| 2:50–3:30 | **The safety ledger.** Click a requirement in the UI. `record content on the wire: 0 B` — zero by construction, not by policy: no field on an `Attestation` can carry a title, a client, a fee, or a name. **32.4 kB of attestations forward; 2 bytes back.** Cost-3 records were never offered, in either round. The model's own sentence never left Firm B's node — the wire got requirement vocabulary. | narrator |
 | 3:30–4:00 | **Close.** Switch the scenario selector to `transit-tunnel` — same harness, different solicitation, different firm holding the gap, no re-run. "Swap the requirement set, the banding vocabulary and the cost function and the same harness runs cross-hospital cohort feasibility." Stop. | driver, then narrator |
 
 ### The beat that must not be improvised
@@ -90,9 +99,9 @@ the part that matters" rather than speeding up.
 | Time | Beat |
 |---|---|
 | 0:00–0:15 | Three firms, one federal bid, competitors next month. Published on Hub, runs on SuperGrid. |
-| 0:15–0:35 | Round 1, structured search only. Every firm self-assesses compliant. The joint matrix: **R4 red**. |
+| 0:15–0:35 | Round 1, each firm searching only its own library. Every firm self-assesses compliant. The joint matrix: **R4 red**. |
 | 0:35–1:00 | Round 2. The gap goes out — two bytes. Firm B's agent reads its own prose and finds the one person who is both. Green, converged. |
-| 1:00–1:20 | Ledger: 0 bytes of record content, 0 clients named, 33 kB out against 2 bytes back. |
+| 1:00–1:20 | Ledger: 0 bytes of record content, 0 clients named, 32.4 kB out against 2 bytes back. |
 | 1:20–1:30 | Scenario selector: same harness, four solicitations. "The SF330 is the example; the harness is the product." |
 
 ---
@@ -134,7 +143,7 @@ terminal they can read, no time for a live run, and the audience is other builde
   front of 130 people on shared wifi is a coin flip we have no reason to take.
 - Three slides, one idea each: (1) three competitors, one bid, nobody can check compliance
   alone; (2) the four-stage loop with round 2 highlighted and stage four marked as design;
-  (3) the two-bytes-back-for-33-kB-forward ledger.
+  (3) the two-bytes-back-for-32-kB-forward ledger.
 - Say the harness sentence twice — once at the start, once at the end. On stage it is the
   only thing anyone remembers.
 - Ten seconds of framing if the room is UK-heavy: "US federal qualifications form —
@@ -157,6 +166,16 @@ data.
 **If they ask why only two rounds.** Because it converged. The loop runs to `num-rounds` *or*
 until the gap closes *or* until a round returns nothing new — `stopped: "converged"` in the
 trace. A third identical broadcast would only cost time.
+
+**If they ask why round 1's model does not just find the cell.** Because it is not allowed to
+look for it. Round 1's call grades records the *structured predicate already matched* —
+"does this filing's own prose bear it out?", `corroborated` or `thin` — and both the prompt
+and `agents/matcher.py` refuse it the two moves that would matter: it cannot nominate a
+record it was not shown, and `thin` is a grade rather than a veto. That is deliberate on both
+sides. A round-1 call that could nominate would find the Section G cell a round early and
+there would be no beat; one that could veto would drop a declared match out of the disclosure
+set on a sampled completion. The proof is cheap and worth offering: run it with and without
+`MODEL=` and the coverage matrix is identical.
 
 **If they ask whether the model could just be told the answer.** The node is handed the
 uncovered requirement id and its predicate, never the answer and never which record to look

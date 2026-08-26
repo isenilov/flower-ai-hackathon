@@ -6,6 +6,7 @@ Static HTML and vanilla JS. No framework, no build step. The backend appends pro
 events to `state/trace.jsonl` and this page replays them.
 
 ```bash
+make stage      # THE DEMO — split screen: log in this pane, page in the browser
 make watch      # page up first, then the protocol runs into it — watch it land live
 make traces     # run every scenario once, so the selector can switch offline
 make rounds     # just write frontend/state/trace.jsonl
@@ -13,7 +14,8 @@ make ui         # just serve this directory on :8000, replaying whatever trace e
 ```
 
 Any of them takes `SCENARIO=<slug>`; empty uses the manifest default. `make help` lists
-the slugs.
+the slugs. All of them take `MODEL=` — without it round 2 finds nothing and every scenario
+traces as non-compliant, which is why `make traces` warns when it is empty.
 
 `make rounds && make ui` is the wrong order to watch anything: the protocol finishes before
 the page can exist, so you only ever get the replay. `make watch` serves first and runs the
@@ -28,8 +30,27 @@ Opening `index.html` directly does not work — `fetch` of the trace needs a ser
 | `index.html` | Stage (coordinator + three firm nodes), coverage matrix, disclosure ledger, event log |
 | `app.js` | Reads `state/trace.jsonl`, replays it on a clock, animates the packets |
 | `styles.css` | Styling. Red cell / green cell is the whole visual argument. |
-| `serve.py` | Static server with caching off, so a mid-rehearsal edit actually shows |
+| `serve.py` | Static server, caching off, plus `POST /run` — the page's Run button |
 | `state/` | Written by the backend, gitignored. Never hand-edited. |
+
+## The split screen — `make stage`
+
+This is the demo. Terminal pane on the left, browser on the right, and every run driven from
+the page's **Run** button rather than from a second terminal.
+
+`POST /run` spawns `python -m backend.rounds` with **stdout inherited**, so the protocol's
+log lands in the same pane `serve.py` is running in while the animation plays beside it.
+Neither half is a recording of the other, and a judge can look from one to the other and see
+the same run — `backend/ansi.py` paints the terminal with the literal colour tokens out of
+`styles.css`, so firm B is the same amber in both.
+
+`serve.py` binds **`127.0.0.1` only**: it spawns subprocesses on an unauthenticated POST, and
+conference wifi is not the place to listen on `0.0.0.0`. One run at a time; a second Run
+while one is in flight is refused rather than queued.
+
+`make watch` passes `--quiet` to suppress the backend's own duplicate of the matrix, since
+the page is already showing it. `make stage` does not run the protocol at all — it waits for
+you to press Run.
 
 ## The trace contract
 
@@ -40,9 +61,10 @@ rendering half a run. **Adding a field is safe; renaming or removing one breaks 
 
 | Event | Carries |
 |---|---|
+| `flower` | `flwr` (version), `runtime`, `transport`, `nodes` — emitted first, before `run_started`. The `Grid` class is the honest name for the wire: `InMemoryGrid` under the simulation runtime, `GrpcGrid` against a real SuperLink, `LocalGrid` inside the published harness. Same protocol, three transports. |
 | `run_started` | `version`, `started_at`, `scenario{slug,title,headline,gap}`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` (each with `predicate`) |
 | `round_started` | `round`, `gap[]` |
-| `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text` |
+| `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text`, `to[]`, `messages`, `message_type`, `transport` |
 | `reply` | `round`, `firm`, `attestations`, `bytes`, `per_requirement`, `new_requirements[]`, `handles[]` |
 | `matrix` | `round`, `rows[]` (each with `attested[]`: firm, handle, kind, `disclosure_cost`, `banded`), `open_gaps[]`, `closed[]` |
 | `round_ended` | `round`, `open_gaps[]`, `stopped` |

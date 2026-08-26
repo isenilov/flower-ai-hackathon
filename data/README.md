@@ -41,7 +41,8 @@ line (brief §14), not a build-day one.
 
 The default scenario stays at `data/` rather than moving under `scenarios/` alongside the
 others. It is asymmetric and it is deliberate: those paths are named in the brief, in
-`tests/test_invariants.py`, and in every piece of backend code that has not been written yet.
+`tests/test_invariants.py`, and in `backend/scenarios.py`, which resolves the default by
+falling back to `data/` rather than to a `scenarios/` subdirectory.
 
 ## Deriving ground truth — `generate.py`
 
@@ -64,6 +65,13 @@ declared one. The only requirement where they differ is the gap. `self_assessmen
 firm reading with one word removed from the Section G predicate — `join` — which is the
 entire difference between the isolated condition and the truth, and the reason all three
 firms cite two different people for one cell and call it covered.
+
+**`round_one_coverage` is a contract, not just a record.** `agents/matcher.py` grades round-1
+matches with a model, and it is pinned to this reading: grading may annotate a match but may
+neither add one nor drop one, because a model that could nominate would find the Section G
+cell a round early and one that could veto would put the harness below its own oracle on a
+sampled completion. Run `make rounds` with and without `MODEL=` and the matrix is identical —
+that is this number holding.
 
 The evidence lexicon lives in `scenarios.json`, not in the Python. It is a list of words per
 tag, matched on word boundaries against project narratives and person bios. Boundaries are
@@ -157,9 +165,11 @@ A **person** record:
 Each firm file also carries a `profile` string — one line on who the firm is and why it is
 blind to the cell. It is for the UI and the narrator, and nothing reads it as data.
 
-Everything marked private is what the bander exists to keep inside the node. A record's
-`disclosure_cost` of 3 means it is never offered — the firm's agent excludes it from the
-candidate set entirely.
+Everything marked private stays inside the node — structurally, because no field on an
+`Attestation` can carry it, rather than because something strips it on the way out. (Brief
+§5.1's `bander.py` was never built; see `backend/README.md`.) A record's `disclosure_cost` of
+3 means it is never offered — `agents/search.py` excludes it from the candidate set in both
+rounds.
 
 ## Adding a scenario
 

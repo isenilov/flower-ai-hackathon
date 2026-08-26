@@ -46,11 +46,13 @@ Locally, as a three-node federated simulation:
 
 ```bash
 make setup                                    # install dependencies
-make doctor                                   # check the environment and that the FAB builds
-make watch  MODEL=/models/Qwen3.5-397B-A17B-FP8   # UI up first, protocol runs into it
+make doctor                                   # environment, FAB build, model, cache, traces
+make stage  MODEL=/models/Qwen3.5-397B-A17B-FP8   # the demo: log in this pane, page in the browser
 ```
 
-`make` on its own lists everything. The two you want during a build are `make rounds` (the
+`make` on its own lists everything. `make stage` is the demo — it serves the page and waits;
+press **Run** there and the protocol's log lands in the terminal pane beside it, so neither
+half is a recording of the other. During a build the two you want are `make rounds` (the
 federated protocol, streaming to the terminal) and `make check` (lint + invariant tests)
 before you push.
 
@@ -58,7 +60,12 @@ before you push.
 
 `MODEL=` is what enables round-2 re-examination, because round 2 is a model reading prose.
 Without it the run is honest rather than broken: round 1 completes, R4 stays red, and the
-harness reports the bid non-compliant. The shared endpoints are in `docs/event.md`:
+harness reports the bid non-compliant.
+
+Round 1 calls a model too, but only to **grade** what its structured prefilter already
+matched — it may neither nominate a record nor veto one, so the coverage matrix is identical
+with or without a model. Run `make rounds` both ways and diff it. The shared endpoints are in
+`docs/event.md`:
 
 ```bash
 export FLWR_MODEL_API_ENDPOINT='http://129.212.182.232:8001/v1/responses'
@@ -66,9 +73,12 @@ unset FLWR_MODEL_API_KEY                      # Qwen takes no key — an empty o
 make rounds MODEL=/models/Qwen3.5-397B-A17B-FP8
 ```
 
-Responses are cached under `.cache/model/`, keyed on the exact request. **Editing the
-round-2 prompt invalidates the cache** — re-warm it with `make traces MODEL=…` while an
-endpoint is reachable, or the demo falls back to an open gap.
+Responses are cached under `.cache/model/`, keyed on the exact request. **Editing either
+prompt invalidates the cache for that round** — re-warm with `make traces MODEL=…` while an
+endpoint is reachable, or the demo falls back to an open gap. Warm each scenario twice:
+round-1 grading has a 120s budget and times out on a cold cache against the shared endpoint,
+leaving the call to finish into the cache for the next run. `make doctor` reports what is
+cached.
 
 The simulation runs **three** supernodes because three firms is the scenario — Flower 1.34
 defaults to two, so `make rounds` passes the count explicitly. Override the count, the

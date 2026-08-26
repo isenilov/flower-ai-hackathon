@@ -2,9 +2,12 @@
 
 Owner: **Flower** (transport, apps) + **Fusion** (optimiser, approval, baselines).
 
-Everything that is *not* an LLM call lives here. The dependency runs one way: `agents`
-imports `backend.schema` and nothing else from `backend`; `backend.firm_node` imports
-`agents` lazily, inside the functions that need a model, so round 1 stays dependency-free.
+Everything that is *not* an LLM call lives here — `firm_node.py` decides what a requirement
+means and what a record bands to, and `agents/` decides what to ask a model about it. The
+dependency runs one way: `agents` imports `backend.schema` (and `backend.ansi`) and nothing
+else from `backend`, and banding and predicate semantics are *injected* into
+`agents.search` rather than imported by it, because they belong to the wire schema and a
+firm's agent has no business redefining either.
 
 ## The shape that actually emerged
 
@@ -38,7 +41,8 @@ turned up that the plan did not anticipate:
 |---|---|
 | `schema.py` | `Requirement`, `Attestation`, the closed `VOCABULARY`, `SECTION_F_CAP`. **Frozen.** |
 | `protocol.py` | The round loop, gap detection, `Outcome`, and `render()` — the text surface that ships |
-| `firm_node.py` | The whole node side: dual-runtime library load, banding, predicate matching, round-1 `attest`, round-2 `reexamine_gaps`, wire `encode`/`decode` |
+| `firm_node.py` | The node side: dual-runtime library load, banding, predicate semantics (`matches`), round-1 `attest`, round-2 `reexamine_gaps`, wire `encode`/`decode`. Candidate selection and both model calls belong to `agents/`. |
+| `ansi.py` | Terminal colour for the demo's left-hand pane, using the literal tokens from `frontend/styles.css` so both halves of the split screen read as one run |
 | `local_grid.py` | In-process `Grid` over `ClientApp` instances, one `Context` per firm, nodes run concurrently |
 | `agent_app.py` | The published surface — solicitation in, coverage report out. **This is what Hub runs.** |
 | `server_app.py` | The federated surface — same protocol over a real grid |
