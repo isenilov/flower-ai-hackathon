@@ -631,10 +631,31 @@ function play() {
   advance();
 }
 
+// Following a live run, not replaying one: carry on from wherever the cursor got to. A
+// round-2 model call takes tens of seconds, so the page runs out of events long before the
+// run ends — going through `play()` there would reset the cursor and restart the animation
+// from round 1 every time a new batch landed.
+function resume() {
+  if (state.cursor >= state.events.length) return;
+  state.playing = true;
+  dom.play.textContent = 'Pause';
+  advance();
+}
+
 function stop() {
   state.playing = false;
   clearTimeout(state.timer);
-  dom.play.textContent = state.cursor >= state.events.length ? 'Replay' : 'Play';
+  const drained = state.cursor >= state.events.length;
+  dom.play.textContent = drained ? 'Replay' : 'Play';
+
+  const last = state.events[state.cursor - 1];
+  if (drained && last && last.type !== 'run_ended' && dom.follow.checked) {
+    dom.narrStep.textContent = 'thinking';
+    dom.narrText.innerHTML =
+      'Each firm is re-reading its own prose with its own model. Nothing has been sent to ' +
+      'the coordinator, and nothing will be but a banded attestation.';
+    dom.narration.className = 'narration waiting';
+  }
 }
 
 function reset() {
@@ -687,7 +708,7 @@ async function load({ autoplay }) {
   state.ref = ref;
   state.events = events;
   if (restarted) reset();
-  if (autoplay && !state.playing) play();
+  if (autoplay && !state.playing) (restarted ? play : resume)();
   return true;
 }
 
