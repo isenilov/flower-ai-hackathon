@@ -11,4 +11,5 @@ CLAUDE.local.md
 .pytest_cache/
 .ruff_cache/
 frontend/state/*.json
+frontend/state/*.jsonl
 .DS_Store

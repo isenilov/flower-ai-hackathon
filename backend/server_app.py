@@ -13,6 +13,7 @@ from flwr.common.logger import log
 from flwr.serverapp import Grid, ServerApp
 
 from backend import protocol
+from backend.trace import Trace
 
 app = ServerApp()
 
@@ -21,5 +22,5 @@ app = ServerApp()
 def main(grid: Grid, context: Context) -> None:
     """Run the protocol: blind attestation, gap re-examination, disclosure."""
     num_rounds = protocol.resolve_rounds(context.run_config.get("num-rounds"))
-    outcome = protocol.run(grid, num_rounds)
+    outcome = protocol.run(grid, num_rounds, trace=Trace())
     log(INFO, "\n%s", protocol.render(outcome))

@@ -19,6 +19,7 @@ from flwr.common.logger import log
 from backend import protocol
 from backend.firm_node import FIRMS, make_client_app
 from backend.local_grid import LocalGrid
+from backend.trace import Trace
 
 app = AgentApp()
 
@@ -46,7 +47,12 @@ def main(agent: AgentSession, context: Context) -> None:
     model = str(context.run_config.get("model", ""))
     operator_input = str(context.run_config.get("agent.input", "")).strip() or None
 
-    outcome = protocol.run(build_grid(num_firms), num_rounds, operator_input)
+    # The session doubles as an event sink: `push_run_events` reaches every
+    # `Control.StreamRunEvents` consumer, so `flwr chat` sees the same protocol events
+    # the local visualisation reads. Absent on runtimes that do not offer it.
+    outcome = protocol.run(
+        build_grid(num_firms), num_rounds, operator_input, trace=Trace(session=agent)
+    )
     log(
         INFO,
         "%s rounds, %s firms, %s open gaps",

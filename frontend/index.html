@@ -1,20 +1,84 @@
 <!doctype html>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Consortium — Federated Bid Assembly</title>
 <link rel="stylesheet" href="styles.css">
 
-<h1>Consortium</h1>
+<main id="app">
 
-<section id="coverage">
-  <h2>Coverage matrix</h2>
-</section>
+  <header class="bar">
+    <div class="brand">
+      <span class="mark"></span>
+      <span class="wordmark">Consortium</span>
+      <span class="tagline">collaborative disclosure harness</span>
+    </div>
+    <div class="transport">
+      <span id="clock" class="clock">—</span>
+      <button id="restart" class="ghost" title="Back to the start">⏮</button>
+      <button id="play" class="primary">Play</button>
+      <button id="step" class="ghost" title="One beat forward">Step ›</button>
+      <label class="speed">
+        <select id="speed">
+          <option value="0.5">0.5×</option>
+          <option value="1" selected>1×</option>
+          <option value="2">2×</option>
+          <option value="4">4×</option>
+        </select>
+      </label>
+      <label class="live" title="Poll the trace file and follow a run as it happens">
+        <input type="checkbox" id="follow"> follow
+      </label>
+    </div>
+  </header>
 
-<section id="ledger">
-  <h2>Disclosure ledger</h2>
-</section>
+  <p id="solicitation" class="solicitation">Waiting for a trace…</p>
 
-<section id="sf330">
-  <h2>SF330 — Sections E / F / G</h2>
-</section>
+  <section id="empty" class="empty">
+    <h2>No trace yet</h2>
+    <p>Run the protocol, then reload — or tick <strong>follow</strong> to watch it arrive.</p>
+    <pre>make rounds</pre>
+    <p class="muted">Writes <code>frontend/state/trace.jsonl</code>, which this page reads.</p>
+  </section>
+
+  <section id="stage" class="stage" hidden>
+    <div id="roundBanner" class="round-banner"><span></span></div>
+    <svg id="wires" aria-hidden="true"></svg>
+
+    <div class="node coordinator" id="coordinator">
+      <div class="node-title">Coordinator</div>
+      <div class="node-sub" id="coordinatorState">idle</div>
+      <div class="reqs" id="reqStrip"></div>
+    </div>
+
+    <div class="firms" id="firms"></div>
+  </section>
+
+  <section id="panels" class="panels" hidden>
+
+    <div class="panel coverage">
+      <h2>Coverage <span class="hint">need vs. attested, across all three firms</span></h2>
+      <div class="matrix" id="matrix"></div>
+      <div class="verdict" id="verdict"></div>
+    </div>
+
+    <div class="panel ledger">
+      <h2>Disclosure ledger</h2>
+      <dl id="ledger">
+        <div><dt>banded attestations on the wire</dt><dd id="mBanded">—</dd></div>
+        <div class="hero"><dt>record content on the wire</dt><dd id="mRecords">—</dd></div>
+        <div><dt>the gap that travelled back</dt><dd id="mGap">—</dd></div>
+        <div><dt>rounds run</dt><dd id="mRounds">—</dd></div>
+      </dl>
+      <p class="footnote" id="ledgerNote"></p>
+    </div>
+
+  </section>
+
+  <section id="log" class="log" hidden>
+    <h2>Event trace</h2>
+    <ol id="logList"></ol>
+  </section>
+
+</main>
 
 <script src="app.js"></script>

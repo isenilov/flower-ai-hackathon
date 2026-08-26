@@ -94,7 +94,7 @@ check: lint test ## What to run before you push
 # ---------------------------------------------------------------- housekeeping
 
 reset: ## Clear run state so the demo starts from nothing
-	@rm -f frontend/state/*.json
+	@rm -f frontend/state/*.json frontend/state/*.jsonl
 	@echo "run state cleared"
 
 clean: reset ## reset, plus caches and build artefacts
