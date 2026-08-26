@@ -1,6 +1,6 @@
 [project]
 name = "consortium"
-version = "0.3.0"
+version = "0.3.1"
 # Hub renders this as the app description, so it carries the team too; `flwr app publish`
 # stops to ask above 200 characters, which would hang `make publish`.
 description = "A collaborative disclosure harness for agents that cannot pool their data. Team Axomic: Vyacheslav Lukin, Ivan Senilov."
