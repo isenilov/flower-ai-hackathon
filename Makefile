@@ -7,6 +7,8 @@
 UV         ?= uv
 RUN        := $(UV) run
 PORT       ?= 8000
+SLIDES     := docs/slides
+SLIDE_PORT ?= 3030
 ROUNDS     ?= 3
 SUPERNODES ?= 3
 SUPERLINK  ?=
@@ -19,16 +21,16 @@ SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds traces harness baselines data build ui stage watch demo test lint fmt check clean reset reset-traces publish chat
+.PHONY: help setup doctor run rounds traces harness baselines data build ui stage watch demo slides slides-build slides-deps test lint fmt check clean reset reset-traces publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
 
 help: ## List the targets
 	@grep -hE '^[a-z][a-z-]*:.*?## ' $(MAKEFILE_LIST) \
-		| awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-11s\033[0m %s\n", $$1, $$2}'
+		| awk 'BEGIN{FS=":.*?## "}{printf "  \033[36m%-12s\033[0m %s\n", $$1, $$2}'
 	@echo ""
-	@echo "  Overrides: PORT=$(PORT) ROUNDS=$(ROUNDS) SUPERNODES=$(SUPERNODES) SUPERLINK=$(SUPERLINK)"
+	@echo "  Overrides: PORT=$(PORT) SLIDE_PORT=$(SLIDE_PORT) ROUNDS=$(ROUNDS) SUPERNODES=$(SUPERNODES) SUPERLINK=$(SUPERLINK)"
 	@echo "             SCENARIO=$(SCENARIO) MODEL=$(MODEL)"
 	@echo "  SCENARIO picks a corpus; empty uses the manifest default. Slugs: $(SCENARIO_SLUGS)"
 	@echo "  SUPERLINK names a connection from your Flower config; empty uses its default."
@@ -141,6 +143,24 @@ watch: reset ## Serve the UI, then run the protocol into it — watch the rounds
 	 wait $$ui
 
 demo: reset rounds baselines ui ## The full run: clean state -> rounds -> baselines -> UI
+
+# ------------------------------------------------------------------- the slides
+
+# Node, not uv: the deck adds nothing to uv.lock and nobody re-runs `uv sync` for it. Slidev
+# installs into docs/slides/node_modules (gitignored) rather than resolving through npx every
+# time, because `npx @slidev/cli` cannot install the theme it then demands. Once installed it
+# runs offline — so run `make slides` once before the freeze, not at 17:29.
+slides: slides-deps ## Serve the deck on :SLIDE_PORT with hot reload — problem, architecture, roadmap
+	cd $(SLIDES) && npx slidev slides.md --port $(SLIDE_PORT) --open
+
+slides-build: slides-deps ## Build the deck to docs/slides/dist — opens with no node process
+	cd $(SLIDES) && npx slidev build slides.md --base ./ --out dist
+	@echo "-> $(SLIDES)/dist/index.html"
+
+slides-deps:
+	@command -v npm >/dev/null || { echo "npm not found — install Node 20+"; exit 1; }
+	@test -d $(SLIDES)/node_modules || { echo "installing Slidev into $(SLIDES)…"; \
+	   cd $(SLIDES) && npm install --silent; }
 
 # --------------------------------------------------------------- dev / testing
 

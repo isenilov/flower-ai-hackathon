@@ -13,3 +13,6 @@ CLAUDE.local.md
 frontend/state/*.json
 frontend/state/*.jsonl
 .DS_Store
+docs/slides/dist/
+docs/slides/node_modules/
+docs/slides/.slidev/
