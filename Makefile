@@ -62,7 +62,7 @@ SCENARIO_ARG := $(if $(SCENARIO),--scenario $(SCENARIO),)
 SCENARIO_SLUGS = $(shell $(RUN) python -c "from backend.scenarios import catalogue; print(' '.join(catalogue()))" 2>/dev/null)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds traces harness grid grid-watch baselines data build ui stage watch demo slides slides-build slides-deps test lint fmt check clean reset reset-traces publish chat
+.PHONY: help setup doctor run rounds traces harness harness-watch grid grid-watch watch-remote baselines data build ui stage watch demo slides slides-build slides-deps test lint fmt check clean reset reset-traces publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -135,7 +135,8 @@ traces: ## Run every scenario once, so the UI's scenario selector is fully popul
 harness: ## Run the published harness the way a judge does — on SuperGrid's agent runner
 	@echo "-> $(FEDERATION) · $(ROUNDS) rounds · agent runner · model $(if $(HARNESS_MODEL),$(HARNESS_MODEL),NONE — round 1 only)"
 	$(RUN) flwr run . $(SUPERLINK) --federation $(FEDERATION) --stream \
-		--run-config "num-rounds=$(ROUNDS) model='$(HARNESS_MODEL)'"
+		--run-config "num-rounds=$(ROUNDS) model='$(HARNESS_MODEL)' trace-to-log=true" 2>&1 \
+		| $(RUN) python -m backend.trace
 	@echo ""
 	@echo "-> $(FEDERATION_URL)"
 
@@ -167,10 +168,18 @@ grid: ## Run the federated protocol on SuperGrid — coordinator and firm nodes 
 	@echo ""
 	@echo "-> $(FEDERATION_URL)"
 
-# `grid` puts the page's data on this machine but the page has to already be up to follow it,
-# and `grid` then `ui` is the wrong order — the run is over before the page exists. Same
-# shape as `watch`, one federation further away.
-grid-watch: reset ## Serve the UI, then run on SuperGrid into it — watch the remote rounds land
+# Both SuperGrid targets put the page's data on this machine, but the page has to be up
+# before the run starts to follow it — and `grid` then `ui` is the wrong order, because the
+# run is over before the page exists. Same shape as `watch`, one federation further away.
+grid-watch: ## Split screen for `grid` — firm nodes on SuperNodes, on screen as it happens
+	@$(MAKE) --no-print-directory watch-remote TARGET=grid
+
+harness-watch: ## Split screen for `harness` — the published app a judge runs, on screen
+	@$(MAKE) --no-print-directory watch-remote TARGET=harness
+
+# Shared by the two above, and not in `help` because the target it runs is the interesting
+# part. TARGET is whichever of them writes the trace through `python -m backend.trace`.
+watch-remote: reset
 	@$(RUN) python frontend/serve.py $(PORT) >/dev/null 2>&1 & \
 	 ui=$$!; \
 	 trap "kill $$ui 2>/dev/null" EXIT INT TERM; \
@@ -178,7 +187,7 @@ grid-watch: reset ## Serve the UI, then run on SuperGrid into it — watch the r
 	 echo "-> http://localhost:$(PORT)/   (the page follows a run on $(FEDERATION))"; \
 	 ( $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & ); \
 	 sleep 2; \
-	 $(MAKE) --no-print-directory grid; \
+	 $(MAKE) --no-print-directory $(TARGET); \
 	 echo ""; \
 	 echo "run complete — page still served on :$(PORT), ctrl-c to stop"; \
 	 wait $$ui

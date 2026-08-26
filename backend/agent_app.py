@@ -58,11 +58,16 @@ def main(agent: AgentSession, context: Context) -> None:
     scenario = protocol.resolve_scenario(context.run_config.get("scenario"))
     # `agent.responses.create` is the only way a firm node reaches a model here — a
     # `ClientApp` never sees an `AgentSession`, so the harness hands it down.
+    # The AgentApp runs on SuperGrid, where its JSONL sink is written inside a container and
+    # discarded with it — so a page on the operator's machine would follow a file nothing
+    # wrote. `trace-to-log` adds the sink that survives the trip; `make harness` reads the
+    # other end of the pipe. See `backend.trace`.
+    to_log = str(context.run_config.get("trace-to-log", "")).strip().lower() in ("true", "1")
     outcome = protocol.run(
         build_grid(num_firms, agent.responses.create if model else None),
         num_rounds,
         operator_input,
-        trace=Trace(session=agent, scenario=scenario.slug),
+        trace=Trace(session=agent, scenario=scenario.slug, to_log=to_log),
         scenario=scenario,
         model_id=model,
     )

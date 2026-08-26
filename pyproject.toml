@@ -75,6 +75,16 @@ section-f-cap = 10
 # yourself, and their ids come back `400 not a valid model ID` there. Empty is still a
 # supported mode: round 1 runs, round 2 finds nothing, and the gap stays open honestly.
 model = "openai/gpt-5.5"
+# Which corpus a run stands on. `backend.agent_app` has always read this key; until it was
+# declared here, `--run-config scenario=...` was rejected and only the environment could set
+# it. Empty uses the manifest default.
+scenario = ""
+# Put the trace in the run's log, as JSON behind a sentinel, so a page on the operator's
+# machine can follow a run happening somewhere it cannot see the filesystem of. Off by
+# default: a local run writes `frontend/state/trace.jsonl` directly and the extra lines would
+# only clutter the demo pane. `make harness` and `make grid` set it and read the other end of
+# the pipe with `python -m backend.trace`. See backend/trace.py.
+trace-to-log = false
 
 [tool.flwr.app.config.agent]
 input = ""

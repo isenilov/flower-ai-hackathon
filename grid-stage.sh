@@ -60,25 +60,9 @@ text = once(
     "swap agentapp for serverapp + clientapp",
     re.M,
 )
-# Anchored on `model` so these land inside `[tool.flwr.app.config]` rather than after the
-# `.agent` subtable that follows it.
-# Anchored on `model`, whatever it is set to, so these land inside `[tool.flwr.app.config]`
-# rather than after the `.agent` subtable that follows it. The value is deliberately not
-# matched: it is the default a judge's run gets and it moves whenever SuperGrid's does.
-text = once(
-    r'^(model = ".*")$',
-    "\\1\n"
-    "# Which corpus a run stands on. Empty uses the manifest default. Only this surface\n"
-    "# has the key: the published app reads the scenario from its environment.\n"
-    '\nscenario = ""\n'
-    "# Put the trace in the run's log, so a page on the operator's machine can follow a run\n"
-    "# happening in a container it cannot see. `make grid` sets it and reads the other end\n"
-    "# of the pipe with `python -m backend.trace`.\n"
-    "trace-to-log = false",
-    text,
-    "add the scenario config key",
-    re.M,
-)
+# `[tool.flwr.app.config]` is copied as it stands. `scenario` and `trace-to-log` are declared
+# in the repo's own pyproject because both surfaces read them, so nothing is injected here —
+# and a key added in both places would be a duplicate TOML key rather than an override.
 
 path.write_text(text)
 PY
