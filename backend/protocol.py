@@ -96,6 +96,7 @@ def run(
         trace.emit(
             "run_started",
             version=TRACE_VERSION,
+            started_at=trace.started_at,
             solicitation=solicitation or rfp_solicitation,
             as_of=as_of,
             num_rounds=num_rounds,

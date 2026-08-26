@@ -62,6 +62,7 @@ const state = {
   cells: new Map(),      // requirement id -> { node, met }
   reqChips: new Map(),
   raw: '',
+  ref: null,
 };
 
 // ------------------------------------------------------------------ utilities
@@ -459,8 +460,11 @@ async function load({ autoplay }) {
   const events = parse(text);
   if (!events.length) return false;
 
-  // A shorter trace than we hold means a fresh run started — begin again.
-  const restarted = events.length < state.events.length || events[0]?.t_ms !== state.events[0]?.t_ms;
+  // `started_at` is the run's identity. A different one means the backend truncated the
+  // file and began again, so the page starts over rather than splicing two runs together.
+  const ref = events[0]?.started_at;
+  const restarted = ref !== state.ref || events.length < state.events.length;
+  state.ref = ref;
   state.events = events;
   if (restarted) reset();
   if (autoplay && !state.playing) play();
@@ -474,8 +478,7 @@ async function poll() {
 
 dom.follow.onchange = () => { if (dom.follow.checked) poll(); };
 
-load({ autoplay: false }).then((ok) => {
-  if (!ok) return;
-  reset();
-  play();
-});
+// Polling a static file is free, so following is the default: it makes `make watch` fill
+// the page as the rounds land, and picks up any later run without a reload.
+if (dom.follow.checked) poll();
+else load({ autoplay: true });

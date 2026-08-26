@@ -6,18 +6,25 @@ Static HTML and vanilla JS. No framework, no build step. The backend appends pro
 events to `state/trace.jsonl` and this page replays them.
 
 ```bash
-make rounds     # writes frontend/state/trace.jsonl
-make ui         # serves this directory on :8000
+make watch      # page up first, then the protocol runs into it — watch it land live
+make rounds     # just write frontend/state/trace.jsonl
+make ui         # just serve this directory on :8000, replaying whatever trace exists
 ```
 
-Open it directly if you prefer, but `fetch` of the trace needs a server — `file://` will
-show the empty state.
+`make rounds && make ui` is the wrong order to watch anything: the protocol finishes before
+the page can exist, so you only ever get the replay. `make watch` serves first and runs the
+protocol into the open page.
+
+Opening `index.html` directly does not work — `fetch` of the trace needs a server, so
+`file://` shows the empty state. `serve.py` is that server; it strips the request's
+`If-Modified-Since` so an edited `app.js` is never answered with a 304.
 
 | File | Shows |
 |---|---|
 | `index.html` | Stage (coordinator + three firm nodes), coverage matrix, disclosure ledger, event log |
 | `app.js` | Reads `state/trace.jsonl`, replays it on a clock, animates the packets |
 | `styles.css` | Styling. Red cell / green cell is the whole visual argument. |
+| `serve.py` | Static server with caching off, so a mid-rehearsal edit actually shows |
 | `state/` | Written by the backend, gitignored. Never hand-edited. |
 
 ## The trace contract
@@ -29,7 +36,7 @@ rendering half a run. **Adding a field is safe; renaming or removing one breaks 
 
 | Event | Carries |
 |---|---|
-| `run_started` | `version`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` |
+| `run_started` | `version`, `started_at`, `solicitation`, `as_of`, `num_rounds`, `firms`, `requirements[]` |
 | `round_started` | `round`, `gap[]` |
 | `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text` |
 | `reply` | `round`, `firm`, `attestations`, `bytes`, `per_requirement`, `new_requirements[]`, `handles[]` |
@@ -44,9 +51,10 @@ page drives the event list off its own clock — play/pause, `Step ›`, and 0.5
 narrator can hold on round 2 for as long as the question takes. `t_ms` is still shown, so
 the timings on screen are the measured ones, not the presentation ones.
 
-Tick **follow** to poll the file instead and pick up a run as it happens; a trace shorter
-than the one in hand means a new run started, and the page resets. That becomes the useful
-mode once `agents/matcher.py` puts real model calls in each round and a round takes seconds.
+**follow** is on by default and polls the file, so a run started after the page opened
+lands on screen as it happens — that is what `make watch` relies on. A changed
+`run_started.started_at` means the backend truncated the file and began again, so the page
+starts over rather than splicing two runs together. Untick it to pin the page to one trace.
 
 ## What the stage is arguing
 

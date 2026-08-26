@@ -53,6 +53,9 @@ class Trace:
         self._forward_failed = False
         self._origin = time.monotonic()
         self._seq = 0
+        # Wall clock, not the monotonic origin: a page following the file needs to tell one
+        # run from the next, and every run's first `t_ms` is the same handful of ms.
+        self.started_at = time.strftime("%Y-%m-%dT%H:%M:%S")
 
         self._path.parent.mkdir(parents=True, exist_ok=True)
         self._path.write_text("")

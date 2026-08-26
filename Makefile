@@ -13,7 +13,7 @@ SUPERLINK  ?=
 OPEN       := $(if $(filter Darwin,$(shell uname -s)),open,xdg-open)
 
 .DEFAULT_GOAL := help
-.PHONY: help setup doctor run rounds harness baselines data build ui demo test lint fmt check clean reset publish chat
+.PHONY: help setup doctor run rounds harness baselines data build ui watch demo test lint fmt check clean reset publish chat
 
 # `demo` and `check` are ordered pipelines — -j would race them.
 .NOTPARALLEL:
@@ -72,7 +72,23 @@ chat: ## Talk to the published harness on SuperGrid: @i53n1/consortium <solicita
 ui: ## Serve the coverage matrix, ledger, and SF330 on localhost:PORT
 	@echo "-> http://localhost:$(PORT)/   (ctrl-c to stop)"
 	@( sleep 1 && $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & )
-	@$(RUN) python -m http.server $(PORT) --directory frontend
+	@$(RUN) python frontend/serve.py $(PORT)
+
+# `rounds` then `ui` is the wrong order to watch anything: the protocol has finished before
+# the page can exist. This puts the page up first and runs the protocol into it, so the
+# rounds land on screen as they happen.
+watch: reset ## Serve the UI, then run the protocol into it — watch the rounds land live
+	@$(RUN) python frontend/serve.py $(PORT) >/dev/null 2>&1 & \
+	 ui=$$!; \
+	 trap "kill $$ui 2>/dev/null" EXIT INT TERM; \
+	 sleep 1; \
+	 echo "-> http://localhost:$(PORT)/   (the page follows the run)"; \
+	 ( $(OPEN) "http://localhost:$(PORT)/" >/dev/null 2>&1 & ); \
+	 sleep 2; \
+	 $(RUN) python -m backend.rounds --rounds $(ROUNDS) --supernodes $(SUPERNODES); \
+	 echo ""; \
+	 echo "rounds complete — page still served on :$(PORT), ctrl-c to stop"; \
+	 wait $$ui
 
 demo: reset rounds baselines ui ## The full run: clean state -> rounds -> baselines -> UI
 
