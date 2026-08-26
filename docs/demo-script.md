@@ -29,6 +29,12 @@ the coverage matrix, the byte ledger.
 A full run replays in about **20 seconds** at 1×. That is deliberate — the narrator paces it
 with `Step ›` and holds on round 2 for as long as the question takes.
 
+**Round 1 grades with a model too, when one is reachable.** It grades and never re-decides —
+the matrix is the same matrix either way — so on a cache-only laptop those calls miss, a grade
+is never allowed to fail a round, and round 1 quietly falls back to the declared reading. That
+is what the pane will show at the table, and it is what the beat sheet below narrates. Do not
+promise a judge round-1 grading lines that this machine will not print.
+
 ---
 
 ## Before the judges arrive — the setup checklist
