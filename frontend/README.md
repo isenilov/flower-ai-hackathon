@@ -48,6 +48,12 @@ the same run — `backend/ansi.py` paints the terminal with the literal colour t
 conference wifi is not the place to listen on `0.0.0.0`. One run at a time; a second Run
 while one is in flight is refused rather than queued.
 
+The pane carries the protocol and nothing else, so a request under `/state/` is never logged
+whatever it answered — the page polls the trace four times a second — and a live trace that
+does not exist yet answers **204**, not 404. `make stage` clears it and waits for Run, so
+"no trace yet" is the normal state of a fresh stage rather than an error worth two red lines
+per poll. A genuine missing asset is still a 404, and an unknown scenario is still a 400.
+
 `--quiet` (passed by `make watch`, and by every run the Run button starts) drops Flower's
 six-line `run_simulation` deprecation notice and Ray's accelerator `FutureWarning` — the two
 things that shout over the protocol without telling a viewer anything. It does not touch the
@@ -69,7 +75,7 @@ rendering half a run. **Adding a field is safe; renaming or removing one breaks 
 | `broadcast` | `round`, `gap[]`, `requirements`, `bytes`, `gap_bytes`, `reads_text`, `to[]`, `messages`, `message_type`, `transport` |
 | `reply` | `round`, `firm`, `attestations`, `bytes`, `per_requirement`, `new_requirements[]`, `handles[]` |
 | `matrix` | `round`, `rows[]` (each with `attested[]`: firm, handle, kind, `disclosure_cost`, `banded`), `open_gaps[]`, `closed[]` |
-| `round_ended` | `round`, `open_gaps[]`, `stopped` |
+| `round_ended` | `round`, `open_gaps[]`, `stopped` — the coordinator's own decision, go again or stop |
 | `run_ended` | `rounds_run`, `open_gaps[]`, `mandatory_gaps[]`, `compliant`, `banded_bytes`, `record_bytes` |
 
 ## Why replay rather than live tail
@@ -128,3 +134,11 @@ nor cut-down — it became the demo surface (brief §11). It stays cut-safe anyw
 `backend/trace.py` prints every event to the terminal, which is what ships inside the FAB. If
 this page does not land, the argument survives in the log — and `make stage` shows both halves
 at once precisely because the terminal half is the one that cannot fail.
+
+Two voices in that log, and the gutter is how you tell them apart. `firm A/B/C` lines are
+written inside a firm node, in its own process, in its own lane colour — under the simulation
+runtime Ray prefixes them with the actor's pid, which is the cheapest possible proof that
+three processes are talking. `coord` lines are the coordinator: what it decomposed the RFP
+into, and after every matrix, whether it is going back to the firms with the gap or stopping.
+`flower` lines are the framework itself — the runtime, the transport, and each
+`send_and_receive`.

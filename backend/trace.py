@@ -186,7 +186,7 @@ def _terminal_line(event: dict[str, Any]) -> str:
 
     if kind == "run_started":
         scenario = event["scenario"]
-        return _tag("trace", ansi.DIM) + (
+        return _tag("coord", ansi.INK, bold=True) + (
             f"{ansi.paint(scenario['slug'], ansi.INK, bold=True)} · "
             f"{len(event['requirements'])} requirements · {len(event['firms'])} firms · "
             f"trace v{event['version']}"
@@ -238,6 +238,22 @@ def _terminal_line(event: dict[str, Any]) -> str:
         cells = "  ".join(_cell(row) for row in event["rows"])
         won = ansi.paint(f"   {closed} closed", ansi.OK, bold=True) if closed else ""
         return _tag("  matrix", ansi.DIM) + cells + won
+
+    if kind == "round_ended":
+        # The coordinator's decision, and the only one it makes alone: broadcast the gap
+        # again, or stop. Silent until now, which read as the round loop having no author.
+        gaps = ",".join(event["open_gaps"])
+        stopped = event["stopped"]
+        if not gaps:
+            detail, tone = f"every requirement met - stopping at round {event['round']}", ansi.OK
+        elif stopped == "no-new-evidence":
+            detail, tone = (
+                f"{gaps} still unmet and round {event['round']} found nothing new - stopping",
+                ansi.GAP,
+            )
+        else:
+            detail, tone = f"{gaps} unmet - going back to the firms with the gap", ansi.FIRM[1]
+        return _tag("coord", ansi.INK, bold=True) + ansi.paint(detail, tone)
 
     if kind == "run_ended":
         compliant = event["compliant"]

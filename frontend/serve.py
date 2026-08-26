@@ -119,8 +119,18 @@ class DemoHandler(SimpleHTTPRequestHandler):
         self._json(status, body)
 
     def do_GET(self) -> None:
-        if urlparse(self.path).path == "/run":
+        path = urlparse(self.path).path
+        if path == "/run":
             self._json(200, self.runner.state())
+            return
+        # `make stage` clears the live trace and the page polls for it four times a second
+        # until a run writes one. That is the normal state of a fresh stage, so it answers
+        # "nothing yet" rather than "not found" — a 404 storm in the demo pane, and a red
+        # line in anyone's devtools, both read as a broken page.
+        if path.startswith("/state/") and not (ROOT / path.lstrip("/")).exists():
+            self.send_response(204)
+            self.send_header("Content-Length", "0")
+            self.end_headers()
             return
         super().do_GET()
 
@@ -145,8 +155,11 @@ class DemoHandler(SimpleHTTPRequestHandler):
         super().end_headers()
 
     def log_message(self, format: str, *args: object) -> None:
-        # One line per asset per reload is noise in a pane that is showing a protocol; the
-        # page polls the trace four times a second, so this would drown everything.
+        # One line per asset per reload is noise in a pane that is showing a protocol, and
+        # the trace poll runs four times a second whatever it answers — so `/state/` is
+        # silent at every status, and everything else is silent unless it failed.
+        if urlparse(self.path).path.startswith("/state/"):
+            return
         if not str(args[1] if len(args) > 1 else "").startswith("2"):
             super().log_message(format, *args)
 
