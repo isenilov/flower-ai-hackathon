@@ -123,6 +123,8 @@ instantly with no re-run and no network, which is what you want with a judge at 
 - A firm reply that speaks to a requirement it did not answer last round is marked
   `+R4` and its new handle chip glows. That delta is the whole "multiplier" claim.
 
-`frontend/` is **cut candidate #1 and #2** on the brief's cut list, and it stays cut-safe:
-`backend/trace.py` also prints every event to the terminal, which is what ships inside the
-FAB. If this page does not land, the argument survives in the log.
+`frontend/` was **cut candidate #1 and #2** on the brief's cut list and ended up neither cut
+nor cut-down — it became the demo surface (brief §11). It stays cut-safe anyway:
+`backend/trace.py` prints every event to the terminal, which is what ships inside the FAB. If
+this page does not land, the argument survives in the log — and `make stage` shows both halves
+at once precisely because the terminal half is the one that cannot fail.

@@ -2,7 +2,7 @@
 
 | File | Contents |
 |---|---|
-| `consortium-brief.md` | **The plan, as written at the start of the day.** Track and submission gates, pitch, architecture, Flower/Hub mapping, publishing runbook, task breakdown, milestones, cut list, judge Q&A. Read this first — §0 tells you what we actually have to hand in. Not rewritten to match the build: see below. |
+| `consortium-brief.md` | **The plan and the build, in one document.** Track and submission gates, pitch, architecture, Flower/Hub mapping, publishing runbook, task breakdown, milestones, cut list, judge Q&A — updated in place against what the code does, with every divergence from the original plan marked inline. Read this first: the *Status* block at the top says what runs, and §0 says what we hand in. |
 | `demo-script.md` | The 4-minute table demo, the 90-second cut, and the stage version. Every beat in it has been run end to end; the numbers are measured. Rehearsed twice, timed, between the 16:50 freeze and 17:30. |
 | `decisions.md` | Decisions actually taken, with the reason each one went the way it did. The 12:00 packaging call is the one that reshaped the codebase. |
 | `event.md` | The organisers' post: schedule, venue, Slack, required docs, shared model endpoints and keys, submission fields, judging axes. Go here before re-reading the forum thread. |
@@ -16,14 +16,14 @@ from each axis to the artefact that evidences it.
 The working agreement — worktrees, the single `main` branch, directory ownership — is in
 `CLAUDE.md` at the repo root, not here.
 
-## The brief is the plan, not the description
+## Where the build diverged from the plan
 
-`consortium-brief.md` is deliberately **not** kept in sync with the code. It is the record of
-what we intended at 10:30, and rewriting it would destroy the only copy of that. For what
-exists, the per-directory READMEs are the authority — each one names what landed, what did
-not, and the invariants that actually hold.
+The brief has been updated in place, so it and the code now agree. This table is the index of
+*what changed and why* — the brief marks each one inline at the section that owns it, and the
+per-directory READMEs are the authority on any individual module.
 
-Where the two diverge, and why:
+Kept as a separate list because the reasons are the reusable part. Six of these were
+discovered rather than decided, and four of them cost hours:
 
 | Brief says | Reality | Why |
 |---|---|---|
@@ -39,6 +39,11 @@ Where the two diverge, and why:
 | Milestones: 3 rounds | The loop **converges at round 2** and stops — `stopped: "converged"` in the trace. | A third identical broadcast costs time and finds nothing. `ROUNDS` is the ceiling, not the count. |
 | §4, §8: in round 1 "every firm self-assesses compliant" and is "confidently wrong" | **Each firm covers five of six, and R4 is unreachable at all three.** No firm's declared fields describe a Section G join, so no firm claims it in the first place. | The brief's version is `ground_truth.json`'s `self_assessment` reading, which drops `join` — and that baseline never executes. The correction is the better argument: it takes the joint matrix to license the one local re-read that finds the cell. `demo-script.md` has the wording. |
 
-Two things the brief planned that landed *bigger* than planned: four scenarios instead of one
-(`data/README.md`), and a split-screen demo driven from the page with the protocol's log in
-the terminal beside it (`make stage`, `frontend/README.md`).
+Two things landed *bigger* than planned: four scenarios instead of one (`data/README.md`), and
+a split-screen demo driven from the page with the protocol's log in the terminal beside it
+(`make stage`, `frontend/README.md`) — the frontend was cut candidate #1 and became the demo.
+
+The one that would generalise to the next hackathon: **the cut list ranked the wrong things.**
+It ordered the artefacts easiest to imagine cutting (the UI) rather than the lane most likely
+to be starved (Fusion — the optimiser, gate, assembly and baselines, four modules, none built).
+Brief §11 has the post-mortem.
