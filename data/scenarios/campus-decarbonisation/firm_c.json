@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_C",
+  "profile": "Sustainability and existing-buildings consultancy. Retrofits campuses and decarbonises plant, but never the same building twice, so its two halves sit in different job families.",
+  "projects": [
+    {
+      "handle": "FIRM_C::PROJ::001",
+      "title": "Riverside College Deep Retrofit",
+      "client": "Riverside College",
+      "client_type": "private",
+      "sector": "education",
+      "value_usd": 68000000,
+      "completed": "2023-03",
+      "delivery": "ipd",
+      "certification": "LEED-Platinum",
+      "narrative": "Deep energy retrofit of five academic buildings, with envelope upgrades, controls and a measurement and verification regime.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::002",
+      "title": "Auralia State Library Retrofit",
+      "client": "Auralia State University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 57000000,
+      "completed": "2024-06",
+      "delivery": "ipd",
+      "certification": "LEED-Platinum",
+      "narrative": "Library retrofit with a new envelope, daylight controls and a reduced-airflow stack environment.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::003",
+      "title": "Whitmore Residence Hall Recommissioning",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 52000000,
+      "completed": "2022-07",
+      "delivery": "ipd",
+      "certification": "LEED-Gold",
+      "narrative": "Recommissioning and mechanical renewal across eleven residence halls, delivered between academic terms.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::004",
+      "title": "State Office Portfolio Decarbonisation",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 124000000,
+      "completed": "2023-09",
+      "delivery": "ipd",
+      "certification": "LEED-Platinum",
+      "narrative": "Portfolio decarbonisation across nine state office buildings, with heat pumps, controls and a central plant conversion.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_C::PROJ::005",
+      "title": "Calder Civic Centre Electrification",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 46000000,
+      "completed": "2024-11",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Electrification of a civic centre, replacing gas plant with air-source heat pumps.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::006",
+      "title": "Northgate Schools Envelope Programme",
+      "client": "Northgate School District",
+      "client_type": "municipal",
+      "sector": "education",
+      "value_usd": 39000000,
+      "completed": "2025-03",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Roof and envelope programme across twelve school buildings.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::007",
+      "title": "Cascade Health Energy Programme",
+      "client": "Cascade Regional Health",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 79000000,
+      "completed": "2021-10",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Energy programme across a hospital estate, with plant renewal and continuous commissioning.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::008",
+      "title": "Whitmore Athletics Retrofit",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 63000000,
+      "completed": "2019-06",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Mechanical and lighting retrofit of an athletics building.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::009",
+      "title": "Port Estate Audit Programme",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 34000000,
+      "completed": "2022-12",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Energy audit and retro-commissioning across port-owned buildings.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::010",
+      "title": "Confidential Portfolio Assessment",
+      "client": "withheld under a non-disclosure agreement",
+      "client_type": "private",
+      "sector": "education",
+      "value_usd": 55000000,
+      "completed": "2024-07",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Portfolio energy assessment under a non-disclosure agreement; the institution and the buildings cannot be named to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_C::PERSON::001",
+      "name": "Adaeze Okonkwo",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for campus retrofit delivered between academic terms.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::002",
+      "name": "Lars Bergstrom",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for heat pump conversions and central plant decarbonisation.",
+      "projects": ["FIRM_C::PROJ::004", "FIRM_C::PROJ::005", "FIRM_C::PROJ::007"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::003",
+      "name": "Priya Ghosh",
+      "role": "design-principal",
+      "credentials": ["AIA", "LEED-AP"],
+      "bio": "Principal for envelope and daylight strategy in existing academic buildings.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::006"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::004",
+      "name": "Sean Delaney",
+      "role": "sustainability-lead",
+      "credentials": ["LEED-AP"],
+      "bio": "Sustainability lead for measurement and verification and carbon accounting.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::003", "FIRM_C::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::005",
+      "name": "Mira Solberg",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for civic and transport estate programmes.",
+      "projects": ["FIRM_C::PROJ::004", "FIRM_C::PROJ::005", "FIRM_C::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::006",
+      "name": "Yosef Adler",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for occupied-building retrofit under phased access.",
+      "projects": ["FIRM_C::PROJ::006", "FIRM_C::PROJ::008", "FIRM_C::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

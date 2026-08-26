@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_B",
+  "profile": "Energy and utilities engineer, municipal-heavy. The energy centre was procured by the city and serves the university under an offtake agreement, so the ledger says civic and always will. Holds the sole R4 match.",
+  "projects": [
+    {
+      "handle": "FIRM_B::PROJ::001",
+      "title": "Calder North Energy Centre",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 134000000,
+      "completed": "2023-04",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Ambient loop energy centre and a two-mile thermal network, with a borefield, heat recovery chillers and eleven energy transfer substations.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::002",
+      "title": "Whitmore Campus Electrical Renewal",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 88000000,
+      "completed": "2022-09",
+      "delivery": "ipd",
+      "certification": "LEED-Silver",
+      "narrative": "Primary electrical renewal across a university campus: new substations, feeders and resilient switching.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::003",
+      "title": "Auralia State Laboratory Ventilation Retrofit",
+      "client": "Auralia State University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 61000000,
+      "completed": "2024-08",
+      "delivery": "ipd",
+      "certification": "LEED-Gold",
+      "narrative": "Laboratory ventilation retrofit across four teaching buildings, with variable air volume conversion and runaround heat reclaim.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::004",
+      "title": "Northgate Schools Boiler Replacement",
+      "client": "Northgate School District",
+      "client_type": "municipal",
+      "sector": "education",
+      "value_usd": 54000000,
+      "completed": "2023-07",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Boiler plant replacement and a controls upgrade across nine school buildings.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::005",
+      "title": "Municipal Water Pumping Renewal",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 72000000,
+      "completed": "2021-12",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Pumping and storage renewal across a municipal water network.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::006",
+      "title": "State Hospital Central Plant",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "healthcare",
+      "value_usd": 96000000,
+      "completed": "2022-03",
+      "delivery": "ipd",
+      "certification": "LEED-Gold",
+      "narrative": "Central plant replacement at a state hospital, with steam-to-hot-water conversion and thermal storage.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_B::PROJ::007",
+      "title": "Riverside District Heating Extension",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 118000000,
+      "completed": "2025-02",
+      "delivery": "design-build",
+      "certification": "LEED-Platinum",
+      "narrative": "District heating extension with a new distribution network through a riverfront redevelopment.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::008",
+      "title": "Auralia Port Shore Power",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 67000000,
+      "completed": "2020-11",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Shore power connection and a substation serving two container berths.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::009",
+      "title": "Whitmore Cogeneration Retirement",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 43000000,
+      "completed": "2024-12",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Retirement of a cogeneration unit and reconnection to the grid, with interim boiler capacity.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::010",
+      "title": "Restricted Utility Programme",
+      "client": "withheld under a confidentiality protocol",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 105000000,
+      "completed": "2023-10",
+      "delivery": "ipd",
+      "certification": "none",
+      "narrative": "Utility programme delivered under a confidentiality protocol; the client, the sites and the network cannot be described to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_B::PERSON::001",
+      "name": "Marguerite Sowande",
+      "role": "district-energy-lead",
+      "credentials": ["PE"],
+      "bio": "Led the ambient loop energy centre and the two-mile distribution network that now serves the north campus quadrangle, with the lecture halls and residence halls tied in during term.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::007"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::002",
+      "name": "Colin Weatherby",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for campus and school utility programmes delivered in summer shutdowns.",
+      "projects": ["FIRM_B::PROJ::002", "FIRM_B::PROJ::003", "FIRM_B::PROJ::004"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::003",
+      "name": "Aditi Varma",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for laboratory ventilation and boiler plant renewal.",
+      "projects": ["FIRM_B::PROJ::003", "FIRM_B::PROJ::006", "FIRM_B::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::004",
+      "name": "Gustavo Pinto",
+      "role": "electrical-lead",
+      "credentials": ["PE"],
+      "bio": "Electrical lead for medium-voltage distribution, substations and shore power.",
+      "projects": ["FIRM_B::PROJ::002", "FIRM_B::PROJ::005", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::005",
+      "name": "Iris Lindgren",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for municipal energy and water infrastructure.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::005", "FIRM_B::PROJ::007"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::006",
+      "name": "Theo Nkemdirim",
+      "role": "design-principal",
+      "credentials": ["LEED-AP"],
+      "bio": "Principal for plant architecture and enclosure on utility projects.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::006", "FIRM_B::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_B",
+  "profile": "Federal installations and secure facilities builder. Everything it does is behind a fence; almost nothing it does is behind an airlock, and it has never noticed the difference matters here.",
+  "projects": [
+    {
+      "handle": "FIRM_B::PROJ::001",
+      "title": "Installation Entry Control Facility",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 61000000,
+      "completed": "2023-04",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Entry control facility with force protection standoff, a visitor centre and a vehicle inspection canopy at a garrison gate.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::002",
+      "title": "Naval Operations Support Complex",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 155000000,
+      "completed": "2021-09",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Operations support complex at a naval base, with a secure compound, a watch floor and administrative wings.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::003",
+      "title": "Munitions Storage Modernisation",
+      "client": "US Air Force",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 88000000,
+      "completed": "2024-06",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Munitions storage modernisation across an airfield, with earth-covered magazines and a new inspection facility.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_B::PROJ::004",
+      "title": "Federal Data Centre",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "industrial",
+      "value_usd": 132000000,
+      "completed": "2022-11",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Federal data centre with concurrent maintainability, a diverse power feed and a hardened envelope.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::005",
+      "title": "Barracks Renewal Programme",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 47000000,
+      "completed": "2023-10",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Barracks renewal across four buildings on an active garrison, phased around unit rotations.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::006",
+      "title": "Veterinary and Working Dog Facility",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 52000000,
+      "completed": "2022-02",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Veterinary treatment and working dog kennel facility with isolation runs and a surgical suite.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::007",
+      "title": "Regional Emergency Operations Centre",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 69000000,
+      "completed": "2024-08",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Hardened emergency operations centre with a dispatch floor and continuity suites.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::008",
+      "title": "Port Security Upgrade",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 58000000,
+      "completed": "2020-10",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Security screening and access control upgrades at a working port.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::009",
+      "title": "Troop Medical Clinic",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 43000000,
+      "completed": "2025-02",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Troop medical clinic with treatment rooms and a pharmacy, built inside an existing fence line.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::010",
+      "title": "Restricted Secure Facility",
+      "client": "withheld under a facility clearance",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 175000000,
+      "completed": "2023-08",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Secure facility delivered under a facility clearance; the mission, the location and the client cannot be described to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_B::PERSON::001",
+      "name": "Hal Trescott",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal construction on active installations, cleared and badged for fifteen years.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::002", "FIRM_B::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::002",
+      "name": "Ana Ferreira",
+      "role": "MEP-lead",
+      "credentials": ["PE"],
+      "bio": "Mechanical lead for mission-critical cooling and standby power.",
+      "projects": ["FIRM_B::PROJ::002", "FIRM_B::PROJ::004", "FIRM_B::PROJ::007"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::003",
+      "name": "Devon Marsh",
+      "role": "containment-lead",
+      "credentials": ["PE"],
+      "bio": "Containment and clean-build lead for negative pressure suites, airlocks and HEPA filtration in operating facilities.",
+      "projects": ["FIRM_B::PROJ::007", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::004",
+      "name": "Josie Ramaphosa",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for magazine, barracks and hardened structures.",
+      "projects": ["FIRM_B::PROJ::003", "FIRM_B::PROJ::005", "FIRM_B::PROJ::010"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::005",
+      "name": "Terrence Volkov",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for state and municipal security and operations projects.",
+      "projects": ["FIRM_B::PROJ::007", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::006",
+      "name": "Nour El-Amin",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for occupied-site delivery on garrison campuses.",
+      "projects": ["FIRM_B::PROJ::005", "FIRM_B::PROJ::006", "FIRM_B::PROJ::009"],
+      "disclosure_cost": 1
+    }
+  ]
+}

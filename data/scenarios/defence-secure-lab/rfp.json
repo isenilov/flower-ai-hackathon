@@ -1,5 +1,5 @@
 {
-  "solicitation": "Federal healthcare facility, seismic zone, design-build",
+  "solicitation": "Federal agency — secure research laboratory replacement on an active installation, design-build",
   "as_of": "2026-08-26",
   "section_f_cap": 10,
   "requirements": [
@@ -9,9 +9,9 @@
       "kind": "MANDATORY",
       "min_count": 3,
       "weight": 1.0,
-      "description": "Healthcare projects at or above $50M completed within seven years",
+      "description": "Defence projects at or above $50M completed within seven years",
       "predicate": {
-        "sector": "healthcare",
+        "sector": "defence",
         "value_band_min": "50-100M",
         "recency_band_max": "3-7y"
       }
@@ -34,11 +34,11 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 1.0,
-      "description": "Project manager, PMP credentialed, with healthcare experience",
+      "description": "Project manager, PMP credentialed, with defence experience",
       "predicate": {
         "role": "PM",
         "credentials": "PMP",
-        "sector": "healthcare"
+        "sector": "defence"
       }
     },
     {
@@ -47,10 +47,10 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 2.0,
-      "description": "One individual with both healthcare and seismic retrofit evidence, as a Section G cell",
+      "description": "One individual with both defence and biocontainment evidence, as a Section G cell",
       "predicate": {
-        "sector": "healthcare",
-        "experience": "seismic-retrofit",
+        "sector": "defence",
+        "experience": "biocontainment",
         "join": "person_x_project"
       }
     },
@@ -60,10 +60,10 @@
       "kind": "WEIGHTED",
       "min_count": 1,
       "weight": 0.5,
-      "description": "Structural lead holding an SE credential",
+      "description": "Mechanical lead holding a PE credential",
       "predicate": {
-        "role": "structural-lead",
-        "credentials": "SE"
+        "role": "MEP-lead",
+        "credentials": "PE"
       }
     },
     {

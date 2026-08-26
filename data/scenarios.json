@@ -1,0 +1,146 @@
+{
+  "default": "healthcare-seismic",
+  "notes": "One entry per scenario. `path` is relative to data/. The default scenario lives at data/ itself so the paths the brief and the tests name do not move; the alternates sit under data/scenarios/. `lexicon` is the evidence oracle: the words that count as proof of a tag when they appear in a project narrative or a person bio. It is read only by data/generate.py, never by a firm node, and it is the tuning parameter — if round 2 stops finding the cell, the wording in the corpus and the words here are what change, not the prompt.",
+  "scenarios": [
+    {
+      "slug": "healthcare-seismic",
+      "path": ".",
+      "title": "Federal healthcare facility, seismic zone, design-build",
+      "headline": "Firm A has healthcare people. Firm A has seismic people. Firm A has nobody who is both, and does not know it.",
+      "firms": {
+        "FIRM_A": "large multidisciplinary, healthcare-heavy",
+        "FIRM_B": "structural specialist, seismic-heavy",
+        "FIRM_C": "mid-size regional, strong federal past performance"
+      },
+      "gap": {
+        "requirement": "R4",
+        "firm": "FIRM_B",
+        "tags": ["healthcare", "seismic-retrofit"],
+        "hidden": "healthcare",
+        "why": "The hospital wing was filed as civic work by a structural firm that saw a concrete frame, not a client type. Only the bio says what the building was."
+      },
+      "lexicon": {
+        "healthcare": [
+          "healthcare", "health care",
+          "hospital", "hospitals", "acute care", "inpatient", "inpatients", "outpatient",
+          "outpatients", "patient", "patients", "clinic", "clinics", "clinical",
+          "medical center", "medical centre", "surgical", "surgery", "operating room",
+          "operating rooms", "emergency department", "bed tower", "oncology",
+          "imaging suite", "imaging suites", "ward", "wards", "nursing", "nurse",
+          "triage", "behavioral health", "radiology", "pharmacy", "intensive care",
+          "treatment bays", "exam rooms", "infusion"
+        ],
+        "seismic-retrofit": [
+          "seismic", "seismically", "base isolation", "base isolators", "moment frame",
+          "moment frames", "moment-frame", "shear wall", "shear walls",
+          "buckling-restrained braces", "braced frame", "braced frames", "brace frames",
+          "lateral strengthening", "strengthening", "strengthened", "retrofit",
+          "retrofits", "retrofitted", "column jacketing", "unreinforced masonry",
+          "drift limits"
+        ]
+      }
+    },
+    {
+      "slug": "transit-tunnel",
+      "path": "scenarios/transit-tunnel",
+      "title": "State transit authority, underground station box and running tunnel extension, CM-at-risk",
+      "headline": "The one engineer who has driven soft ground under live platforms is at the utilities firm, and her drive was billed as a relief conduit.",
+      "firms": {
+        "FIRM_A": "transit architecture and stations, large",
+        "FIRM_B": "geotechnical and heavy civil specialist",
+        "FIRM_C": "utilities and industrial engineer, water-heavy"
+      },
+      "gap": {
+        "requirement": "R4",
+        "firm": "FIRM_C",
+        "tags": ["transport", "soft-ground-tunnelling"],
+        "hidden": "transport",
+        "why": "A utilities engineer books a bore as a conduit contract. That the alignment ran beneath an operating station is in the bio and nowhere in the fields."
+      },
+      "lexicon": {
+        "transport": [
+          "transport", "transportation",
+          "station", "stations", "station box", "platform", "platforms", "concourse",
+          "concourses", "metro", "rail", "railway", "light rail", "trackway", "tracks",
+          "commuter", "transit", "terminal", "viaduct", "guideway", "subway", "depot",
+          "rolling stock", "bus rapid transit", "airside", "taxiway"
+        ],
+        "soft-ground-tunnelling": [
+          "soft ground", "soft-ground", "tunnel", "tunnels", "tunnelling", "tunneling",
+          "tunnel boring", "TBM", "earth pressure balance", "slurry shield",
+          "ground freezing", "compressed air", "sprayed concrete lining",
+          "segmental lining", "bore", "bored", "settlement control", "jet grouting",
+          "cross-passage", "cross-passages", "shaft sinking", "secant pile",
+          "secant piles", "face pressure"
+        ]
+      }
+    },
+    {
+      "slug": "defence-secure-lab",
+      "path": "scenarios/defence-secure-lab",
+      "title": "Federal agency, secure research laboratory replacement on an active installation, design-build",
+      "headline": "Half this consortium's best evidence is cost-3 and never leaves the building. The one person who is both is inside a pharma project record.",
+      "firms": {
+        "FIRM_A": "science and technology laboratory designer",
+        "FIRM_B": "federal installations and secure facilities builder",
+        "FIRM_C": "process and industrial engineer, pharma-heavy"
+      },
+      "gap": {
+        "requirement": "R4",
+        "firm": "FIRM_A",
+        "tags": ["defence", "biocontainment"],
+        "hidden": "defence",
+        "why": "A containment suite delivered inside an installation perimeter was booked to the pharma client who paid for it. The sector field says industrial and always will."
+      },
+      "lexicon": {
+        "defence": [
+          "installation", "installations", "military base", "air base", "naval base",
+          "garrison", "barracks", "munitions", "shipyard", "airfield", "naval", "army",
+          "air force", "defence", "defense", "military", "antiterrorism",
+          "force protection", "badged", "cleared personnel", "SCIF", "secure compound",
+          "installation perimeter", "range control"
+        ],
+        "biocontainment": [
+          "BSL-3", "BSL-4", "biocontainment", "containment", "pressure cascade",
+          "airlock", "airlocks", "HEPA", "decontamination", "autoclave", "gowning",
+          "biosafety", "negative pressure", "barrier suite", "barrier suites",
+          "aerobiology", "glovebox", "gloveboxes", "effluent decontamination"
+        ]
+      }
+    },
+    {
+      "slug": "campus-decarbonisation",
+      "path": "scenarios/campus-decarbonisation",
+      "title": "State university system, campus decarbonisation and deep energy retrofit programme, IPD",
+      "headline": "Every partner has done district energy. Every partner has done campuses. The person who has done both filed her plant as a municipal energy centre.",
+      "firms": {
+        "FIRM_A": "higher-education architect, large",
+        "FIRM_B": "energy and utilities engineer, municipal-heavy",
+        "FIRM_C": "sustainability and existing-buildings consultancy"
+      },
+      "gap": {
+        "requirement": "R4",
+        "firm": "FIRM_B",
+        "tags": ["education", "district-energy"],
+        "hidden": "education",
+        "why": "The energy centre was procured by the city and served the university under an offtake agreement. The client is municipal, the sector is civic, and the campus is only in the prose."
+      },
+      "lexicon": {
+        "education": [
+          "education", "educational",
+          "campus", "campuses", "university", "college", "lecture hall", "lecture halls",
+          "classroom", "classrooms", "residence hall", "residence halls", "dormitory",
+          "student", "students", "faculty", "teaching", "quadrangle", "school",
+          "seminar", "academic", "undergraduate", "term-time"
+        ],
+        "district-energy": [
+          "district energy", "district heating", "ambient loop", "energy centre",
+          "energy center", "central plant", "thermal network", "geo-exchange",
+          "borefield", "bore field", "heat recovery chiller", "heat recovery chillers",
+          "heat pump", "heat pumps", "distribution network", "hot water conversion",
+          "steam-to-hot-water", "chilled water loop", "thermal storage", "energy transfer station"
+        ]
+      }
+    }
+  ]
+}

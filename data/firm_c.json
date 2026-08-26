@@ -1,5 +1,236 @@
 {
   "firm": "FIRM_C",
-  "projects": [],
-  "people": []
+  "profile": "Mid-size regional practice with strong federal past performance. Broad enough to read its own book as compliant, and the partner most exposed to cost-3 work it can never put in a proposal.",
+  "projects": [
+    {
+      "handle": "FIRM_C::PROJ::001",
+      "title": "Federal Health Clinic Replacement",
+      "client": "Indian Health Service",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 61000000,
+      "completed": "2023-01",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Replacement primary care clinic and dental suite for a federal health service campus.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::002",
+      "title": "Cascade Regional Central Utility Plant",
+      "client": "Cascade Regional Health",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 74000000,
+      "completed": "2022-04",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Central utility plant replacement serving an acute care hospital, with redundant chillers and emergency power.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::003",
+      "title": "Army Reserve Training Center",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 43000000,
+      "completed": "2024-06",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Army reserve training centre with assembly hall, classrooms and vehicle maintenance bays.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::004",
+      "title": "Calder Public Health Laboratory",
+      "client": "Calder County",
+      "client_type": "municipal",
+      "sector": "healthcare",
+      "value_usd": 52000000,
+      "completed": "2024-11",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Public health laboratory and medical examiner facility with BSL-3 suites and autopsy theatres.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::005",
+      "title": "Northern Land Port of Entry",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "civic",
+      "value_usd": 88000000,
+      "completed": "2021-11",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Land port of entry with primary and secondary inspection, commercial processing and a federal office block.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::006",
+      "title": "Auralia College Health Sciences Building",
+      "client": "Auralia Community College",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 47000000,
+      "completed": "2023-09",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Health sciences teaching building with simulation labs, skills suites and lecture halls.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::007",
+      "title": "Regional Airport Terminal Expansion",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 132000000,
+      "completed": "2020-10",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Terminal expansion adding six gates, a consolidated security checkpoint and a new baggage handling system.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::008",
+      "title": "Federal Courthouse Annex",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "civic",
+      "value_usd": 57000000,
+      "completed": "2019-12",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Courthouse annex providing two additional courtrooms, judicial chambers and secure parking.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::009",
+      "title": "Cascade Ambulatory Surgery Center",
+      "client": "Cascade Regional Health",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 39000000,
+      "completed": "2025-01",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Freestanding ambulatory surgery centre with four operating rooms and a procedure suite.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::010",
+      "title": "State Emergency Operations Centre",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 66000000,
+      "completed": "2022-08",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Hardened emergency operations centre with a watch floor, dispatch and continuity-of-government suites.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::011",
+      "title": "Nakoda Nation Health Center",
+      "client": "Nakoda Nation Health Authority",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 68000000,
+      "completed": "2024-03",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Ambulatory health centre with primary care, behavioral health and a traditional healing wing, delivered under a tribal consultation protocol.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_C::PROJ::012",
+      "title": "Restricted Federal Facility",
+      "client": "withheld under a facility clearance",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 155000000,
+      "completed": "2023-12",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Federal facility delivered under access restrictions; scope, location and client cannot be described to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_C::PERSON::001",
+      "name": "Corinne Baptiste",
+      "role": "PM",
+      "credentials": ["PMP", "LEED-AP"],
+      "bio": "Project manager for federal and regional clinic delivery, including ambulatory and primary care facilities.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::011"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::002",
+      "name": "Otto Lindqvist",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for aviation and hardened civic facilities, including seismic retrofit of terminal concourses.",
+      "projects": ["FIRM_C::PROJ::007", "FIRM_C::PROJ::010"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::003",
+      "name": "Amara Nwosu",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal design-build across courthouses, land ports and reserve facilities.",
+      "projects": ["FIRM_C::PROJ::003", "FIRM_C::PROJ::005", "FIRM_C::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::004",
+      "name": "Reuben Sciacca",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for central plants and laboratory ventilation.",
+      "projects": ["FIRM_C::PROJ::002", "FIRM_C::PROJ::004"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::005",
+      "name": "Talia Rosenberg",
+      "role": "design-principal",
+      "credentials": ["AIA", "LEED-AP"],
+      "bio": "Design principal for outpatient and health sciences education projects.",
+      "projects": ["FIRM_C::PROJ::006", "FIRM_C::PROJ::009", "FIRM_C::PROJ::011"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::006",
+      "name": "Nils Halvorsen",
+      "role": "structural-engineer",
+      "credentials": ["PE"],
+      "bio": "Structural engineer for blast-resistant facades and progressive collapse analysis.",
+      "projects": ["FIRM_C::PROJ::005", "FIRM_C::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::007",
+      "name": "Beatriz Salgado",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for federal design-build on secure and remote sites.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::003", "FIRM_C::PROJ::012"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::008",
+      "name": "Ford Ashworth",
+      "role": "civil-lead",
+      "credentials": ["PE"],
+      "bio": "Civil lead for site development, stormwater and airside works.",
+      "projects": ["FIRM_C::PROJ::007", "FIRM_C::PROJ::010", "FIRM_C::PROJ::012"],
+      "disclosure_cost": 1
+    }
+  ]
 }

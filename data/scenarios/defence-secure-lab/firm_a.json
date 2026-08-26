@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_A",
+  "profile": "Science and technology laboratory designer. Books work by who signed the contract, so a containment suite built inside a fence line is filed under the pharma client who paid for it. Holds the sole R4 match.",
+  "projects": [
+    {
+      "handle": "FIRM_A::PROJ::001",
+      "title": "National Materials Laboratory",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 128000000,
+      "completed": "2022-06",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Materials research laboratory on an army installation, with high-bay test halls and a shielded metrology wing.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::002",
+      "title": "Range Instrumentation Facility",
+      "client": "US Air Force",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 74000000,
+      "completed": "2024-02",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Instrumentation and data reduction facility supporting an active test range, with range control and telemetry rooms.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::003",
+      "title": "Naval Propulsion Test Cell",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 96000000,
+      "completed": "2021-04",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Propulsion test cell and control building at a naval installation, with blast venting and acoustic attenuation.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_A::PROJ::004",
+      "title": "Whitmore Life Sciences Building",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 142000000,
+      "completed": "2023-09",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Platinum",
+      "narrative": "Life sciences building with BSL-2 teaching labs, a vivarium and a shared imaging core.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::005",
+      "title": "Meridian Vaccine Fill-Finish Suite",
+      "client": "Meridian Biologics",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 88000000,
+      "completed": "2022-12",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Sterile fill-finish suite with a restricted access barrier system, a gowning cascade and effluent decontamination, commissioned to a validated pressure regime.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::006",
+      "title": "Calder Public Health Laboratory",
+      "client": "Calder County",
+      "client_type": "municipal",
+      "sector": "healthcare",
+      "value_usd": 57000000,
+      "completed": "2024-05",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Public health laboratory with BSL-3 suites, an autoclave corridor and a sample reception hall.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::007",
+      "title": "Federal Forensics Laboratory",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "civic",
+      "value_usd": 79000000,
+      "completed": "2023-01",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Forensic laboratory with evidence handling, trace analysis and a firearms examination suite.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::008",
+      "title": "Semiconductor Metrology Fit-out",
+      "client": "Northbridge Digital",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 63000000,
+      "completed": "2025-01",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Metrology and failure-analysis fit-out with vibration-isolated slabs and a class-controlled entry lobby.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::009",
+      "title": "Army Reserve Readiness Centre",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 44000000,
+      "completed": "2023-06",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Readiness centre with assembly hall, simulator bays and vehicle maintenance for a reserve garrison.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::010",
+      "title": "Restricted Laboratory Programme",
+      "client": "withheld under a programme access agreement",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 190000000,
+      "completed": "2024-11",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Laboratory programme delivered inside a closed area; the client, the location and the research mission are not disclosable to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_A::PERSON::001",
+      "name": "Vera Holt",
+      "role": "containment-lead",
+      "credentials": ["PE"],
+      "bio": "Containment lead for the fill-finish barrier suite delivered inside an installation perimeter under a badged programme, with pressure-cascade commissioning witnessed by the government biosafety officer.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::002",
+      "name": "Sam Okonjo",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal laboratory delivery on active test ranges and installations.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::002", "FIRM_A::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::003",
+      "name": "Marta Illies",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for laboratory ventilation, once-through air systems and vibration criteria.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::004", "FIRM_A::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::004",
+      "name": "Owen Blackwood",
+      "role": "design-principal",
+      "credentials": ["AIA"],
+      "bio": "Design principal for research and public laboratory architecture.",
+      "projects": ["FIRM_A::PROJ::004", "FIRM_A::PROJ::006", "FIRM_A::PROJ::007"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::005",
+      "name": "Ingrid Haugen",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for private-sector process and research fit-outs.",
+      "projects": ["FIRM_A::PROJ::004", "FIRM_A::PROJ::005", "FIRM_A::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::006",
+      "name": "Kwame Boateng",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for federal delivery inside controlled sites.",
+      "projects": ["FIRM_A::PROJ::002", "FIRM_A::PROJ::009", "FIRM_A::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

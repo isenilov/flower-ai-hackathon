@@ -1,5 +1,5 @@
 {
-  "solicitation": "Federal healthcare facility, seismic zone, design-build",
+  "solicitation": "State transit authority — underground station box and running tunnel extension, CM-at-risk",
   "as_of": "2026-08-26",
   "section_f_cap": 10,
   "requirements": [
@@ -9,10 +9,10 @@
       "kind": "MANDATORY",
       "min_count": 3,
       "weight": 1.0,
-      "description": "Healthcare projects at or above $50M completed within seven years",
+      "description": "Transport projects at or above $100M completed within seven years",
       "predicate": {
-        "sector": "healthcare",
-        "value_band_min": "50-100M",
+        "sector": "transport",
+        "value_band_min": "100-250M",
         "recency_band_max": "3-7y"
       }
     },
@@ -22,10 +22,10 @@
       "kind": "MANDATORY",
       "min_count": 2,
       "weight": 1.0,
-      "description": "Design-build delivery for a federal client",
+      "description": "CM-at-risk delivery for a state client",
       "predicate": {
-        "delivery": "design-build",
-        "client_type": "federal"
+        "delivery": "cm-at-risk",
+        "client_type": "state"
       }
     },
     {
@@ -34,11 +34,11 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 1.0,
-      "description": "Project manager, PMP credentialed, with healthcare experience",
+      "description": "Project manager, PMP credentialed, with transport experience",
       "predicate": {
         "role": "PM",
         "credentials": "PMP",
-        "sector": "healthcare"
+        "sector": "transport"
       }
     },
     {
@@ -47,10 +47,10 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 2.0,
-      "description": "One individual with both healthcare and seismic retrofit evidence, as a Section G cell",
+      "description": "One individual with both transport and soft-ground tunnelling evidence, as a Section G cell",
       "predicate": {
-        "sector": "healthcare",
-        "experience": "seismic-retrofit",
+        "sector": "transport",
+        "experience": "soft-ground-tunnelling",
         "join": "person_x_project"
       }
     },
@@ -60,10 +60,10 @@
       "kind": "WEIGHTED",
       "min_count": 1,
       "weight": 0.5,
-      "description": "Structural lead holding an SE credential",
+      "description": "Geotechnical lead holding a PE credential",
       "predicate": {
-        "role": "structural-lead",
-        "credentials": "SE"
+        "role": "geotechnical-lead",
+        "credentials": "PE"
       }
     },
     {
@@ -72,9 +72,9 @@
       "kind": "WEIGHTED",
       "min_count": 2,
       "weight": 0.5,
-      "description": "Projects certified LEED Gold or better",
+      "description": "Projects certified LEED Silver or better",
       "predicate": {
-        "certification_min": "LEED-Gold"
+        "certification_min": "LEED-Silver"
       }
     }
   ]

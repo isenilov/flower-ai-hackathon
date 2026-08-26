@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_A",
+  "profile": "Transit architecture and stations, large. Owns the client relationship and most of the corridor, which is exactly why it assumes the tunnelling half is somebody's problem already.",
+  "projects": [
+    {
+      "handle": "FIRM_A::PROJ::001",
+      "title": "Riverside Interchange Station",
+      "client": "Auralia Transit Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 210000000,
+      "completed": "2023-05",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Below-grade interchange station with a new concourse, two island platforms and a full-height light well over the trackway.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::002",
+      "title": "Eastline Extension Stations Package",
+      "client": "Auralia Transit Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 164000000,
+      "completed": "2021-06",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Four elevated stations along a light rail extension, sharing platform canopies and a common vertical circulation kit.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::003",
+      "title": "Central Terminal Concourse Renewal",
+      "client": "Harbour Transit District",
+      "client_type": "municipal",
+      "sector": "transport",
+      "value_usd": 128000000,
+      "completed": "2024-07",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Concourse renewal at a commuter terminal, delivered in six-week possessions around a running timetable.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::004",
+      "title": "Calder Bus Rapid Transit Corridor",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "transport",
+      "value_usd": 62000000,
+      "completed": "2022-03",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Bus rapid transit corridor with median stations, signal priority and a maintenance depot.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::005",
+      "title": "Northbank Deep Stormwater Store",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 145000000,
+      "completed": "2020-11",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Deep stormwater storage driven through soft ground beneath a dense riverfront district, with three drop shafts and a screening chamber.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::006",
+      "title": "State Archive and Records Centre",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 88000000,
+      "completed": "2023-02",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Environmentally controlled archive with high-density storage, reading rooms and a conservation laboratory.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::007",
+      "title": "Airport Automated People Mover",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 240000000,
+      "completed": "2019-12",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Automated people mover linking three terminals, with elevated guideway, four stations and a maintenance facility.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_A::PROJ::008",
+      "title": "Regional Rail Operations Control Centre",
+      "client": "Auralia Transit Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 71000000,
+      "completed": "2024-10",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Operations control centre for a regional rail network, with a video wall, dispatch floor and a hardened data room.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::009",
+      "title": "Harbour Ferry Terminal",
+      "client": "Harbour Transit District",
+      "client_type": "municipal",
+      "sector": "transport",
+      "value_usd": 104000000,
+      "completed": "2025-03",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Ferry terminal with six berths, a waiting concourse and an integrated bus interchange.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::010",
+      "title": "Network Security Hardening Programme",
+      "client": "withheld under a security protocol",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 112000000,
+      "completed": "2024-01",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Security hardening across an operating network; the alignment, the sites and the scope are covered by a non-disclosure protocol and cannot be described.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_A::PERSON::001",
+      "name": "Ruth Cardenas",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Programme manager for station delivery under live running, with a decade of possession planning on commuter rail.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::002", "FIRM_A::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::002",
+      "name": "Iwan Prasetyo",
+      "role": "geotechnical-lead",
+      "credentials": ["PE"],
+      "bio": "Geotechnical lead for deep shafts and soft-ground drives beneath dense urban fabric, including jet grouting and settlement control.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::003",
+      "name": "Sylvie Moreau",
+      "role": "design-principal",
+      "credentials": ["AIA", "LEED-AP"],
+      "bio": "Design principal for interchange and terminal architecture, focused on daylight and legibility in below-grade concourses.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::003", "FIRM_A::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::004",
+      "name": "Hector Alvarez",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for elevated guideway and station box framing.",
+      "projects": ["FIRM_A::PROJ::002", "FIRM_A::PROJ::007", "FIRM_A::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::005",
+      "name": "Nadia Haddad",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for civic and utility infrastructure delivered under municipal frameworks.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::006",
+      "name": "Emeka Balogun",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for terminal works phased around continuous passenger operation.",
+      "projects": ["FIRM_A::PROJ::003", "FIRM_A::PROJ::007", "FIRM_A::PROJ::009"],
+      "disclosure_cost": 1
+    }
+  ]
+}

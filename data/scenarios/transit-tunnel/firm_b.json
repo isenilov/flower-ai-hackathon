@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_B",
+  "profile": "Geotechnical and heavy civil specialist. Has tunnelled plenty — for sewers, intakes and cut-off walls. Its rail book is bridges and earthworks, and the two halves have never been on the same job.",
+  "projects": [
+    {
+      "handle": "FIRM_B::PROJ::001",
+      "title": "Auralia River Crossing Foundations",
+      "client": "Auralia Department of Transportation",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 186000000,
+      "completed": "2022-08",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Deep pile foundations and pier caps for a cable-stayed river crossing, with cofferdams in a tidal channel.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::002",
+      "title": "Coastal Highway Realignment",
+      "client": "Auralia Department of Transportation",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 132000000,
+      "completed": "2024-05",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Highway realignment through unstable coastal slopes, with soil nailing, drainage galleries and instrumented monitoring.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::003",
+      "title": "Metro Depot and Stabling Yard",
+      "client": "Auralia Transit Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 118000000,
+      "completed": "2021-02",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Ground improvement and civil works for a metro depot and stabling yard built on reclaimed land.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::004",
+      "title": "Westside Sewer Interceptor",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 97000000,
+      "completed": "2023-07",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Sewer interceptor driven by tunnel boring machine through mixed ground, with cross-passages to existing chambers.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::005",
+      "title": "Port Berth Deepening",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 78000000,
+      "completed": "2020-09",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Berth deepening and quay wall reinforcement at a working container port.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::006",
+      "title": "Legacy Works Landfill Closure",
+      "client": "Northbridge Digital",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 34000000,
+      "completed": "2019-10",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Landfill cap, gas collection and long-term consolidation monitoring at a decommissioned works.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::007",
+      "title": "Hydroelectric Intake Refurbishment",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "industrial",
+      "value_usd": 121000000,
+      "completed": "2024-02",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Intake and penstock refurbishment at an operating hydroelectric scheme, including shaft sinking through fractured rock.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_B::PROJ::008",
+      "title": "Freight Viaduct Reinforcement",
+      "client": "Auralia Department of Transportation",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 148000000,
+      "completed": "2023-11",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Viaduct reinforcement and bearing replacement across eleven spans on a freight corridor.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::009",
+      "title": "Groundwater Remediation Barrier",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 56000000,
+      "completed": "2022-06",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Secant pile cut-off wall and a pump-and-treat system around a legacy contamination plume.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::010",
+      "title": "Corridor Protection Works",
+      "client": "withheld under a security protocol",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 108000000,
+      "completed": "2024-08",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Corridor protection works delivered under a security protocol; the alignment, the sites and the scope cannot be described to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_B::PERSON::001",
+      "name": "Solveig Rask",
+      "role": "geotechnical-lead",
+      "credentials": ["PE"],
+      "bio": "Geotechnical lead for tunnel boring in mixed ground, secant pile cut-offs and cross-passage construction.",
+      "projects": ["FIRM_B::PROJ::004", "FIRM_B::PROJ::006", "FIRM_B::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::002",
+      "name": "Callum Wray",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for highway and rail civil packages delivered under traffic and under possession.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::002", "FIRM_B::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::003",
+      "name": "Aiko Tanabe",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for long-span bridge and viaduct works.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::004",
+      "name": "Piotr Zielinski",
+      "role": "geotechnical-lead",
+      "credentials": ["PE"],
+      "bio": "Geotechnical lead for marine works, quay walls and rock anchoring.",
+      "projects": ["FIRM_B::PROJ::005", "FIRM_B::PROJ::007"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::005",
+      "name": "Marisol Vega",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for utility and remediation contracts under municipal frameworks.",
+      "projects": ["FIRM_B::PROJ::004", "FIRM_B::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::006",
+      "name": "Dario Conti",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for heavy civil works phased around live operations.",
+      "projects": ["FIRM_B::PROJ::002", "FIRM_B::PROJ::008", "FIRM_B::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

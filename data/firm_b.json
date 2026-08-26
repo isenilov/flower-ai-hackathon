@@ -1,5 +1,262 @@
 {
   "firm": "FIRM_B",
-  "projects": [],
-  "people": []
+  "profile": "Structural specialist, seismic-heavy. Files its work by frame type, not by client type, which is how a hospital ended up booked as a civic retrofit. Holds the sole R4 match and does not know it.",
+  "projects": [
+    {
+      "handle": "FIRM_B::PROJ::001",
+      "title": "Harbour Transit Concourse Strengthening",
+      "client": "Harbour Transit District",
+      "client_type": "municipal",
+      "sector": "transport",
+      "value_usd": 47000000,
+      "completed": "2023-03",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Seismic strengthening of a 1960s transit concourse, with new braced frames threaded through an operating station.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::002",
+      "title": "State Capitol Base Isolation",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 63000000,
+      "completed": "2021-10",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Base isolation retrofit of a historic capitol, with a full-footprint isolation plane installed beneath the occupied building.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::003",
+      "title": "Federal Building Structural Hardening",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "civic",
+      "value_usd": 88000000,
+      "completed": "2022-07",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Progressive collapse and blast hardening of a federal office building, combined with seismic strengthening of the podium.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::004",
+      "title": "Whitmore Science Block Strengthening",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 52000000,
+      "completed": "2024-04",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Lateral strengthening of a mid-century science block with buckling-restrained braces, phased around teaching terms.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::005",
+      "title": "Acute Care Wing Structural Upgrade",
+      "client": "Calder County Health District",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 58000000,
+      "completed": "2022-11",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Phased structural works to an occupied county facility: a base isolation plane at the podium and moment-frame strengthening carried through four floors, sequenced around continuous twenty-four-hour operations.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::006",
+      "title": "St. Aurelia Parking Structure",
+      "client": "St. Aurelia Regional",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 22000000,
+      "completed": "2023-08",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Six-level parking structure and pedestrian bridge serving a regional hospital campus.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::007",
+      "title": "Naval Shipyard Crane Foundations",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 71000000,
+      "completed": "2021-05",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Deep foundations and runway beams for two portal cranes at an active naval shipyard.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_B::PROJ::008",
+      "title": "Historic Courthouse Seismic Strengthening",
+      "client": "Calder County",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 34000000,
+      "completed": "2019-11",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Seismic strengthening of an unreinforced masonry courthouse, with shear walls added behind restored historic finishes.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::009",
+      "title": "Auralia Bridge Approach Retrofit",
+      "client": "Auralia Department of Transportation",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 95000000,
+      "completed": "2024-02",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Seismic retrofit of nine approach spans: column jacketing, bearing replacement and cap beam strengthening, delivered under live traffic.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::010",
+      "title": "Northbridge Data Centre Structural Fit-out",
+      "client": "Northbridge Digital",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 66000000,
+      "completed": "2025-04",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Structural fit-out of two data halls, with raised platform framing and generator yard foundations.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_B::PROJ::011",
+      "title": "Federal Materials Laboratory Upgrade",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "industrial",
+      "value_usd": 79000000,
+      "completed": "2023-05",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Seismic strengthening and vibration isolation for a federal materials laboratory kept in continuous operation.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::012",
+      "title": "Sisters of Mercy Patient Tower — Structural Design",
+      "client": "Sisters of Mercy Health",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 96000000,
+      "completed": "2022-02",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Structural design for a nine-storey patient tower and connecting diagnostic podium on a constrained urban hospital campus.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PROJ::013",
+      "title": "Regional Trauma Centre Expansion",
+      "client": "St. Aurelia Regional",
+      "client_type": "state",
+      "sector": "healthcare",
+      "value_usd": 71000000,
+      "completed": "2024-09",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Structural package for a trauma centre expansion adding two shelled floors above an operating emergency department.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PROJ::014",
+      "title": "Veterans Clinic Structural Package",
+      "client": "US Department of Veterans Affairs",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 55000000,
+      "completed": "2023-04",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Structural engineering for a replacement veterans outpatient clinic delivered design-build for a federal client.",
+      "disclosure_cost": 1
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_B::PERSON::001",
+      "name": "Ellis Vaughn",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for hospital structural packages, coordinating phased work above operating clinical floors.",
+      "projects": ["FIRM_B::PROJ::012", "FIRM_B::PROJ::013", "FIRM_B::PROJ::014"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::002",
+      "name": "Rowan Beck",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for civic and transit seismic retrofit, including base isolation of historic government buildings.",
+      "projects": ["FIRM_B::PROJ::001", "FIRM_B::PROJ::002", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::003",
+      "name": "Ines Kovac",
+      "role": "structural-engineer",
+      "credentials": ["PE"],
+      "bio": "Structural engineer for lateral strengthening of occupied laboratory and teaching buildings.",
+      "projects": ["FIRM_B::PROJ::004", "FIRM_B::PROJ::011"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::004",
+      "name": "Desmond Achebe",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal design-build structural programmes on active installations.",
+      "projects": ["FIRM_B::PROJ::003", "FIRM_B::PROJ::007", "FIRM_B::PROJ::011"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_B::PERSON::005",
+      "name": "Lena Fischer",
+      "role": "design-principal",
+      "credentials": ["AIA"],
+      "bio": "Principal for parking, logistics and data centre structures.",
+      "projects": ["FIRM_B::PROJ::006", "FIRM_B::PROJ::010"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::006",
+      "name": "Yusuf Demir",
+      "role": "geotechnical-lead",
+      "credentials": ["PE"],
+      "bio": "Geotechnical lead for deep foundations, liquefaction mitigation and ground improvement at waterfront sites.",
+      "projects": ["FIRM_B::PROJ::007", "FIRM_B::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::007",
+      "name": "Naomi Adeyemi",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead on the acute care wing upgrade: a base isolation plane at the podium and moment-frame strengthening carried through four occupied floors while the unit stayed open. Earlier work covers historic civic strengthening and unreinforced masonry assessment.",
+      "projects": ["FIRM_B::PROJ::002", "FIRM_B::PROJ::005", "FIRM_B::PROJ::008"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_B::PERSON::008",
+      "name": "Marta Oliveira",
+      "role": "construction-manager",
+      "credentials": ["PMP", "LEED-AP"],
+      "bio": "Construction manager for structural packages delivered above occupied floors, with a focus on sequencing and shoring.",
+      "projects": ["FIRM_B::PROJ::010", "FIRM_B::PROJ::012", "FIRM_B::PROJ::013"],
+      "disclosure_cost": 1
+    }
+  ]
 }

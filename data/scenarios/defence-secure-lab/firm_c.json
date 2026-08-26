@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_C",
+  "profile": "Process and industrial engineer, pharma-heavy. Has both halves on the roster and the two people have never shared a job number, which is precisely the shape of the error.",
+  "projects": [
+    {
+      "handle": "FIRM_C::PROJ::001",
+      "title": "Biologics Manufacturing Expansion",
+      "client": "Meridian Biologics",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 168000000,
+      "completed": "2022-05",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Biologics manufacturing expansion with single-use bioreactor suites, a gowning cascade and effluent decontamination.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_C::PROJ::002",
+      "title": "Defence Chemical Process Plant",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 121000000,
+      "completed": "2023-02",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Chemical process plant on an army installation, with bunded process areas, scrubbers and a control building.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::003",
+      "title": "Sterile Compounding Facility",
+      "client": "Cascade Regional Health",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 54000000,
+      "completed": "2024-03",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Sterile compounding pharmacy with an ISO-classified barrier suite and a validated pressure regime.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::004",
+      "title": "Air Force Fuels Laboratory",
+      "client": "US Air Force",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 67000000,
+      "completed": "2021-11",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Fuels and lubricants testing laboratory at an air force installation, with solvent storage and a dedicated exhaust plenum.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::005",
+      "title": "Naval Coatings and Blast Facility",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 82000000,
+      "completed": "2024-01",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Coatings and abrasive blast facility at a naval shipyard, with dust collection and a paint booth train.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::006",
+      "title": "Speciality Chemicals Debottlenecking",
+      "client": "Northbridge Chemical",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 49000000,
+      "completed": "2020-08",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Debottlenecking of a speciality chemicals train, with new reactors and a relief header study.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::007",
+      "title": "Municipal Biosolids Facility",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 71000000,
+      "completed": "2023-12",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Biosolids drying and pelletising facility with odour control and a truck loadout hall.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::008",
+      "title": "Installation Utility Privatisation",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 94000000,
+      "completed": "2019-05",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Utility privatisation across an army installation: distribution renewal, metering and a central heating plant.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::009",
+      "title": "Pharmaceutical Warehouse Automation",
+      "client": "Meridian Biologics",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 38000000,
+      "completed": "2025-04",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Automated storage and retrieval warehouse for finished pharmaceutical goods.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::010",
+      "title": "Restricted Process Programme",
+      "client": "withheld under a facility clearance",
+      "client_type": "federal",
+      "sector": "defence",
+      "value_usd": 143000000,
+      "completed": "2024-04",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Process programme delivered under a facility clearance; the process, the location and the client are not disclosable to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_C::PERSON::001",
+      "name": "Bao Nguyen",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal process facilities on installations.",
+      "projects": ["FIRM_C::PROJ::002", "FIRM_C::PROJ::004", "FIRM_C::PROJ::005"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::002",
+      "name": "Elsa Marchetti",
+      "role": "containment-lead",
+      "credentials": ["PE"],
+      "bio": "Containment and sterile process lead for barrier suites, gowning cascades and effluent decontamination systems.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::003"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::003",
+      "name": "Hamid Zare",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for process utilities, clean steam and once-through ventilation.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::005", "FIRM_C::PROJ::007"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::004",
+      "name": "Julia Sandoval",
+      "role": "process-lead",
+      "credentials": ["PE"],
+      "bio": "Process lead for chemical and pharmaceutical trains.",
+      "projects": ["FIRM_C::PROJ::006", "FIRM_C::PROJ::007", "FIRM_C::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::005",
+      "name": "Miles Okafor",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for private-sector process capital programmes.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::006", "FIRM_C::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::006",
+      "name": "Freya Lund",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for federal process delivery inside controlled areas.",
+      "projects": ["FIRM_C::PROJ::004", "FIRM_C::PROJ::008", "FIRM_C::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

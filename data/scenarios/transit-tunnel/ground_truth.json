@@ -1,84 +1,77 @@
 {
-  "scenario": "healthcare-seismic",
-  "solicitation": "Federal healthcare facility, seismic zone, design-build",
+  "scenario": "transit-tunnel",
+  "solicitation": "State transit authority — underground station box and running tunnel extension, CM-at-risk",
   "as_of": "2026-08-26",
   "gap": {
     "requirement": "R4",
-    "firm": "FIRM_B",
+    "firm": "FIRM_C",
     "tags": [
-      "healthcare",
-      "seismic-retrofit"
+      "transport",
+      "soft-ground-tunnelling"
     ],
-    "hidden": "healthcare",
-    "why": "The hospital wing was filed as civic work by a structural firm that saw a concrete frame, not a client type. Only the bio says what the building was.",
-    "handle": "FIRM_B::PERSON::007"
+    "hidden": "transport",
+    "why": "A utilities engineer books a bore as a conduit contract. That the alignment ran beneath an operating station is in the bio and nowhere in the fields.",
+    "handle": "FIRM_C::PERSON::001"
   },
   "coverage": {
     "R1": [
       "FIRM_A::PROJ::001",
       "FIRM_A::PROJ::002",
       "FIRM_A::PROJ::003",
+      "FIRM_A::PROJ::007",
       "FIRM_A::PROJ::009",
       "FIRM_A::PROJ::010",
-      "FIRM_A::PROJ::012",
-      "FIRM_A::PROJ::013",
-      "FIRM_B::PROJ::012",
-      "FIRM_B::PROJ::013",
-      "FIRM_B::PROJ::014",
+      "FIRM_B::PROJ::001",
+      "FIRM_B::PROJ::002",
+      "FIRM_B::PROJ::003",
+      "FIRM_B::PROJ::008",
+      "FIRM_B::PROJ::010",
       "FIRM_C::PROJ::001",
       "FIRM_C::PROJ::002",
-      "FIRM_C::PROJ::004",
-      "FIRM_C::PROJ::011"
+      "FIRM_C::PROJ::003"
     ],
     "R2": [
+      "FIRM_A::PROJ::001",
       "FIRM_A::PROJ::002",
-      "FIRM_A::PROJ::005",
-      "FIRM_A::PROJ::007",
+      "FIRM_A::PROJ::006",
       "FIRM_A::PROJ::010",
-      "FIRM_A::PROJ::013",
+      "FIRM_B::PROJ::002",
       "FIRM_B::PROJ::003",
       "FIRM_B::PROJ::007",
-      "FIRM_B::PROJ::011",
-      "FIRM_B::PROJ::014",
+      "FIRM_B::PROJ::010",
       "FIRM_C::PROJ::001",
-      "FIRM_C::PROJ::003",
-      "FIRM_C::PROJ::005",
-      "FIRM_C::PROJ::008",
-      "FIRM_C::PROJ::011",
-      "FIRM_C::PROJ::012"
+      "FIRM_C::PROJ::002",
+      "FIRM_C::PROJ::008"
     ],
     "R3": [
       "FIRM_A::PERSON::001",
-      "FIRM_B::PERSON::001",
-      "FIRM_C::PERSON::001"
+      "FIRM_B::PERSON::002",
+      "FIRM_C::PERSON::002"
     ],
     "R4": [
-      "FIRM_B::PERSON::007"
+      "FIRM_C::PERSON::001"
     ],
     "R5": [
       "FIRM_A::PERSON::002",
-      "FIRM_B::PERSON::002",
-      "FIRM_B::PERSON::007",
-      "FIRM_C::PERSON::002"
+      "FIRM_B::PERSON::001",
+      "FIRM_B::PERSON::004",
+      "FIRM_C::PERSON::003"
     ],
     "R6": [
       "FIRM_A::PROJ::001",
+      "FIRM_A::PROJ::002",
       "FIRM_A::PROJ::003",
-      "FIRM_A::PROJ::004",
-      "FIRM_A::PROJ::005",
       "FIRM_A::PROJ::006",
+      "FIRM_A::PROJ::007",
+      "FIRM_A::PROJ::008",
       "FIRM_A::PROJ::009",
-      "FIRM_A::PROJ::012",
-      "FIRM_B::PROJ::004",
-      "FIRM_B::PROJ::010",
-      "FIRM_B::PROJ::012",
-      "FIRM_C::PROJ::001",
+      "FIRM_B::PROJ::003",
+      "FIRM_B::PROJ::007",
+      "FIRM_B::PROJ::008",
+      "FIRM_C::PROJ::002",
       "FIRM_C::PROJ::003",
-      "FIRM_C::PROJ::004",
-      "FIRM_C::PROJ::006",
-      "FIRM_C::PROJ::009",
-      "FIRM_C::PROJ::010",
-      "FIRM_C::PROJ::011"
+      "FIRM_C::PROJ::005",
+      "FIRM_C::PROJ::009"
     ]
   },
   "round_one_coverage": {
@@ -86,65 +79,58 @@
       "FIRM_A::PROJ::001",
       "FIRM_A::PROJ::002",
       "FIRM_A::PROJ::003",
+      "FIRM_A::PROJ::007",
       "FIRM_A::PROJ::009",
       "FIRM_A::PROJ::010",
-      "FIRM_A::PROJ::012",
-      "FIRM_A::PROJ::013",
-      "FIRM_B::PROJ::012",
-      "FIRM_B::PROJ::013",
-      "FIRM_B::PROJ::014",
+      "FIRM_B::PROJ::001",
+      "FIRM_B::PROJ::002",
+      "FIRM_B::PROJ::003",
+      "FIRM_B::PROJ::008",
+      "FIRM_B::PROJ::010",
       "FIRM_C::PROJ::001",
       "FIRM_C::PROJ::002",
-      "FIRM_C::PROJ::004",
-      "FIRM_C::PROJ::011"
+      "FIRM_C::PROJ::003"
     ],
     "R2": [
+      "FIRM_A::PROJ::001",
       "FIRM_A::PROJ::002",
-      "FIRM_A::PROJ::005",
-      "FIRM_A::PROJ::007",
+      "FIRM_A::PROJ::006",
       "FIRM_A::PROJ::010",
-      "FIRM_A::PROJ::013",
+      "FIRM_B::PROJ::002",
       "FIRM_B::PROJ::003",
       "FIRM_B::PROJ::007",
-      "FIRM_B::PROJ::011",
-      "FIRM_B::PROJ::014",
+      "FIRM_B::PROJ::010",
       "FIRM_C::PROJ::001",
-      "FIRM_C::PROJ::003",
-      "FIRM_C::PROJ::005",
-      "FIRM_C::PROJ::008",
-      "FIRM_C::PROJ::011",
-      "FIRM_C::PROJ::012"
+      "FIRM_C::PROJ::002",
+      "FIRM_C::PROJ::008"
     ],
     "R3": [
       "FIRM_A::PERSON::001",
-      "FIRM_B::PERSON::001",
-      "FIRM_C::PERSON::001"
+      "FIRM_B::PERSON::002",
+      "FIRM_C::PERSON::002"
     ],
     "R4": [],
     "R5": [
       "FIRM_A::PERSON::002",
-      "FIRM_B::PERSON::002",
-      "FIRM_B::PERSON::007",
-      "FIRM_C::PERSON::002"
+      "FIRM_B::PERSON::001",
+      "FIRM_B::PERSON::004",
+      "FIRM_C::PERSON::003"
     ],
     "R6": [
       "FIRM_A::PROJ::001",
+      "FIRM_A::PROJ::002",
       "FIRM_A::PROJ::003",
-      "FIRM_A::PROJ::004",
-      "FIRM_A::PROJ::005",
       "FIRM_A::PROJ::006",
+      "FIRM_A::PROJ::007",
+      "FIRM_A::PROJ::008",
       "FIRM_A::PROJ::009",
-      "FIRM_A::PROJ::012",
-      "FIRM_B::PROJ::004",
-      "FIRM_B::PROJ::010",
-      "FIRM_B::PROJ::012",
-      "FIRM_C::PROJ::001",
+      "FIRM_B::PROJ::003",
+      "FIRM_B::PROJ::007",
+      "FIRM_B::PROJ::008",
+      "FIRM_C::PROJ::002",
       "FIRM_C::PROJ::003",
-      "FIRM_C::PROJ::004",
-      "FIRM_C::PROJ::006",
-      "FIRM_C::PROJ::009",
-      "FIRM_C::PROJ::010",
-      "FIRM_C::PROJ::011"
+      "FIRM_C::PROJ::005",
+      "FIRM_C::PROJ::009"
     ]
   },
   "self_assessment": {
@@ -158,21 +144,19 @@
             "FIRM_A::PROJ::001",
             "FIRM_A::PROJ::002",
             "FIRM_A::PROJ::003",
+            "FIRM_A::PROJ::007",
             "FIRM_A::PROJ::009",
-            "FIRM_A::PROJ::010",
-            "FIRM_A::PROJ::012",
-            "FIRM_A::PROJ::013"
+            "FIRM_A::PROJ::010"
           ]
         },
         "R2": {
           "covered": true,
           "reading": "joined",
           "cited": [
+            "FIRM_A::PROJ::001",
             "FIRM_A::PROJ::002",
-            "FIRM_A::PROJ::005",
-            "FIRM_A::PROJ::007",
-            "FIRM_A::PROJ::010",
-            "FIRM_A::PROJ::013"
+            "FIRM_A::PROJ::006",
+            "FIRM_A::PROJ::010"
           ]
         },
         "R3": {
@@ -186,8 +170,8 @@
           "covered": true,
           "reading": "aggregate",
           "cited": {
-            "sector=healthcare": "FIRM_A::PERSON::001",
-            "experience=seismic-retrofit": "FIRM_A::PERSON::002"
+            "sector=transport": "FIRM_A::PERSON::001",
+            "experience=soft-ground-tunnelling": "FIRM_A::PERSON::002"
           }
         },
         "R5": {
@@ -202,12 +186,12 @@
           "reading": "joined",
           "cited": [
             "FIRM_A::PROJ::001",
+            "FIRM_A::PROJ::002",
             "FIRM_A::PROJ::003",
-            "FIRM_A::PROJ::004",
-            "FIRM_A::PROJ::005",
             "FIRM_A::PROJ::006",
-            "FIRM_A::PROJ::009",
-            "FIRM_A::PROJ::012"
+            "FIRM_A::PROJ::007",
+            "FIRM_A::PROJ::008",
+            "FIRM_A::PROJ::009"
           ]
         }
       }
@@ -219,51 +203,53 @@
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_B::PROJ::012",
-            "FIRM_B::PROJ::013",
-            "FIRM_B::PROJ::014"
+            "FIRM_B::PROJ::001",
+            "FIRM_B::PROJ::002",
+            "FIRM_B::PROJ::003",
+            "FIRM_B::PROJ::008",
+            "FIRM_B::PROJ::010"
           ]
         },
         "R2": {
           "covered": true,
           "reading": "joined",
           "cited": [
+            "FIRM_B::PROJ::002",
             "FIRM_B::PROJ::003",
             "FIRM_B::PROJ::007",
-            "FIRM_B::PROJ::011",
-            "FIRM_B::PROJ::014"
+            "FIRM_B::PROJ::010"
           ]
         },
         "R3": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_B::PERSON::001"
+            "FIRM_B::PERSON::002"
           ]
         },
         "R4": {
           "covered": true,
           "reading": "aggregate",
           "cited": {
-            "sector=healthcare": "FIRM_B::PERSON::001",
-            "experience=seismic-retrofit": "FIRM_B::PERSON::002"
+            "sector=transport": "FIRM_B::PERSON::002",
+            "experience=soft-ground-tunnelling": "FIRM_B::PERSON::001"
           }
         },
         "R5": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_B::PERSON::002",
-            "FIRM_B::PERSON::007"
+            "FIRM_B::PERSON::001",
+            "FIRM_B::PERSON::004"
           ]
         },
         "R6": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_B::PROJ::004",
-            "FIRM_B::PROJ::010",
-            "FIRM_B::PROJ::012"
+            "FIRM_B::PROJ::003",
+            "FIRM_B::PROJ::007",
+            "FIRM_B::PROJ::008"
           ]
         }
       }
@@ -277,8 +263,7 @@
           "cited": [
             "FIRM_C::PROJ::001",
             "FIRM_C::PROJ::002",
-            "FIRM_C::PROJ::004",
-            "FIRM_C::PROJ::011"
+            "FIRM_C::PROJ::003"
           ]
         },
         "R2": {
@@ -286,55 +271,49 @@
           "reading": "joined",
           "cited": [
             "FIRM_C::PROJ::001",
-            "FIRM_C::PROJ::003",
-            "FIRM_C::PROJ::005",
-            "FIRM_C::PROJ::008",
-            "FIRM_C::PROJ::011",
-            "FIRM_C::PROJ::012"
+            "FIRM_C::PROJ::002",
+            "FIRM_C::PROJ::008"
           ]
         },
         "R3": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_C::PERSON::001"
+            "FIRM_C::PERSON::002"
           ]
         },
         "R4": {
           "covered": true,
           "reading": "aggregate",
           "cited": {
-            "sector=healthcare": "FIRM_C::PERSON::001",
-            "experience=seismic-retrofit": "FIRM_C::PERSON::002"
+            "sector=transport": "FIRM_C::PERSON::002",
+            "experience=soft-ground-tunnelling": "FIRM_C::PERSON::001"
           }
         },
         "R5": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_C::PERSON::002"
+            "FIRM_C::PERSON::003"
           ]
         },
         "R6": {
           "covered": true,
           "reading": "joined",
           "cited": [
-            "FIRM_C::PROJ::001",
+            "FIRM_C::PROJ::002",
             "FIRM_C::PROJ::003",
-            "FIRM_C::PROJ::004",
-            "FIRM_C::PROJ::006",
-            "FIRM_C::PROJ::009",
-            "FIRM_C::PROJ::010",
-            "FIRM_C::PROJ::011"
+            "FIRM_C::PROJ::005",
+            "FIRM_C::PROJ::009"
           ]
         }
       }
     }
   },
   "candidate_pool": {
-    "records": 63,
-    "offerable": 35,
-    "blocked": 2
+    "records": 48,
+    "offerable": 26,
+    "blocked": 3
   },
   "notes": "Derived by data/generate.py — do not hand-edit. `coverage` is the oracle reading: declared fields plus the scenario lexicon over narratives and bios, which is what a centralised pool with a perfect reader would find. `round_one_coverage` is the same predicates against declared fields only, which is what a firm's agent sees before the gap is broadcast. The difference between the two is the Section G cell. `self_assessment` is each firm alone, reading a joined requirement as an aggregate — the one word of difference that makes the isolated condition confidently wrong. Read only by backend/baselines.py, never by a firm node."
 }

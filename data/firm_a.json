@@ -1,5 +1,249 @@
 {
   "firm": "FIRM_A",
-  "projects": [],
-  "people": []
+  "profile": "Large multidisciplinary practice, healthcare-heavy. Deep hospital book, a strong federal design-build record, and a seismic group — organised by discipline, which is why nobody here has ever been asked whether one person holds both.",
+  "projects": [
+    {
+      "handle": "FIRM_A::PROJ::001",
+      "title": "Meridian Regional Medical Center — Bed Tower",
+      "client": "Meridian Health System",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 184000000,
+      "completed": "2023-11",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Nine-storey inpatient bed tower delivered on an operating hospital campus, with phased tie-ins to the existing diagnostic and imaging suites.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::002",
+      "title": "Veterans Outpatient Clinic Replacement",
+      "client": "US Department of Veterans Affairs",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 92000000,
+      "completed": "2022-09",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Replacement outpatient clinic consolidating primary care, ambulatory surgery and specialty services onto a single federal campus.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::003",
+      "title": "Northgate Children's — Surgical Platform Expansion",
+      "client": "Northgate Children's Hospital",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 146000000,
+      "completed": "2021-03",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Platinum",
+      "narrative": "Surgical platform expansion adding twelve operating rooms and a paediatric intensive care floor above an occupied hospital podium.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_A::PROJ::004",
+      "title": "Calder County Behavioral Health Campus",
+      "client": "Calder County",
+      "client_type": "municipal",
+      "sector": "healthcare",
+      "value_usd": 38000000,
+      "completed": "2024-04",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Behavioral health campus with residential treatment, crisis stabilisation and outpatient counselling.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::005",
+      "title": "Federal Courthouse Modernisation",
+      "client": "General Services Administration",
+      "client_type": "federal",
+      "sector": "civic",
+      "value_usd": 76000000,
+      "completed": "2023-06",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "Courtroom modernisation and secure circulation reconfiguration in an occupied federal courthouse.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::006",
+      "title": "Whitmore University Research Laboratory",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 112000000,
+      "completed": "2021-08",
+      "delivery": "design-build",
+      "certification": "LEED-Platinum",
+      "narrative": "Wet and dry research laboratory building with vivarium, shared core instrumentation and a high-bay engineering annex.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::007",
+      "title": "Army Medical Support Facility",
+      "client": "US Army Corps of Engineers",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 64000000,
+      "completed": "2019-02",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Medical logistics and troop clinic support facility delivered on an active installation.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::008",
+      "title": "Valley Transit Maintenance and Storage Facility",
+      "client": "Valley Transit Authority",
+      "client_type": "municipal",
+      "sector": "transport",
+      "value_usd": 54000000,
+      "completed": "2022-05",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Light rail maintenance and storage facility with service bays, wheel truing and an operations control room.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::009",
+      "title": "Meridian Cancer Treatment Pavilion",
+      "client": "Meridian Health System",
+      "client_type": "private",
+      "sector": "healthcare",
+      "value_usd": 88000000,
+      "completed": "2024-08",
+      "delivery": "ipd",
+      "certification": "LEED-Gold",
+      "narrative": "Ambulatory oncology pavilion with linear accelerator vaults, infusion suites and clinical trials space.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::010",
+      "title": "Naval Hospital Support Annex",
+      "client": "Naval Facilities Engineering Systems Command",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 58000000,
+      "completed": "2023-10",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Support annex to a naval hospital: central sterile processing, pharmacy and staff facilities, built inside the existing perimeter.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_A::PROJ::011",
+      "title": "Calder Regional Water Reclamation Expansion",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 41000000,
+      "completed": "2020-07",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Process train expansion and headworks replacement at a regional water reclamation plant.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::012",
+      "title": "St. Aurelia Emergency Department Modernisation",
+      "client": "St. Aurelia Regional",
+      "client_type": "state",
+      "sector": "healthcare",
+      "value_usd": 67000000,
+      "completed": "2025-02",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Emergency department expansion doubling treatment bays and adding a dedicated behavioral health observation unit.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::013",
+      "title": "Restricted Federal Health Facility",
+      "client": "withheld under the programme access agreement",
+      "client_type": "federal",
+      "sector": "healthcare",
+      "value_usd": 210000000,
+      "completed": "2024-05",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Inpatient facility delivered under a restricted-access agreement; client, location and scope are not disclosable to a third party under any terms.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_A::PERSON::001",
+      "name": "Dana Whitfield",
+      "role": "PM",
+      "credentials": ["PMP", "LEED-AP"],
+      "bio": "Programme manager for hospital and clinic delivery, with twenty years running phased construction on occupied patient care campuses.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::002", "FIRM_A::PROJ::009", "FIRM_A::PROJ::012"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::002",
+      "name": "Marcus Lin",
+      "role": "structural-lead",
+      "credentials": ["SE", "PE"],
+      "bio": "Structural lead for civic and transit work, specialising in seismic retrofit of occupied public buildings and lateral strengthening of existing frames.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::003",
+      "name": "Priya Raman",
+      "role": "healthcare-planner",
+      "credentials": ["AIA"],
+      "bio": "Clinical planner for acute care and ambulatory work; leads functional programming for surgical, imaging and inpatient units.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::003", "FIRM_A::PROJ::009"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::004",
+      "name": "Ben Osei",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for federal civic and higher-education delivery, including design-build courthouse and laboratory programmes.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::005",
+      "name": "Hana Sorensen",
+      "role": "structural-engineer",
+      "credentials": ["PE"],
+      "bio": "Structural engineer for long-span floor framing and vibration criteria in laboratory and diagnostic imaging environments.",
+      "projects": ["FIRM_A::PROJ::003", "FIRM_A::PROJ::006", "FIRM_A::PROJ::011"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::006",
+      "name": "Tomas Reyes",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for hospital infrastructure: central plant capacity, isolation room pressurisation and resilient power for critical care.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::003", "FIRM_A::PROJ::012"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::007",
+      "name": "Ada Fenwick",
+      "role": "design-principal",
+      "credentials": ["AIA", "LEED-AP"],
+      "bio": "Design principal for ambulatory and behavioral health architecture, focused on daylight and wayfinding in treatment settings.",
+      "projects": ["FIRM_A::PROJ::004", "FIRM_A::PROJ::009", "FIRM_A::PROJ::012"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::008",
+      "name": "Grant Mueller",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for federal design-build delivery on active installations, including medical logistics and support facilities.",
+      "projects": ["FIRM_A::PROJ::002", "FIRM_A::PROJ::007", "FIRM_A::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
 }

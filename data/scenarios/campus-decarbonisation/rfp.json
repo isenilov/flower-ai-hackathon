@@ -1,5 +1,5 @@
 {
-  "solicitation": "Federal healthcare facility, seismic zone, design-build",
+  "solicitation": "State university system — campus decarbonisation and deep energy retrofit programme, IPD",
   "as_of": "2026-08-26",
   "section_f_cap": 10,
   "requirements": [
@@ -9,9 +9,9 @@
       "kind": "MANDATORY",
       "min_count": 3,
       "weight": 1.0,
-      "description": "Healthcare projects at or above $50M completed within seven years",
+      "description": "Education projects at or above $50M completed within seven years",
       "predicate": {
-        "sector": "healthcare",
+        "sector": "education",
         "value_band_min": "50-100M",
         "recency_band_max": "3-7y"
       }
@@ -22,10 +22,10 @@
       "kind": "MANDATORY",
       "min_count": 2,
       "weight": 1.0,
-      "description": "Design-build delivery for a federal client",
+      "description": "Integrated project delivery for a state client",
       "predicate": {
-        "delivery": "design-build",
-        "client_type": "federal"
+        "delivery": "ipd",
+        "client_type": "state"
       }
     },
     {
@@ -34,11 +34,11 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 1.0,
-      "description": "Project manager, PMP credentialed, with healthcare experience",
+      "description": "Project manager, PMP credentialed, with education experience",
       "predicate": {
         "role": "PM",
         "credentials": "PMP",
-        "sector": "healthcare"
+        "sector": "education"
       }
     },
     {
@@ -47,10 +47,10 @@
       "kind": "MANDATORY",
       "min_count": 1,
       "weight": 2.0,
-      "description": "One individual with both healthcare and seismic retrofit evidence, as a Section G cell",
+      "description": "One individual with both education and district energy evidence, as a Section G cell",
       "predicate": {
-        "sector": "healthcare",
-        "experience": "seismic-retrofit",
+        "sector": "education",
+        "experience": "district-energy",
         "join": "person_x_project"
       }
     },
@@ -60,10 +60,10 @@
       "kind": "WEIGHTED",
       "min_count": 1,
       "weight": 0.5,
-      "description": "Structural lead holding an SE credential",
+      "description": "Design principal holding a LEED-AP credential",
       "predicate": {
-        "role": "structural-lead",
-        "credentials": "SE"
+        "role": "design-principal",
+        "credentials": "LEED-AP"
       }
     },
     {
@@ -72,9 +72,9 @@
       "kind": "WEIGHTED",
       "min_count": 2,
       "weight": 0.5,
-      "description": "Projects certified LEED Gold or better",
+      "description": "Projects certified LEED Platinum",
       "predicate": {
-        "certification_min": "LEED-Gold"
+        "certification_min": "LEED-Platinum"
       }
     }
   ]

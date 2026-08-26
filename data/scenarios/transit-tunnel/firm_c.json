@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_C",
+  "profile": "Utilities and industrial engineer, water-heavy. Books everything it drives as a conduit contract, which is how the only soft-ground drive under a live station in this consortium is filed as industrial work.",
+  "projects": [
+    {
+      "handle": "FIRM_C::PROJ::001",
+      "title": "Light Rail Utility Relocation Programme",
+      "client": "Auralia Transit Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 118000000,
+      "completed": "2022-10",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Relocation of water, gas and telecoms utilities ahead of a light rail extension, phased across eleven street crossings.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::002",
+      "title": "Transit Corridor Drainage Renewal",
+      "client": "Auralia Department of Transportation",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 104000000,
+      "completed": "2024-04",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Drainage and culvert renewal along an operating rail corridor, delivered in night possessions.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::003",
+      "title": "Airport Fuel and Hydrant System",
+      "client": "Auralia Port Authority",
+      "client_type": "state",
+      "sector": "transport",
+      "value_usd": 136000000,
+      "completed": "2021-07",
+      "delivery": "design-build",
+      "certification": "LEED-Silver",
+      "narrative": "Aviation fuel farm and airside hydrant distribution with automated leak detection.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::004",
+      "title": "North Relief Conduit",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 158000000,
+      "completed": "2023-03",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "A 3.2 km relief conduit driven through soft ground beneath a tidal channel, with intermediate shafts and a compressed air working chamber.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::005",
+      "title": "Regional Water Treatment Expansion",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 89000000,
+      "completed": "2020-12",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Silver",
+      "narrative": "Membrane treatment expansion and a high-lift pumping hall at a regional water plant.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::006",
+      "title": "Effluent Pretreatment Plant",
+      "client": "Northbridge Digital",
+      "client_type": "private",
+      "sector": "industrial",
+      "value_usd": 47000000,
+      "completed": "2024-09",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Effluent pretreatment plant and equalisation basins serving a data campus cooling loop.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::007",
+      "title": "Coastal Outfall Replacement",
+      "client": "Calder County Utilities",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 112000000,
+      "completed": "2025-02",
+      "delivery": "design-bid-build",
+      "certification": "none",
+      "narrative": "Marine outfall replacement with a bored diffuser section and a temporary cofferdam at the shoreline.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_C::PROJ::008",
+      "title": "State Reservoir Spillway Reconstruction",
+      "client": "State of Auralia",
+      "client_type": "state",
+      "sector": "civic",
+      "value_usd": 126000000,
+      "completed": "2023-08",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Spillway and stilling basin reconstruction at a state reservoir, executed between flood seasons.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PROJ::009",
+      "title": "Downtown District Cooling Network",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "industrial",
+      "value_usd": 64000000,
+      "completed": "2022-01",
+      "delivery": "design-build",
+      "certification": "LEED-Gold",
+      "narrative": "District cooling network with a central plant and four energy transfer substations across a downtown grid.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PROJ::010",
+      "title": "Restricted Process Water Facility",
+      "client": "withheld under a facility clearance",
+      "client_type": "federal",
+      "sector": "industrial",
+      "value_usd": 91000000,
+      "completed": "2024-06",
+      "delivery": "design-build",
+      "certification": "none",
+      "narrative": "Process water facility delivered under a facility clearance; the client, the location and the process are not disclosable.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_C::PERSON::001",
+      "name": "Yara Mansour",
+      "role": "tunnelling-lead",
+      "credentials": ["PE"],
+      "bio": "Tunnelling lead on the north relief conduit: a soft-ground bore advanced under compressed air beneath live platforms and an operating station box, with a settlement-control regime agreed with the operator.",
+      "projects": ["FIRM_C::PROJ::004", "FIRM_C::PROJ::007"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::002",
+      "name": "Grace Adeyinka",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for utility packages delivered inside operating rail and airside corridors.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::003"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::003",
+      "name": "Viktor Sorensen",
+      "role": "geotechnical-lead",
+      "credentials": ["PE"],
+      "bio": "Geotechnical lead for dams, spillways and deep excavation support.",
+      "projects": ["FIRM_C::PROJ::005", "FIRM_C::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::004",
+      "name": "Leila Osman",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for water treatment and district cooling plant.",
+      "projects": ["FIRM_C::PROJ::005", "FIRM_C::PROJ::006", "FIRM_C::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_C::PERSON::005",
+      "name": "Tobias Weiss",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for conduit and outfall contracts under municipal frameworks.",
+      "projects": ["FIRM_C::PROJ::004", "FIRM_C::PROJ::007", "FIRM_C::PROJ::008"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_C::PERSON::006",
+      "name": "Rina Chaudhry",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for utility works phased around live operations.",
+      "projects": ["FIRM_C::PROJ::001", "FIRM_C::PROJ::002", "FIRM_C::PROJ::010"],
+      "disclosure_cost": 1
+    }
+  ]
+}

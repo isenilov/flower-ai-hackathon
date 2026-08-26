@@ -1,0 +1,192 @@
+{
+  "firm": "FIRM_A",
+  "profile": "Higher-education architect, large. Knows every campus in the state and assumes that means it knows who has run a thermal network on one.",
+  "projects": [
+    {
+      "handle": "FIRM_A::PROJ::001",
+      "title": "Whitmore Science Quadrangle Renewal",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 148000000,
+      "completed": "2023-06",
+      "delivery": "ipd",
+      "certification": "LEED-Platinum",
+      "narrative": "Deep renewal of three teaching and research buildings around a quadrangle, delivered term by term with students in residence.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::002",
+      "title": "Auralia State Student Union",
+      "client": "Auralia State University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 92000000,
+      "completed": "2022-08",
+      "delivery": "ipd",
+      "certification": "LEED-Gold",
+      "narrative": "Student union replacement with dining, assembly and study commons at the head of the campus green.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::003",
+      "title": "Riverside College Residence Halls",
+      "client": "Riverside College",
+      "client_type": "private",
+      "sector": "education",
+      "value_usd": 76000000,
+      "completed": "2024-05",
+      "delivery": "design-build",
+      "certification": "LEED-Platinum",
+      "narrative": "Two residence halls with 480 beds, seminar rooms and a shared dining commons.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::004",
+      "title": "Whitmore Engineering Teaching Block",
+      "client": "Whitmore University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 64000000,
+      "completed": "2021-03",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Gold",
+      "narrative": "Engineering teaching block with high-bay labs, classrooms and a maker floor.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::005",
+      "title": "Calder Central Library",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 58000000,
+      "completed": "2023-11",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Platinum",
+      "narrative": "Central library with open stacks, a children's wing and a community meeting suite.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::006",
+      "title": "Calder Municipal Recreation Centre",
+      "client": "City of Calder",
+      "client_type": "municipal",
+      "sector": "civic",
+      "value_usd": 47000000,
+      "completed": "2022-06",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Recreation centre with a natatorium served by a heat recovery chiller plant and a dehumidification loop.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::007",
+      "title": "Auralia State Athletics Complex",
+      "client": "Auralia State University",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 41000000,
+      "completed": "2025-01",
+      "delivery": "cm-at-risk",
+      "certification": "LEED-Silver",
+      "narrative": "Athletics complex with a fieldhouse, training rooms and spectator seating.",
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PROJ::008",
+      "title": "Northgate School District Modernisation",
+      "client": "Northgate School District",
+      "client_type": "municipal",
+      "sector": "education",
+      "value_usd": 83000000,
+      "completed": "2019-04",
+      "delivery": "design-bid-build",
+      "certification": "LEED-Gold",
+      "narrative": "Modernisation of four school buildings, including classroom daylighting and envelope repairs.",
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PROJ::009",
+      "title": "Community College Health Sciences Campus",
+      "client": "Auralia Community College",
+      "client_type": "state",
+      "sector": "education",
+      "value_usd": 112000000,
+      "completed": "2024-09",
+      "delivery": "ipd",
+      "certification": "LEED-Platinum",
+      "narrative": "Health sciences campus with teaching clinics, simulation suites and a student services concourse.",
+      "disclosure_cost": 2
+    },
+    {
+      "handle": "FIRM_A::PROJ::010",
+      "title": "Confidential Institutional Programme",
+      "client": "withheld under a confidentiality agreement",
+      "client_type": "private",
+      "sector": "education",
+      "value_usd": 67000000,
+      "completed": "2024-02",
+      "delivery": "cm-at-risk",
+      "certification": "none",
+      "narrative": "Institutional campus programme delivered under a confidentiality agreement; the institution, the sites and the programme cannot be described to a third party.",
+      "disclosure_cost": 3
+    }
+  ],
+  "people": [
+    {
+      "handle": "FIRM_A::PERSON::001",
+      "name": "Helena Vogt",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Programme manager for campus renewal delivered around teaching terms.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::002", "FIRM_A::PROJ::004"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::002",
+      "name": "Rafael Mendes",
+      "role": "MEP-lead",
+      "credentials": ["PE", "LEED-AP"],
+      "bio": "Mechanical lead for heat pump plant, heat recovery chillers and low-temperature hot water conversion in existing buildings.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::003",
+      "name": "Wren Ashby",
+      "role": "design-principal",
+      "credentials": ["AIA", "LEED-AP"],
+      "bio": "Design principal for teaching and residential architecture on constrained campuses.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::003", "FIRM_A::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::004",
+      "name": "Noor Farouk",
+      "role": "PM",
+      "credentials": ["PMP"],
+      "bio": "Project manager for municipal civic and recreation projects.",
+      "projects": ["FIRM_A::PROJ::005", "FIRM_A::PROJ::006"],
+      "disclosure_cost": 0
+    },
+    {
+      "handle": "FIRM_A::PERSON::005",
+      "name": "Bertrand Cole",
+      "role": "sustainability-lead",
+      "credentials": ["LEED-AP"],
+      "bio": "Sustainability lead for embodied carbon and envelope performance on academic buildings.",
+      "projects": ["FIRM_A::PROJ::001", "FIRM_A::PROJ::003", "FIRM_A::PROJ::009"],
+      "disclosure_cost": 1
+    },
+    {
+      "handle": "FIRM_A::PERSON::006",
+      "name": "Sana Iqbal",
+      "role": "construction-manager",
+      "credentials": ["PMP"],
+      "bio": "Construction manager for occupied-campus phasing and summer shutdown works.",
+      "projects": ["FIRM_A::PROJ::002", "FIRM_A::PROJ::007", "FIRM_A::PROJ::008"],
+      "disclosure_cost": 1
+    }
+  ]
+}
